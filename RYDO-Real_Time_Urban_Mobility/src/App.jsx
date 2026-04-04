@@ -8,6 +8,11 @@ function App() {
         </h1>
 
         <p className="tagline">Real-Time Urban Mobility</p>
+        
+
+        <p className="subtag">
+          Get in, go out — འགྱོ་བ vibes.
+        </p>
       </div>
     </div>
   );
