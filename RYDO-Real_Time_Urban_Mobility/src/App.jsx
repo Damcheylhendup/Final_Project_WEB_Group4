@@ -9,10 +9,15 @@ function App() {
 
         <p className="tagline">Real-Time Urban Mobility</p>
         
+        <button className="start-btn">
+          Get Started <span className="arrow">→</span>
+        </button>
 
         <p className="subtag">
-          Get in, go out — འགྱོ་བ vibes.
+          "Get in, go out — འགྱོ་བ vibes."
         </p>
+
+        
       </div>
     </div>
   );
