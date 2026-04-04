@@ -54,9 +54,45 @@ body {
 
 .tagline {
   position: absolute;
-  bottom: 18%;
-  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  bottom: 47%;
+  font-size: clamp(1.3rem, 2.5vw, 1.9rem);
   color: #ffffff;
   text-align: center;
   width: 100%;
 }
+
+.start-btn {
+  margin-top: 60px;
+  padding: 14px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 40px;
+  background-color: #f7a300;
+  color: white;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  transition: 0.3s ease;
+}
+
+.start-btn:hover {
+  background-color: #e69500;
+}
+
+.arrow {
+  font-size: 20px;
+}
+
+.subtag {
+  position: absolute;
+  bottom: 15%;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  color: #ffffff;
+  text-align: center;
+  max-width: 100%;
+  line-height: 1.4;
+}
+
