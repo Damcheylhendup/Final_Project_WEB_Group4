@@ -54,7 +54,7 @@ body {
 
 .tagline {
   position: absolute;
-  bottom: 48%;
+  bottom: 47%;
   font-size: clamp(1.3rem, 2.5vw, 1.9rem);
   color: #ffffff;
   text-align: center;
