@@ -168,11 +168,15 @@ button:active {
   font-size: 1rem;
   cursor: pointer;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 30px 1fr;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
+  padding: 0 20px;
+  column-gap: 12px;
 }
+ .social-btn svg {
+  font-size: 18px;
+ }
 
 .social-btn:hover {
   background-color: #dcdcdc;
