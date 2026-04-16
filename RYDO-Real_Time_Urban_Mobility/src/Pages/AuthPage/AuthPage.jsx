@@ -1,4 +1,6 @@
 import './AuthPage.css';
+import {FaApple, FaGoogle, FaFacebookF} from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
 
 function AuthPage() {
   return (
@@ -47,12 +49,22 @@ function AuthPage() {
 
         {/* Social Buttons */}
         <div className="social-buttons">
-          <button className="social-btn"> Continue with Apple</button>
-          <button className="social-btn">G Continue with Google</button>
-          <button className="social-btn facebook-btn">f Continue with Facebook</button>
-          <button className="social-btn">✉ Continue with Email</button>
-        </div>
+  <button className="social-btn">
+    <FaApple className="icon" /> Continue with Apple
+  </button>
 
+  <button className="social-btn">
+    <FaGoogle className="icon" /> Continue with Google
+  </button>
+
+  <button className="social-btn facebook-btn">
+    <FaFacebookF className="icon" /> Continue with Facebook
+  </button>
+
+  <button className="social-btn">
+    <MdEmail className="icon" /> Continue with Email
+  </button>
+</div>
         {/* Second Divider */}
         <div className="divider second-divider">
           <span></span>
