@@ -7,7 +7,7 @@ function LandingPage() {
   return (
     <div className="splash-screen">
       <div className="content">
-        <h1 className="logo">
+        <h1 className="logo box">
           <span className="yellow">RY</span>
           <span className="red">DO</span>
         </h1>
