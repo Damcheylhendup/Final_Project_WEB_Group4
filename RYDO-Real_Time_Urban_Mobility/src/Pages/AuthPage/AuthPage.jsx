@@ -1,12 +1,11 @@
 import './AuthPage.css';
-import {FaApple, FaGoogle, FaFacebookF} from 'react-icons/fa';
-import { MdEmail } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 
 function AuthPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-
         {/* Logo */}
         <div className="logo">
           <span className="yellow">RY</span>
@@ -30,7 +29,7 @@ function AuthPage() {
 
             <input
               id="phone"
-              type="tel"   // better for mobile
+              type="tel"
               placeholder="+975 17660994"
               className="phone-input"
             />
@@ -49,22 +48,17 @@ function AuthPage() {
 
         {/* Social Buttons */}
         <div className="social-buttons">
-  <button className="social-btn">
-    <FaApple className="icon" /> Continue with Apple
-  </button>
+          <button className="social-btn">
+            <FaGoogle className="icon" />
+            Continue with Google
+          </button>
 
-  <button className="social-btn">
-    <FaGoogle className="icon" /> Continue with Google
-  </button>
+          <button className="social-btn facebook-btn">
+            <FaFacebookF className="icon" />
+            Continue with Facebook
+          </button>
+        </div>
 
-  <button className="social-btn facebook-btn">
-    <FaFacebookF className="icon" /> Continue with Facebook
-  </button>
-
-  <button className="social-btn">
-    <MdEmail className="icon" /> Continue with Email
-  </button>
-</div>
         {/* Second Divider */}
         <div className="divider second-divider">
           <span></span>
@@ -72,8 +66,10 @@ function AuthPage() {
           <span></span>
         </div>
 
-        {/* Find Account */}
-        <button className="find-account-btn">⌕ Find my account</button>
+        {/* Login Link */}
+        <p className="find-account-btn">
+          Already have an account? <Link to="/login">Log in</Link>
+        </p>
 
         {/* Terms */}
         <p className="terms-text">

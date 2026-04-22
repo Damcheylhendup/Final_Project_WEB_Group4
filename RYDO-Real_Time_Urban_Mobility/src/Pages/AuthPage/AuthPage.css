@@ -192,26 +192,6 @@ button:active {
   transform: translateY(-2px);
 }
 
-.second-divider {
-  margin-top: 28px;
-}
-
-.find-account-btn {
-  width: 100%;
-  min-height: 58px;
-  border: none;
-  background: transparent;
-  color: #111;
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin-bottom: 28px;
-}
-
-.find-account-btn:hover {
-  color: #000;
-  transform: translateY(-2px);
-}
-
 .terms-text {
   font-size: 0.95rem;
   color: #666;
