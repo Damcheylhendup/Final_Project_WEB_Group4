@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import './LoginPage.css';
 
 function LoginPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     emailOrPhone: '',
     password: '',
@@ -36,7 +37,7 @@ function LoginPage() {
 
     if (Object.keys(newErrors).length === 0) {
       console.log('Login Data:', formData);
-      alert('Login successful');
+      navigate('/dashboard');
     }
   };
 
