@@ -14,7 +14,7 @@ function LandingPage() {
 
         <p className="tagline">Real-Time Urban Mobility</p>
 
-        <button className="start-btn" onClick={() => navigate('/auth')}>
+        <button className="start-btn" onClick={() => navigate('/login')}>
           Get Started <span className="arrow">→</span>
         </button>
 
