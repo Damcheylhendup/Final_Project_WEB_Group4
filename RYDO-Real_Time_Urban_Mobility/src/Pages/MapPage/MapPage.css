@@ -1,0 +1,105 @@
+.map-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.map-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.back-btn {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.map-container h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.map-box {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  background: #dfe7ef;
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.road-line {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 80%;
+  height: 10px;
+  background: #333;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.location {
+  position: absolute;
+  top: 42%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  text-align: center;
+}
+
+.location span {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 6px;
+  color: #111;
+  font-weight: 600;
+}
+
+.driver {
+  position: absolute;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  font-size: 2.4rem;
+  transition: left 0.4s ease;
+}
+
+.tracking-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.tracking-card h2 {
+  margin-top: 0;
+}
+
+.tracking-card p {
+  color: #444;
+}
+
+.tracking-card button {
+  width: 100%;
+  min-height: 52px;
+  border: none;
+  border-radius: 12px;
+  background: #000;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.tracking-card button:hover {
+  background: #222;
+}

@@ -59,7 +59,7 @@ function AuthPage() {
         </div>
 
         <button className="continue-btn" onClick={handleContinue}>
-          Continue
+          Signup
         </button>
 
         <div className="divider">

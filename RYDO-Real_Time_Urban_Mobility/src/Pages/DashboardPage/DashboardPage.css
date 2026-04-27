@@ -1,0 +1,137 @@
+/* Page */
+.dashboard-page {
+  min-height: 100vh;
+  background: #f5f5f5; /* 🔥 white/soft grey */
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+/* Container */
+.dashboard-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+/* Logo */
+.dashboard-logo {
+  background: #111;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.yellow {
+  color: #ffd21f;
+}
+
+.red {
+  color: #f05a1a;
+}
+
+/* Logout */
+.logout-btn {
+  border: none;
+  background: #000;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #222;
+  transform: translateY(-2px);
+}
+
+/* Welcome section */
+.welcome-section {
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-section h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.welcome-section p {
+  color: #666;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+/* Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Cards */
+.dashboard-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+.dashboard-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Card text */
+.dashboard-card h2 {
+  margin: 0 0 8px;
+}
+
+.dashboard-card p {
+  color: #666;
+}
+
+/* Buttons */
+.dashboard-card button {
+  margin-top: 14px;
+  border: none;
+  background: #000;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-card button:hover {
+  background: #222;
+  transform: scale(1.05);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-section h1 {
+    font-size: 1.8rem;
+  }
+}
