@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TripsPage.css';
+import tripImg from "../../assets/trip.png";
 
 function TripsPage() {
   const navigate = useNavigate();
@@ -12,22 +13,33 @@ function TripsPage() {
   }, []);
 
   const clearTrips = () => {
-    localStorage.removeItem('rides');
-    setRides([]);
+    if (window.confirm("Clear all trip history?")) {
+      localStorage.removeItem('rides');
+      setRides([]);
+    }
   };
 
   return (
     <div className="trips-page">
       <div className="trips-container">
+        
+        {/* Header Section */}
         <div className="trips-header">
           <button className="back-btn" onClick={() => navigate('/dashboard')}>
             ← Back
           </button>
 
           <h1>My Trips</h1>
+          
+          {/* This container allows the CSS to center and size the car correctly */}
+          <div className="trip-image-container">
+            <img src={tripImg} alt="trip illustration" className="trip-image" />
+          </div>
+
           <p>View your current and past Rydo bookings.</p>
         </div>
 
+        {/* Empty State vs List Logic */}
         {rides.length === 0 ? (
           <div className="empty-box">
             <h2>No trips yet</h2>
@@ -38,10 +50,10 @@ function TripsPage() {
           <>
             <div className="trips-list">
               {rides.map((ride) => (
-                <div className="trip-card" key={ride.id}>
+                <div className="trip-card" key={ride.id || Math.random()}>
                   <div className="trip-top">
                     <h2>{ride.rideType} Ride</h2>
-                    <span className="status">{ride.status}</span>
+                    <span className="status">{ride.status || 'Scheduled'}</span>
                   </div>
 
                   <div className="trip-info">
