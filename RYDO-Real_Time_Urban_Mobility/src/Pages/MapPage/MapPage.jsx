@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import './MapPage.css';
 
@@ -7,22 +8,69 @@ function MapPage() {
 
   const [driverPosition, setDriverPosition] = useState(20);
   const [ride, setRide] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+
+  const BACKEND_URL = 'http://localhost:4000';
 
   useEffect(() => {
     const rides = JSON.parse(localStorage.getItem('rides')) || [];
     if (rides.length > 0) {
       setRide(rides[rides.length - 1]);
     }
-
-    const interval = setInterval(() => {
-      setDriverPosition((prev) => {
-        if (prev >= 80) return 80;
-        return prev + 5;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    // No ride selected => nothing to track.
+    if (!ride?.id) return;
+
+    const socket = io(BACKEND_URL);
+    setIsConnected(false);
+
+    // Track-room simulation so you can test end-to-end without a separate driver app.
+    let simPosition = 20; // percent along the road (0-100)
+    const start = () => {
+      socket.emit('join-ride', { rideId: ride.id });
+
+      const interval = setInterval(() => {
+        simPosition = Math.min(80, simPosition + 5);
+
+        // Fake coordinates; backend just broadcasts them back.
+        // We convert percent -> longitude so UI can reverse it.
+        const latitude = 27.5 + simPosition / 200; // demo values
+        const longitude = 89 + simPosition / 100; // so pos = (longitude - 89) * 100
+
+        socket.emit('update-location', {
+          rideId: ride.id,
+          latitude,
+          longitude,
+        });
+      }, 1000);
+
+      // Cleanup interval when socket disconnects/unmounts.
+      socket.on('disconnect', () => clearInterval(interval));
+    };
+
+    socket.on('connect', () => {
+      setIsConnected(true);
+      start();
+    });
+
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+    });
+
+    socket.on('driver-location', ({ longitude }) => {
+      if (typeof longitude !== 'number') return;
+
+      const pos = (longitude - 89) * 100;
+      setDriverPosition(Math.max(0, Math.min(80, Math.round(pos))));
+    });
+
+    return () => {
+      setIsConnected(false);
+      socket.disconnect();
+    };
+  }, [ride?.id]);
 
   return (
     <div className="map-page">
@@ -32,7 +80,9 @@ function MapPage() {
         </button>
 
         <h1>Live Tracking</h1>
-        <p className="subtitle">Track your driver in real time.</p>
+        <p className="subtitle">
+          Track your driver in real time. {isConnected ? 'Connected to backend.' : 'Connecting...'}
+        </p>
 
         <div className="map-box">
           <div className="road-line"></div>

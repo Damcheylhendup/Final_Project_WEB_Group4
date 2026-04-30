@@ -1,0 +1,14 @@
+{
+  "name": "rydo-backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.3"
+  }
+}
+
