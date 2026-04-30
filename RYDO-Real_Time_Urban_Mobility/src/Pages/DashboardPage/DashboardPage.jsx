@@ -53,9 +53,9 @@ function DashboardPage() {
           </div>
 
           <div className="dashboard-card">
-            <h2><FaWallet /> Payments</h2>
+            <h2><FaWallet /> Transactions</h2>
             <p>View fare details and payments.</p>
-            <button onClick={() => navigate('/payments')}>Payments</button>
+            <button onClick={() => navigate('/Payments')}>View Transactions</button>
           </div>
 
         </section>

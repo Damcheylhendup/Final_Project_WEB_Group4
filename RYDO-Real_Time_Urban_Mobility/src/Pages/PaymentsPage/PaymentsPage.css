@@ -32,7 +32,18 @@
 
 .subtitle {
   color: #666;
-  margin-bottom: 24px;
+  margin: 10px 0 24px;
+}
+
+.map-container {
+  margin: 12px 0;
+}
+
+.map-image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 .payment-summary {
