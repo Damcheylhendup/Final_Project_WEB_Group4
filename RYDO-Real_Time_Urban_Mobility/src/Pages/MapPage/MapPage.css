@@ -3,6 +3,7 @@
   background: #f5f5f5;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .map-container {
@@ -16,16 +17,20 @@
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 16px;
+  color: inherit;
 }
 
 .map-container h1 {
   margin: 0;
   font-size: 2.2rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .subtitle {
   color: #666;
   margin-bottom: 24px;
+  transition: color 0.3s ease;
 }
 
 .map-box {
@@ -37,6 +42,7 @@
   overflow: hidden;
   margin-bottom: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .road-line {
@@ -64,6 +70,7 @@
   margin-top: 6px;
   color: #111;
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .driver {
@@ -79,14 +86,17 @@
   border-radius: 24px;
   padding: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tracking-card h2 {
   margin-top: 0;
+  color: inherit;
 }
 
 .tracking-card p {
   color: #444;
+  transition: color 0.3s ease;
 }
 
 .tracking-card button {
@@ -98,8 +108,64 @@
   color: white;
   font-size: 1rem;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .tracking-card button:hover {
   background: #222;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .map-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .map-container h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .subtitle {
+  color: #aaa;
+}
+
+html.dark-mode .map-box {
+  background: #1f2933;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .road-line {
+  background: #f0f0f0;
+}
+
+html.dark-mode .location span {
+  color: #f0f0f0;
+}
+
+html.dark-mode .tracking-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .tracking-card p {
+  color: #aaa;
+}
+
+html.dark-mode .tracking-card button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .tracking-card button:hover {
+  background: #ddd;
 }

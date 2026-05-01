@@ -1,9 +1,10 @@
 /* Page */
 .dashboard-page {
   min-height: 100vh;
-  background: #f5f5f5; /* 🔥 white/soft grey */
+  background: #f5f5f5;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Container */
@@ -61,17 +62,21 @@
   padding: 28px;
   margin-bottom: 24px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .welcome-section h1 {
   margin: 0;
   font-size: 2.2rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .welcome-section p {
   color: #666;
   font-size: 1rem;
   margin-top: 8px;
+  transition: color 0.3s ease;
 }
 
 /* Grid */
@@ -87,12 +92,16 @@
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
+
 .dashboard-card h2 {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: 0 0 8px;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .dashboard-card:hover {
@@ -100,12 +109,9 @@
 }
 
 /* Card text */
-.dashboard-card h2 {
-  margin: 0 0 8px;
-}
-
 .dashboard-card p {
   color: #666;
+  transition: color 0.3s ease;
 }
 
 /* Buttons */
@@ -123,6 +129,49 @@
 .dashboard-card button:hover {
   background: #222;
   transform: scale(1.05);
+}
+
+/* ─── Dark Mode ───────────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .dashboard-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .welcome-section,
+html.dark-mode .dashboard-card {
+  background: #1a1a1a;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .welcome-section h1,
+html.dark-mode .dashboard-card h2 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .welcome-section p,
+html.dark-mode .dashboard-card p {
+  color: #aaa;
+}
+
+html.dark-mode .logout-btn,
+html.dark-mode .dashboard-card button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .logout-btn:hover,
+html.dark-mode .dashboard-card button:hover {
+  background: #ddd;
 }
 
 /* Mobile */

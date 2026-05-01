@@ -3,10 +3,11 @@
   background: #f5f5f5;
   padding: 24px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .trips-container {
-  max-width: 600px; /* Reduced for a more "mobile app" feel */
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -18,6 +19,7 @@
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
   text-align: left;
   overflow: hidden;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .back-btn {
@@ -27,21 +29,25 @@
   cursor: pointer;
   margin-bottom: 16px;
   padding: 0;
+  color: inherit;
 }
 
 .trips-header h1 {
   margin: 0 0 10px 0;
   font-size: 2.2rem;
   font-weight: 800;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .trips-header p {
   color: #888;
   font-size: 0.9rem;
   margin: 10px 0 0 0;
+  transition: color 0.3s ease;
 }
 
-/* Image Logic Fixes */
+/* Image */
 .trip-image-container {
   width: 100%;
   display: flex;
@@ -56,12 +62,14 @@
   object-fit: contain;
 }
 
+/* Empty */
 .empty-box {
   background: #fff;
   border-radius: 24px;
   padding: 40px 20px;
   text-align: center;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .empty-box h2 {
@@ -87,6 +95,7 @@
   transform: translateY(-2px);
 }
 
+/* List */
 .trips-list {
   display: flex;
   flex-direction: column;
@@ -98,6 +107,7 @@
   border-radius: 24px;
   padding: 24px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .trip-top {
@@ -120,6 +130,7 @@
   margin: 5px 0;
   color: #555;
   font-size: 0.95rem;
+  transition: color 0.3s ease;
 }
 
 .trip-actions {
@@ -143,4 +154,65 @@
 .clear-btn:hover {
   background: #fff5f5;
   color: #bd2130;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-header,
+html.dark-mode .trip-card,
+html.dark-mode .empty-box {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .trips-header h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-header p,
+html.dark-mode .trip-info p {
+  color: #aaa;
+}
+
+/* Status */
+html.dark-mode .status {
+  background: #1f2d3d;
+  color: #66b2ff;
+}
+
+/* Buttons */
+html.dark-mode .empty-box button,
+html.dark-mode .trip-actions button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .empty-box button:hover {
+  background: #ddd;
+}
+
+/* Clear button */
+html.dark-mode .clear-btn {
+  background: #2a2a2a;
+  color: #ff6b6b;
+  border: 1px solid #444;
+}
+
+html.dark-mode .clear-btn:hover {
+  background: #3a1f1f;
+  color: #ff6b6b;
 }
