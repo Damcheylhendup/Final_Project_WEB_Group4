@@ -7,6 +7,7 @@ import BookingPage from './Pages/BookingPage/BookingPage.jsx';
 import TripsPage from './Pages/TripsPage/TripsPage.jsx';
 import PaymentsPage from './Pages/PaymentsPage/PaymentsPage.jsx';
 import MapPage from './Pages/MapPage/MapPage.jsx';
+import AccountSettingsPage from './Pages/AccountSettingsPage/AccountSettingsPage.jsx';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/trips" element={<TripsPage />} />
         <Route path="/payments" element={<PaymentsPage />} />
         <Route path="/map" element={<MapPage />} />
+        <Route path="/account" element={<AccountSettingsPage />} />
       </Routes>
     </Router>
   );

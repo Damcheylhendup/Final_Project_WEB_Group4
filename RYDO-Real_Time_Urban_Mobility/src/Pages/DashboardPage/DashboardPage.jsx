@@ -1,6 +1,6 @@
 import './DashboardPage.css';
 import { useNavigate } from 'react-router-dom';
-import { FaCar, FaHistory, FaMapMarkedAlt, FaWallet } from 'react-icons/fa';
+import { FaCar, FaHistory, FaMapMarkedAlt, FaWallet, FaUserCog } from 'react-icons/fa';
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -56,6 +56,11 @@ function DashboardPage() {
             <h2><FaWallet /> Transactions</h2>
             <p>View fare details and payments.</p>
             <button onClick={() => navigate('/Payments')}>View Transactions</button>
+          </div>
+          <div className="dashboard-card">
+            <h2><FaUserCog /> Account & Settings</h2>
+            <p>Manage your profile and app preferences.</p>
+            <button onClick={() => navigate('/account')}>Open Settings</button>
           </div>
 
         </section>
