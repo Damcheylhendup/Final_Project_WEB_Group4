@@ -1,120 +1,168 @@
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import './MapPage.css';
 
 function MapPage() {
   const navigate = useNavigate();
 
-  const [driverPosition, setDriverPosition] = useState(20);
   const [ride, setRide] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
-
-  const BACKEND_URL = 'http://localhost:4000';
+  const [driverPosition, setDriverPosition] = useState(12);
+  const [trackingStatus, setTrackingStatus] = useState('Waiting for driver');
 
   useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const rides = JSON.parse(localStorage.getItem('rides')) || [];
-    if (rides.length > 0) {
-      setRide(rides[rides.length - 1]);
+
+    const userRides = rides.filter(
+      (item) =>
+        item.riderId === currentUser?.id ||
+        item.riderName === currentUser?.fullName
+    );
+
+    const activeRide =
+      userRides.find((item) => item.status === 'Accepted') ||
+      userRides.find((item) => item.status === 'Pending') ||
+      userRides[userRides.length - 1];
+
+    setRide(activeRide || null);
+
+    if (!activeRide) return;
+
+    if (activeRide.status === 'Pending') {
+      setTrackingStatus('Waiting for driver to accept your ride');
+      return;
     }
+
+    if (activeRide.status === 'Completed') {
+      setDriverPosition(88);
+      setTrackingStatus('Trip completed');
+      return;
+    }
+
+    setTrackingStatus('Driver is on the way');
+
+    const interval = setInterval(() => {
+      setDriverPosition((prev) => {
+        if (prev >= 88) {
+          clearInterval(interval);
+          setTrackingStatus('Driver has arrived');
+
+          const allRides = JSON.parse(localStorage.getItem('rides')) || [];
+          const updatedRides = allRides.map((item) =>
+            item.id === activeRide.id
+              ? {
+                  ...item,
+                  status: 'Arrived',
+                }
+              : item
+          );
+
+          localStorage.setItem('rides', JSON.stringify(updatedRides));
+          return 88;
+        }
+
+        if (prev >= 70) {
+          setTrackingStatus('Driver is nearby');
+        } else if (prev >= 40) {
+          setTrackingStatus('Driver is halfway there');
+        } else {
+          setTrackingStatus('Driver is on the way');
+        }
+
+        return prev + 4;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    // No ride selected => nothing to track.
-    if (!ride?.id) return;
-
-    const socket = io(BACKEND_URL);
-    setIsConnected(false);
-
-    // Track-room simulation so you can test end-to-end without a separate driver app.
-    let simPosition = 20; // percent along the road (0-100)
-    const start = () => {
-      socket.emit('join-ride', { rideId: ride.id });
-
-      const interval = setInterval(() => {
-        simPosition = Math.min(80, simPosition + 5);
-
-        // Fake coordinates; backend just broadcasts them back.
-        // We convert percent -> longitude so UI can reverse it.
-        const latitude = 27.5 + simPosition / 200; // demo values
-        const longitude = 89 + simPosition / 100; // so pos = (longitude - 89) * 100
-
-        socket.emit('update-location', {
-          rideId: ride.id,
-          latitude,
-          longitude,
-        });
-      }, 1000);
-
-      // Cleanup interval when socket disconnects/unmounts.
-      socket.on('disconnect', () => clearInterval(interval));
-    };
-
-    socket.on('connect', () => {
-      setIsConnected(true);
-      start();
-    });
-
-    socket.on('disconnect', () => {
-      setIsConnected(false);
-    });
-
-    socket.on('driver-location', ({ longitude }) => {
-      if (typeof longitude !== 'number') return;
-
-      const pos = (longitude - 89) * 100;
-      setDriverPosition(Math.max(0, Math.min(80, Math.round(pos))));
-    });
-
-    return () => {
-      setIsConnected(false);
-      socket.disconnect();
-    };
-  }, [ride?.id]);
 
   return (
     <div className="map-page">
       <div className="map-container">
-        <button className="back-btn" onClick={() => navigate('/dashboard')}>
+        <button className="back-btn" onClick={() => navigate('/trips')}>
           ← Back
         </button>
 
-        <h1>Live Tracking</h1>
-        <p className="subtitle">
-          Track your driver in real time. {isConnected ? 'Connected to backend.' : 'Connecting...'}
-        </p>
-
-        <div className="map-box">
-          <div className="road-line"></div>
-
-          <div className="location pickup" style={{ left: '15%' }}>
-            📍
-            <span>Pickup</span>
-          </div>
-
-          <div className="location destination" style={{ left: '85%' }}>
-            🏁
-            <span>Destination</span>
-          </div>
-
-          <div className="driver" style={{ left: `${driverPosition}%` }}>
-            🚗
-          </div>
+        <div className="map-header">
+          <h1>Live Tracking</h1>
+          <p>Track your driver in real time on a 2D map.</p>
         </div>
 
-        {ride ? (
-          <div className="tracking-card">
-            <h2>{ride.rideType} Ride</h2>
-            <p><strong>Pickup:</strong> {ride.pickup}</p>
-            <p><strong>Destination:</strong> {ride.destination}</p>
-            <p><strong>Status:</strong> Driver is on the way</p>
-          </div>
-        ) : (
+        {!ride ? (
           <div className="tracking-card">
             <h2>No active ride</h2>
-            <p>Please book a ride first.</p>
+            <p>Please book a ride first to start live tracking.</p>
             <button onClick={() => navigate('/booking')}>Book Ride</button>
           </div>
+        ) : (
+          <>
+            <div className="map-box">
+              <div className="map-grid"></div>
+
+              <div className="road horizontal-road"></div>
+              <div className="road vertical-road left-road"></div>
+              <div className="road vertical-road right-road"></div>
+
+              <div className="location pickup">
+                <div className="marker">📍</div>
+                <span>Pickup</span>
+              </div>
+
+              <div className="location destination">
+                <div className="marker">🏁</div>
+                <span>Destination</span>
+              </div>
+
+              <div
+                className="driver-car"
+                style={{ left: `${driverPosition}%` }}
+              >
+                🚗
+              </div>
+            </div>
+
+            <div className="progress-section">
+              <div className="progress-top">
+                <span>{trackingStatus}</span>
+                <span>{Math.round(driverPosition)}%</span>
+              </div>
+
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${driverPosition}%` }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="tracking-card">
+              <h2>{ride.rideType} Ride</h2>
+
+              <p>
+                <strong>Pickup:</strong> {ride.pickup}
+              </p>
+
+              <p>
+                <strong>Destination:</strong> {ride.destination}
+              </p>
+
+              <p>
+                <strong>Driver:</strong> {ride.driverName || 'Not assigned yet'}
+              </p>
+
+              <p>
+                <strong>Status:</strong> {trackingStatus}
+              </p>
+
+              <p>
+                <strong>Fare:</strong> Nu. {ride.fare}
+              </p>
+
+              <p>
+                <strong>Payment:</strong> {ride.paymentStatus || 'Unpaid'}
+              </p>
+            </div>
+          </>
         )}
       </div>
     </div>

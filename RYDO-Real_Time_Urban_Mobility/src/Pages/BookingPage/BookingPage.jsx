@@ -44,28 +44,35 @@ function BookingPage() {
   };
 
   const confirmRide = () => {
-    if (!fare) {
-      setError('Please calculate fare first');
-      return;
-    }
+  if (!fare) {
+    setError('Please calculate fare first');
+    return;
+  }
 
-    const ride = {
-      id: Date.now(),
-      pickup: formData.pickup,
-      destination: formData.destination,
-      rideType: formData.rideType,
-      distance: fare.distance,
-      fare: fare.amount,
-      status: 'Pending',
-      date: new Date().toLocaleString(),
-    };
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    const existingRides = JSON.parse(localStorage.getItem('rides')) || [];
-    localStorage.setItem('rides', JSON.stringify([...existingRides, ride]));
-
-    alert('Ride booked successfully');
-    navigate('/trips');
+  const ride = {
+    id: Date.now(),
+    riderId: currentUser?.id || null,
+    riderName: currentUser?.fullName || 'Guest Rider',
+    pickup: formData.pickup,
+    destination: formData.destination,
+    rideType: formData.rideType,
+    distance: fare.distance,
+    fare: fare.amount,
+    status: 'Pending',
+    paymentStatus: 'Unpaid',
+    driverName: '',
+    date: new Date().toLocaleString(),
   };
+
+  const existingRides = JSON.parse(localStorage.getItem('rides')) || [];
+
+  localStorage.setItem('rides', JSON.stringify([...existingRides, ride]));
+
+  alert('Ride request sent to drivers');
+  navigate('/trips');
+};
 
   return (
     <div className="booking-page">

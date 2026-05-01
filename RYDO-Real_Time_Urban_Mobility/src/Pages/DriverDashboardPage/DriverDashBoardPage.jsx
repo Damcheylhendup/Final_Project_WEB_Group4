@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FaCar,
@@ -16,6 +16,7 @@ function DriverDashboardPage() {
 
   const [isOnline, setIsOnline] = useState(false);
   const [currentRide, setCurrentRide] = useState(null);
+  const [rideRequests, setRideRequests] = useState([]);
 
   const driver = JSON.parse(localStorage.getItem('currentUser')) || {
     fullName: 'Driver',
@@ -23,43 +24,62 @@ function DriverDashboardPage() {
     vehicleNumber: 'Not set',
   };
 
-  const rideRequests = [
-    {
-      id: 1,
-      riderName: 'Sonam',
-      pickup: 'CST Main Gate',
-      destination: 'Phuentsholing Town',
-      fare: 180,
-      distance: 4,
-    },
-    {
-      id: 2,
-      riderName: 'Kinley',
-      pickup: 'College Hostel',
-      destination: 'Bus Terminal',
-      fare: 220,
-      distance: 6,
-    },
-    {
-      id: 3,
-      riderName: 'Damchey',
-      pickup: 'Lower Market',
-      destination: 'CST Campus',
-      fare: 150,
-      distance: 3,
-    },
-  ];
+  const loadRideRequests = () => {
+    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+
+    const pendingRides = rides.filter((ride) => ride.status === 'Pending');
+    setRideRequests(pendingRides);
+
+    const acceptedRide = rides.find(
+      (ride) =>
+        ride.status === 'Accepted' &&
+        ride.driverName === driver.fullName
+    );
+
+    setCurrentRide(acceptedRide || null);
+  };
+
+  useEffect(() => {
+    loadRideRequests();
+  }, []);
 
   const handleAcceptRide = (ride) => {
-    setCurrentRide({
-      ...ride,
-      status: 'Accepted',
-    });
+    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+
+    const updatedRides = rides.map((item) =>
+      item.id === ride.id
+        ? {
+            ...item,
+            status: 'Accepted',
+            driverName: driver.fullName,
+          }
+        : item
+    );
+
+    localStorage.setItem('rides', JSON.stringify(updatedRides));
+
+    alert('Ride accepted successfully');
+    loadRideRequests();
   };
 
   const handleCompleteRide = () => {
+    if (!currentRide) return;
+
+    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+
+    const updatedRides = rides.map((ride) =>
+      ride.id === currentRide.id
+        ? {
+            ...ride,
+            status: 'Completed',
+          }
+        : ride
+    );
+
+    localStorage.setItem('rides', JSON.stringify(updatedRides));
+
     alert('Ride completed successfully');
-    setCurrentRide(null);
+    loadRideRequests();
   };
 
   const handleLogout = () => {
@@ -131,7 +151,10 @@ function DriverDashboardPage() {
             </div>
           </div>
 
-          <div className="stat-card clickable-card" onClick={() => navigate('/account')}>
+          <div
+            className="stat-card clickable-card"
+            onClick={() => navigate('/account')}
+          >
             <FaUserCog />
             <div>
               <h3>Account & Settings</h3>
@@ -151,6 +174,10 @@ function DriverDashboardPage() {
             ) : currentRide ? (
               <div className="offline-box">
                 <p>You already have an active ride.</p>
+              </div>
+            ) : rideRequests.length === 0 ? (
+              <div className="offline-box">
+                <p>No pending ride requests right now.</p>
               </div>
             ) : (
               <div className="requests-list">
@@ -174,6 +201,10 @@ function DriverDashboardPage() {
                       <strong>Distance:</strong> {ride.distance} km
                     </p>
 
+                    <p>
+                      <strong>Ride Type:</strong> {ride.rideType}
+                    </p>
+
                     <button onClick={() => handleAcceptRide(ride)}>
                       Accept Ride
                     </button>
@@ -189,17 +220,26 @@ function DriverDashboardPage() {
             {currentRide ? (
               <div className="current-ride">
                 <h3>{currentRide.riderName}</h3>
+
                 <p>
                   <strong>Pickup:</strong> {currentRide.pickup}
                 </p>
+
                 <p>
                   <strong>Destination:</strong> {currentRide.destination}
                 </p>
+
                 <p>
                   <strong>Fare:</strong> Nu. {currentRide.fare}
                 </p>
+
                 <p>
                   <strong>Status:</strong> {currentRide.status}
+                </p>
+
+                <p>
+                  <strong>Payment:</strong>{' '}
+                  {currentRide.paymentStatus || 'Unpaid'}
                 </p>
 
                 <button onClick={handleCompleteRide}>Complete Ride</button>

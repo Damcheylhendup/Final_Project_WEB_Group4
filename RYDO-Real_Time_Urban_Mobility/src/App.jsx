@@ -10,6 +10,7 @@ import MapPage from './Pages/MapPage/MapPage.jsx';
 import AccountSettingsPage from './Pages/AccountSettingsPage/AccountSettingsPage.jsx';
 import CreateAccountPage from './Pages/CreateAccountPage/CreateAccountPage.jsx';
 import DriverDashboardPage from './Pages/DriverDashboardPage/DriverDashboardPage.jsx';
+import ProtectedRoute from './Components/ProtectedRoute.jsx';
 
 function App() {
   return (
@@ -18,14 +19,14 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/booking" element={<BookingPage />} />
-        <Route path="/trips" element={<TripsPage />} />
-        <Route path="/payments" element={<PaymentsPage />} />
-        <Route path="/map" element={<MapPage />} />
-        <Route path="/account" element={<AccountSettingsPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
-        <Route path="/driver-dashboard" element={<DriverDashboardPage />} />
+        <Route path="/dashboard" element={<ProtectedRoute allowedRole="rider"><DashboardPage /></ProtectedRoute>} />
+        <Route path="/booking" element={<ProtectedRoute allowedRole="rider"><BookingPage /></ProtectedRoute>} />
+        <Route path="/trips" element={<ProtectedRoute allowedRole="rider"><TripsPage /></ProtectedRoute>} />
+        <Route path="/payments" element={<ProtectedRoute allowedRole="rider"><PaymentsPage /></ProtectedRoute>} />
+        <Route path="/map" element={<ProtectedRoute allowedRole="rider"><MapPage /></ProtectedRoute>} />
+        <Route path="/driver-dashboard" element={<ProtectedRoute allowedRole="driver"><DriverDashboardPage /></ProtectedRoute>} />
+        <Route path="/account" element={<ProtectedRoute><AccountSettingsPage /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
