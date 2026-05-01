@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PaymentsPage.css";
 import map from "../../assets/map.jpg";
+import qr from "../../assets/qr.png";
 
 function PaymentsPage() {
   const navigate = useNavigate();
@@ -63,13 +64,15 @@ function PaymentsPage() {
             </div>
 
             <div className="qr-box">
-              <div className="fake-qr">QR</div>
+              <div className="QR-image-container">
+               <img src={qr} alt="QR Code" className="QR-image" />
+              </div>
               <p>Scan using mBoB / Mpay / Bank app</p>
             </div>
 
             <input
               type="text"
-              placeholder="Enter payment reference number"
+              placeholder="Enter Payment ID"
               value={reference}
               onChange={(e) => setReference(e.target.value)}
               className="payment-input"
