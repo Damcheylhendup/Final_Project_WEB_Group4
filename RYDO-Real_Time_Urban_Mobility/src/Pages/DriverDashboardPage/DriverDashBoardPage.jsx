@@ -22,6 +22,10 @@ function DriverDashboardPage() {
     fullName: 'Driver',
     vehicleType: 'Taxi',
     vehicleNumber: 'Not set',
+    bankName: '',
+    accountHolder: '',
+    accountNumber: '',
+    qrImage: '',
   };
 
   const loadRideRequests = () => {
@@ -51,7 +55,12 @@ function DriverDashboardPage() {
         ? {
             ...item,
             status: 'Accepted',
+            driverId: driver.id,
             driverName: driver.fullName,
+            driverBankName: driver.bankName || '',
+            driverAccountHolder: driver.accountHolder || '',
+            driverAccountNumber: driver.accountNumber || '',
+            driverQrImage: driver.qrImage || '',
           }
         : item
     );

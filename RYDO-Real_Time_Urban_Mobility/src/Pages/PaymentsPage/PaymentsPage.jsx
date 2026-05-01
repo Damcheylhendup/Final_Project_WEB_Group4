@@ -60,7 +60,7 @@ function PaymentsPage() {
 
         <h1>Payment</h1>
         <p className="subtitle">
-          Complete your payment using bank QR/reference.
+          Complete your payment using the accepted driver’s bank details.
         </p>
 
         {!latestRide ? (
@@ -73,31 +73,77 @@ function PaymentsPage() {
           <>
             <div className="payment-summary">
               <h2>Ride Summary</h2>
+
               <p>
                 <strong>Pickup:</strong> {latestRide.pickup}
               </p>
+
               <p>
                 <strong>Destination:</strong> {latestRide.destination}
               </p>
+
               <p>
                 <strong>Ride Type:</strong> {latestRide.rideType}
               </p>
+
               <p>
                 <strong>Distance:</strong> {latestRide.distance} km
               </p>
+
               <p>
                 <strong>Status:</strong> {latestRide.status}
               </p>
+
               <p>
                 <strong>Payment:</strong> {latestRide.paymentStatus || 'Unpaid'}
               </p>
+
               <h3>Total: Nu. {latestRide.fare}</h3>
             </div>
 
+            <div className="driver-payment-details">
+              <h2>Driver Payment Details</h2>
+
+              <p>
+                <strong>Driver:</strong>{' '}
+                {latestRide.driverName || 'Not assigned yet'}
+              </p>
+
+              <p>
+                <strong>Bank:</strong>{' '}
+                {latestRide.driverBankName || 'Not provided'}
+              </p>
+
+              <p>
+                <strong>Account Holder:</strong>{' '}
+                {latestRide.driverAccountHolder || 'Not provided'}
+              </p>
+
+              <p>
+                <strong>Account Number:</strong>{' '}
+                {latestRide.driverAccountNumber || 'Not provided'}
+              </p>
+            </div>
+
             <div className="qr-box">
-              <div className="fake-qr">QR</div>
+              {latestRide.driverQrImage ? (
+                <img
+                  src={latestRide.driverQrImage}
+                  alt="Driver payment QR"
+                  className="payment-qr-image"
+                />
+              ) : (
+                <div className="fake-qr">QR</div>
+              )}
+
               <p>Scan using mBoB / Mpay / Bank app</p>
             </div>
+
+            {latestRide.status === 'Pending' && (
+              <p className="payment-warning">
+                A driver has not accepted this ride yet. Payment details may be incomplete.
+              </p>
+            )}
 
             <input
               type="text"

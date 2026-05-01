@@ -11,7 +11,7 @@
 
 .payments-card {
   width: 100%;
-  max-width: 520px;
+  max-width: 540px;
   background: #fff;
   border-radius: 24px;
   padding: 28px;
@@ -26,6 +26,12 @@
   cursor: pointer;
   margin-bottom: 16px;
   color: inherit;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  transform: translateX(-3px);
+  font-weight: 600;
 }
 
 .payments-card h1 {
@@ -38,21 +44,11 @@
 .subtitle {
   color: #666;
   margin: 10px 0 24px;
+  line-height: 1.5;
   transition: color 0.3s ease;
 }
 
-.map-container {
-  margin: 12px 0;
-}
-
-.map-image {
-  width: 100%;
-  max-height: 220px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-/* Summary */
+/* Ride Summary */
 .payment-summary {
   background: #f3f3f3;
   border-radius: 18px;
@@ -68,13 +64,33 @@
 
 .payment-summary p {
   color: #444;
+  margin: 8px 0;
   transition: color 0.3s ease;
 }
 
 .payment-summary h3 {
   font-size: 1.7rem;
-  margin-bottom: 0;
+  margin: 14px 0 0;
   color: inherit;
+}
+
+/* Driver Payment Details */
+.driver-payment-details {
+  background: #f3f3f3;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+
+.driver-payment-details h2 {
+  margin-top: 0;
+}
+
+.driver-payment-details p {
+  color: #444;
+  margin: 8px 0;
+  transition: color 0.3s ease;
 }
 
 /* QR */
@@ -84,8 +100,8 @@
 }
 
 .fake-qr {
-  width: 160px;
-  height: 160px;
+  width: 170px;
+  height: 170px;
   margin: 0 auto 12px;
   border: 3px solid #000;
   border-radius: 12px;
@@ -101,6 +117,30 @@
   transition: border-color 0.3s ease, background 0.3s ease;
 }
 
+.payment-qr-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid #000;
+}
+
+.qr-box p {
+  color: #666;
+  margin: 10px 0 0;
+}
+
+/* Warning */
+.payment-warning {
+  background: #fff3cd;
+  color: #856404;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
 /* Input */
 .payment-input {
   width: 100%;
@@ -114,6 +154,10 @@
   margin-bottom: 16px;
   color: #111;
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+.payment-input:focus {
+  background: #dedede;
 }
 
 /* Buttons */
@@ -143,6 +187,32 @@
   border-radius: 18px;
   padding: 24px;
   transition: background 0.3s ease;
+}
+
+.empty-payment p {
+  color: #666;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .payments-page {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .payments-card {
+    padding: 24px 20px;
+  }
+
+  .payments-card h1 {
+    font-size: 1.7rem;
+  }
+
+  .payment-qr-image,
+  .fake-qr {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 /* ─── Dark Mode ───────────────────────────────────────── */
@@ -175,15 +245,18 @@ html.dark-mode .subtitle {
 }
 
 html.dark-mode .payment-summary,
+html.dark-mode .driver-payment-details,
 html.dark-mode .empty-payment {
   background: #252525;
 }
 
-html.dark-mode .payment-summary p {
+html.dark-mode .payment-summary p,
+html.dark-mode .driver-payment-details p,
+html.dark-mode .empty-payment p,
+html.dark-mode .qr-box p {
   color: #aaa;
 }
 
-/* QR Dark */
 html.dark-mode .fake-qr {
   border-color: #f0f0f0;
   background:
@@ -193,13 +266,24 @@ html.dark-mode .fake-qr {
   color: #f0f0f0;
 }
 
-/* Input */
+html.dark-mode .payment-qr-image {
+  border-color: #f0f0f0;
+}
+
+html.dark-mode .payment-warning {
+  background: #3a3217;
+  color: #facc15;
+}
+
 html.dark-mode .payment-input {
   background: #2a2a2a;
   color: #f0f0f0;
 }
 
-/* Buttons */
+html.dark-mode .payment-input:focus {
+  background: #333;
+}
+
 html.dark-mode .pay-btn,
 html.dark-mode .empty-payment button {
   background: #f0f0f0;

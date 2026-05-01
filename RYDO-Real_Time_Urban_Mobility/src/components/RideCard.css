@@ -1,0 +1,85 @@
+.ride-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.ride-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ride-card-top h2 {
+  margin: 0;
+}
+
+.ride-status {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ride-status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.ride-status.accepted {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.ride-status.completed {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.ride-status.arrived {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.ride-info {
+  margin-top: 16px;
+}
+
+.ride-info p {
+  color: #444;
+  margin: 8px 0;
+}
+
+.ride-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.ride-actions button {
+  border: none;
+  background: #000;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ride-actions button:hover {
+  background: #222;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .ride-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ride-actions {
+    flex-direction: column;
+  }
+}

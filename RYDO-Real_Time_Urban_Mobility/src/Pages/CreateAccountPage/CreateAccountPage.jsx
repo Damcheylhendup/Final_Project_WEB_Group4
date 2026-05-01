@@ -1,20 +1,27 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import './CreateAccountPage.css';
 
 function CreateAccountPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const passedPhone = location.state?.phone || '';
 
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    phone: '',
+    phone: passedPhone,
     role: 'rider',
     password: '',
     confirmPassword: '',
     vehicleType: '',
     vehicleNumber: '',
     licenseNumber: '',
+    bankName: '',
+    accountHolder: '',
+    accountNumber: '',
+    qrImage: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -33,8 +40,53 @@ function CreateAccountPage() {
     });
   };
 
+  const handlePhoneChange = (e) => {
+    const onlyNumbers = e.target.value.replace(/\D/g, '');
+
+    setFormData({
+      ...formData,
+      phone: onlyNumbers,
+    });
+
+    setErrors({
+      ...errors,
+      phone: '',
+    });
+  };
+
+  const handleQrUpload = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setErrors({
+        ...errors,
+        qrImage: 'Please upload an image file',
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setFormData((prev) => ({
+        ...prev,
+        qrImage: reader.result,
+      }));
+
+      setErrors((prev) => ({
+        ...prev,
+        qrImage: '',
+      }));
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   const validateForm = () => {
     const newErrors = {};
+    const cleanedPhone = formData.phone.replace(/\s+/g, '');
 
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required';
@@ -42,10 +94,14 @@ function CreateAccountPage() {
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Enter a valid email address';
     }
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
+    } else if (!/^(17|77|16)\d{6}$/.test(cleanedPhone)) {
+      newErrors.phone = 'Enter a valid Bhutan number, e.g. 17660994';
     }
 
     if (!formData.password.trim()) {
@@ -72,6 +128,22 @@ function CreateAccountPage() {
       if (!formData.licenseNumber.trim()) {
         newErrors.licenseNumber = 'License number is required';
       }
+
+      if (!formData.bankName.trim()) {
+        newErrors.bankName = 'Bank name is required';
+      }
+
+      if (!formData.accountHolder.trim()) {
+        newErrors.accountHolder = 'Account holder name is required';
+      }
+
+      if (!formData.accountNumber.trim()) {
+        newErrors.accountNumber = 'Account number is required';
+      }
+
+      if (!formData.qrImage) {
+        newErrors.qrImage = 'Payment QR image is required';
+      }
     }
 
     return newErrors;
@@ -88,11 +160,12 @@ function CreateAccountPage() {
     }
 
     const users = JSON.parse(localStorage.getItem('users')) || [];
+    const cleanedPhone = formData.phone.replace(/\s+/g, '');
 
     const accountExists = users.some(
       (user) =>
         user.email === formData.email ||
-        user.phone.replace(/\s+/g, '') === formData.phone.replace(/\s+/g, '')
+        user.phone.replace(/\s+/g, '') === cleanedPhone
     );
 
     if (accountExists) {
@@ -106,12 +179,18 @@ function CreateAccountPage() {
       id: Date.now(),
       fullName: formData.fullName,
       email: formData.email,
-      phone: formData.phone,
+      phone: cleanedPhone,
       role: formData.role,
       password: formData.password,
-      vehicleType: formData.vehicleType,
-      vehicleNumber: formData.vehicleNumber,
-      licenseNumber: formData.licenseNumber,
+
+      vehicleType: isDriver ? formData.vehicleType : '',
+      vehicleNumber: isDriver ? formData.vehicleNumber : '',
+      licenseNumber: isDriver ? formData.licenseNumber : '',
+
+      bankName: isDriver ? formData.bankName : '',
+      accountHolder: isDriver ? formData.accountHolder : '',
+      accountNumber: isDriver ? formData.accountNumber : '',
+      qrImage: isDriver ? formData.qrImage : '',
     };
 
     localStorage.setItem('users', JSON.stringify([...users, newUser]));
@@ -133,7 +212,9 @@ function CreateAccountPage() {
         </div>
 
         <h1>Create Account</h1>
-        <p className="create-subtitle">Choose your role and complete your profile.</p>
+        <p className="create-subtitle">
+          Choose your role and complete your profile.
+        </p>
 
         <form className="create-form" onSubmit={handleCreateAccount}>
           <input
@@ -157,9 +238,10 @@ function CreateAccountPage() {
           <input
             type="tel"
             name="phone"
-            placeholder="+975 17660994"
+            placeholder="17660994"
             value={formData.phone}
-            onChange={handleChange}
+            onChange={handlePhoneChange}
+            maxLength="8"
           />
           {errors.phone && <p className="error-text">{errors.phone}</p>}
 
@@ -175,11 +257,13 @@ function CreateAccountPage() {
               <input
                 type="text"
                 name="vehicleType"
-                placeholder="Vehicle Type e.g. Taxi, Car, Bike"
+                placeholder="Vehicle Type e.g. Taxi, Car, Bus"
                 value={formData.vehicleType}
                 onChange={handleChange}
               />
-              {errors.vehicleType && <p className="error-text">{errors.vehicleType}</p>}
+              {errors.vehicleType && (
+                <p className="error-text">{errors.vehicleType}</p>
+              )}
 
               <input
                 type="text"
@@ -188,7 +272,9 @@ function CreateAccountPage() {
                 value={formData.vehicleNumber}
                 onChange={handleChange}
               />
-              {errors.vehicleNumber && <p className="error-text">{errors.vehicleNumber}</p>}
+              {errors.vehicleNumber && (
+                <p className="error-text">{errors.vehicleNumber}</p>
+              )}
 
               <input
                 type="text"
@@ -197,7 +283,70 @@ function CreateAccountPage() {
                 value={formData.licenseNumber}
                 onChange={handleChange}
               />
-              {errors.licenseNumber && <p className="error-text">{errors.licenseNumber}</p>}
+              {errors.licenseNumber && (
+                <p className="error-text">{errors.licenseNumber}</p>
+              )}
+
+              <h3>Payment Details</h3>
+
+              <input
+                type="text"
+                name="bankName"
+                placeholder="Bank Name e.g. BOB, BNB, T Bank"
+                value={formData.bankName}
+                onChange={handleChange}
+              />
+              {errors.bankName && (
+                <p className="error-text">{errors.bankName}</p>
+              )}
+
+              <input
+                type="text"
+                name="accountHolder"
+                placeholder="Account Holder Name"
+                value={formData.accountHolder}
+                onChange={handleChange}
+              />
+              {errors.accountHolder && (
+                <p className="error-text">{errors.accountHolder}</p>
+              )}
+
+              <input
+                type="text"
+                name="accountNumber"
+                placeholder="Account Number"
+                value={formData.accountNumber}
+                onChange={handleChange}
+              />
+              {errors.accountNumber && (
+                <p className="error-text">{errors.accountNumber}</p>
+              )}
+
+              <div className="qr-upload-box">
+                <label htmlFor="qrImage">Upload Payment QR</label>
+
+                <input
+                  id="qrImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleQrUpload}
+                />
+
+                {formData.qrImage && (
+                  <div className="qr-preview-box">
+                    <img
+                      src={formData.qrImage}
+                      alt="Payment QR Preview"
+                      className="qr-preview-image"
+                    />
+                    <p>QR uploaded successfully</p>
+                  </div>
+                )}
+
+                {errors.qrImage && (
+                  <p className="error-text">{errors.qrImage}</p>
+                )}
+              </div>
             </div>
           )}
 
@@ -217,7 +366,9 @@ function CreateAccountPage() {
             value={formData.confirmPassword}
             onChange={handleChange}
           />
-          {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
+          {errors.confirmPassword && (
+            <p className="error-text">{errors.confirmPassword}</p>
+          )}
 
           <button type="submit" className="create-btn">
             Create Account

@@ -114,3 +114,46 @@
   color: #111;
   font-weight: 700;
 }
+.qr-upload-box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qr-upload-box label {
+  font-weight: 700;
+  color: #111;
+}
+
+.qr-upload-box input[type='file'] {
+  background: #e9e9e9;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.qr-preview-box {
+  text-align: center;
+  background: #f3f3f3;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.qr-preview-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border: 3px solid #000;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.qr-preview-box p {
+  color: #065f46;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 8px 0 0;
+}

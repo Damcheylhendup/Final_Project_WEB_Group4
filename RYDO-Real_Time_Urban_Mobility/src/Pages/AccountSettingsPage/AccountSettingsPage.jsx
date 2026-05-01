@@ -5,12 +5,21 @@ import './AccountSettingsPage.css';
 function AccountSettingsPage() {
   const navigate = useNavigate();
 
-  const [profile, setProfile] = useState({
-    fullName: 'Sonam Lindel',
-    email: 'sonam@example.com',
-    phone: '+975 17660994',
-    role: 'Rider',
-  });
+  const savedUser = JSON.parse(localStorage.getItem('currentUser')) || {
+    fullName: 'User',
+    email: 'user@example.com',
+    phone: '17660994',
+    role: 'rider',
+    vehicleType: '',
+    vehicleNumber: '',
+    licenseNumber: '',
+    bankName: '',
+    accountHolder: '',
+    accountNumber: '',
+    qrImage: '',
+  };
+
+  const [profile, setProfile] = useState(savedUser);
 
   const [settings, setSettings] = useState(() => {
     return {
@@ -22,7 +31,8 @@ function AccountSettingsPage() {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  // 🔥 APPLY DARK MODE WHEN TOGGLE CHANGES
+  const isDriver = profile.role === 'driver';
+
   useEffect(() => {
     if (settings.darkMode) {
       document.documentElement.classList.add('dark-mode');
@@ -40,37 +50,103 @@ function AccountSettingsPage() {
     });
   };
 
+  const handleQrUpload = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file');
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setProfile((prev) => ({
+        ...prev,
+        qrImage: reader.result,
+      }));
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   const handleSettingsChange = (e) => {
     const { name, type, checked, value } = e.target;
 
-    if (name === "darkMode") {
-      // 🔥 IMPORTANT: handle separately
-      setSettings((prev) => ({
-        ...prev,
-        darkMode: checked,
-      }));
-    } else {
-      setSettings((prev) => ({
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
-    }
+    setSettings((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
   };
 
   const handleSave = () => {
+    const cleanedPhone = profile.phone.replace(/\s+/g, '');
+
+    if (!profile.fullName.trim()) {
+      alert('Full name is required');
+      return;
+    }
+
+    if (!profile.email.trim()) {
+      alert('Email is required');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)) {
+      alert('Enter a valid email address');
+      return;
+    }
+
+    if (!/^(17|77|16)\d{6}$/.test(cleanedPhone)) {
+      alert('Enter a valid Bhutan number, e.g. 17660994');
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    const updatedUser = {
+      ...profile,
+      phone: cleanedPhone,
+      role: savedUser.role,
+    };
+
+    const updatedUsers = users.map((user) =>
+      user.id === updatedUser.id ? updatedUser : user
+    );
+
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+    setProfile(updatedUser);
     setIsEditing(false);
     alert('Profile updated successfully');
   };
 
+  const handleCancel = () => {
+    const latestUser = JSON.parse(localStorage.getItem('currentUser')) || savedUser;
+    setProfile(latestUser);
+    setIsEditing(false);
+  };
+
   const handleLogout = () => {
+    localStorage.removeItem('currentUser');
     navigate('/login');
+  };
+
+  const handleBack = () => {
+    if (profile.role === 'driver') {
+      navigate('/driver-dashboard');
+    } else {
+      navigate('/dashboard');
+    }
   };
 
   return (
     <div className="account-page">
       <div className="account-container">
-
-        <button className="back-btn" onClick={() => navigate('/dashboard')}>
+        <button className="back-btn" onClick={handleBack}>
           ← Back
         </button>
 
@@ -87,7 +163,6 @@ function AccountSettingsPage() {
         </div>
 
         <div className="account-grid">
-
           <section className="account-card">
             <div className="card-title-row">
               <h2>Account Information</h2>
@@ -104,7 +179,7 @@ function AccountSettingsPage() {
               <input
                 type="text"
                 name="fullName"
-                value={profile.fullName}
+                value={profile.fullName || ''}
                 onChange={handleProfileChange}
                 disabled={!isEditing}
               />
@@ -113,7 +188,7 @@ function AccountSettingsPage() {
               <input
                 type="email"
                 name="email"
-                value={profile.email}
+                value={profile.email || ''}
                 onChange={handleProfileChange}
                 disabled={!isEditing}
               />
@@ -122,21 +197,103 @@ function AccountSettingsPage() {
               <input
                 type="text"
                 name="phone"
-                value={profile.phone}
+                value={profile.phone || ''}
                 onChange={handleProfileChange}
                 disabled={!isEditing}
+                maxLength="8"
               />
 
               <label>Role</label>
-              <select
-                name="role"
-                value={profile.role}
-                onChange={handleProfileChange}
-                disabled={!isEditing}
-              >
-                <option value="Rider">Rider</option>
-                <option value="Driver">Driver</option>
-              </select>
+              <input
+                type="text"
+                value={profile.role === 'driver' ? 'Driver' : 'Rider'}
+                disabled
+              />
+
+              {isDriver && (
+                <div className="driver-account-section">
+                  <h3>Driver Details</h3>
+
+                  <label>Vehicle Type</label>
+                  <input
+                    type="text"
+                    name="vehicleType"
+                    value={profile.vehicleType || ''}
+                    onChange={handleProfileChange}
+                    disabled={!isEditing}
+                  />
+
+                  <label>Vehicle Number</label>
+                  <input
+                    type="text"
+                    name="vehicleNumber"
+                    value={profile.vehicleNumber || ''}
+                    onChange={handleProfileChange}
+                    disabled={!isEditing}
+                  />
+
+                  <label>License Number</label>
+                  <input
+                    type="text"
+                    name="licenseNumber"
+                    value={profile.licenseNumber || ''}
+                    onChange={handleProfileChange}
+                    disabled={!isEditing}
+                  />
+
+                  <h3>Payment Details</h3>
+
+                  <label>Bank Name</label>
+                  <input
+                    type="text"
+                    name="bankName"
+                    value={profile.bankName || ''}
+                    onChange={handleProfileChange}
+                    disabled={!isEditing}
+                  />
+
+                  <label>Account Holder Name</label>
+                  <input
+                    type="text"
+                    name="accountHolder"
+                    value={profile.accountHolder || ''}
+                    onChange={handleProfileChange}
+                    disabled={!isEditing}
+                  />
+
+                  <label>Account Number</label>
+                  <input
+                    type="text"
+                    name="accountNumber"
+                    value={profile.accountNumber || ''}
+                    onChange={handleProfileChange}
+                    disabled={!isEditing}
+                  />
+
+                  <label>Payment QR</label>
+
+                  {profile.qrImage ? (
+                    <div className="settings-qr-preview">
+                      <img
+                        src={profile.qrImage}
+                        alt="Driver payment QR"
+                        className="settings-qr-image"
+                      />
+                    </div>
+                  ) : (
+                    <p className="no-qr-text">No QR uploaded yet.</p>
+                  )}
+
+                  {isEditing && (
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleQrUpload}
+                      className="settings-file-input"
+                    />
+                  )}
+                </div>
+              )}
 
               {isEditing && (
                 <div className="edit-actions">
@@ -144,7 +301,7 @@ function AccountSettingsPage() {
                     Save Changes
                   </button>
 
-                  <button className="cancel-btn" onClick={() => setIsEditing(false)}>
+                  <button className="cancel-btn" onClick={handleCancel}>
                     Cancel
                   </button>
                 </div>
@@ -156,7 +313,6 @@ function AccountSettingsPage() {
             <h2>Settings</h2>
 
             <div className="settings-list">
-
               <div className="setting-item">
                 <div>
                   <h3>Notifications</h3>
@@ -200,14 +356,12 @@ function AccountSettingsPage() {
                   <option value="Dzongkha">Dzongkha</option>
                 </select>
               </div>
-
             </div>
 
             <button className="logout-main-btn" onClick={handleLogout}>
               Logout
             </button>
           </section>
-
         </div>
       </div>
     </div>
