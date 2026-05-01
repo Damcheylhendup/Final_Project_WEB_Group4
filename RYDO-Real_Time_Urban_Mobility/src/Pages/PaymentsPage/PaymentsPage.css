@@ -6,6 +6,7 @@
   align-items: center;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .payments-card {
@@ -15,6 +16,7 @@
   border-radius: 24px;
   padding: 28px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .back-btn {
@@ -23,16 +25,20 @@
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 16px;
+  color: inherit;
 }
 
 .payments-card h1 {
   margin: 0;
   font-size: 2rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .subtitle {
   color: #666;
   margin: 10px 0 24px;
+  transition: color 0.3s ease;
 }
 
 .map-container {
@@ -46,26 +52,32 @@
   border-radius: 12px;
 }
 
+/* Summary */
 .payment-summary {
   background: #f3f3f3;
   border-radius: 18px;
   padding: 20px;
   margin-bottom: 20px;
+  transition: background 0.3s ease;
 }
 
 .payment-summary h2 {
   margin-top: 0;
+  color: inherit;
 }
 
 .payment-summary p {
   color: #444;
+  transition: color 0.3s ease;
 }
 
 .payment-summary h3 {
   font-size: 1.7rem;
   margin-bottom: 0;
+  color: inherit;
 }
 
+/* QR */
 .qr-box {
   text-align: center;
   margin: 20px 0;
@@ -86,8 +98,10 @@
     linear-gradient(90deg, #000 10%, transparent 10%) 0 0 / 20px 20px,
     linear-gradient(#000 10%, transparent 10%) 0 0 / 20px 20px,
     #fff;
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
+/* Input */
 .payment-input {
   width: 100%;
   min-height: 54px;
@@ -98,8 +112,11 @@
   padding: 0 16px;
   font-size: 1rem;
   margin-bottom: 16px;
+  color: #111;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Buttons */
 .pay-btn,
 .empty-payment button {
   width: 100%;
@@ -119,9 +136,77 @@
   transform: translateY(-2px);
 }
 
+/* Empty */
 .empty-payment {
   text-align: center;
   background: #f3f3f3;
   border-radius: 18px;
   padding: 24px;
+  transition: background 0.3s ease;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .payments-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .payments-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .payments-card h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .subtitle {
+  color: #aaa;
+}
+
+html.dark-mode .payment-summary,
+html.dark-mode .empty-payment {
+  background: #252525;
+}
+
+html.dark-mode .payment-summary p {
+  color: #aaa;
+}
+
+/* QR Dark */
+html.dark-mode .fake-qr {
+  border-color: #f0f0f0;
+  background:
+    linear-gradient(90deg, #f0f0f0 10%, transparent 10%) 0 0 / 20px 20px,
+    linear-gradient(#f0f0f0 10%, transparent 10%) 0 0 / 20px 20px,
+    #1a1a1a;
+  color: #f0f0f0;
+}
+
+/* Input */
+html.dark-mode .payment-input {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+/* Buttons */
+html.dark-mode .pay-btn,
+html.dark-mode .empty-payment button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .pay-btn:hover,
+html.dark-mode .empty-payment button:hover {
+  background: #ddd;
 }

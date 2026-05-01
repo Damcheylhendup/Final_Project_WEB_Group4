@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AccountSettingsPage.css';
 
@@ -12,13 +12,26 @@ function AccountSettingsPage() {
     role: 'Rider',
   });
 
-  const [settings, setSettings] = useState({
-    notifications: true,
-    darkMode: false,
-    language: 'English',
+  const [settings, setSettings] = useState(() => {
+    return {
+      notifications: true,
+      darkMode: localStorage.getItem('darkMode') === 'true',
+      language: 'English',
+    };
   });
 
   const [isEditing, setIsEditing] = useState(false);
+
+  // 🔥 APPLY DARK MODE WHEN TOGGLE CHANGES
+  useEffect(() => {
+    if (settings.darkMode) {
+      document.documentElement.classList.add('dark-mode');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+    }
+
+    localStorage.setItem('darkMode', settings.darkMode);
+  }, [settings.darkMode]);
 
   const handleProfileChange = (e) => {
     setProfile({
@@ -30,10 +43,18 @@ function AccountSettingsPage() {
   const handleSettingsChange = (e) => {
     const { name, type, checked, value } = e.target;
 
-    setSettings({
-      ...settings,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+    if (name === "darkMode") {
+      // 🔥 IMPORTANT: handle separately
+      setSettings((prev) => ({
+        ...prev,
+        darkMode: checked,
+      }));
+    } else {
+      setSettings((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
   };
 
   const handleSave = () => {
@@ -48,6 +69,7 @@ function AccountSettingsPage() {
   return (
     <div className="account-page">
       <div className="account-container">
+
         <button className="back-btn" onClick={() => navigate('/dashboard')}>
           ← Back
         </button>
@@ -65,6 +87,7 @@ function AccountSettingsPage() {
         </div>
 
         <div className="account-grid">
+
           <section className="account-card">
             <div className="card-title-row">
               <h2>Account Information</h2>
@@ -133,6 +156,7 @@ function AccountSettingsPage() {
             <h2>Settings</h2>
 
             <div className="settings-list">
+
               <div className="setting-item">
                 <div>
                   <h3>Notifications</h3>
@@ -176,12 +200,14 @@ function AccountSettingsPage() {
                   <option value="Dzongkha">Dzongkha</option>
                 </select>
               </div>
+
             </div>
 
             <button className="logout-main-btn" onClick={handleLogout}>
               Logout
             </button>
           </section>
+
         </div>
       </div>
     </div>
