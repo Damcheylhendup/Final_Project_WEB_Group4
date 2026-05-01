@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './AuthPage.css';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 
 function AuthPage() {
   const [phone, setPhone] = useState('');
+  const navigate = useNavigate();
   const [error, setError] = useState('');
 
   const handleContinue = () => {
@@ -58,7 +59,7 @@ function AuthPage() {
           {error && <p className="error-text">{error}</p>}
         </div>
 
-        <button className="continue-btn" onClick={handleContinue}>
+        <button className="continue-btn" onClick={() => navigate('/create-account')}>
           Signup
         </button>
 
@@ -69,12 +70,12 @@ function AuthPage() {
         </div>
 
         <div className="social-buttons">
-          <button className="social-btn">
+          <button className="social-btn"onClick={() => navigate('/create-account')}>
             <FaGoogle className="icon" />
             Continue with Google
           </button>
 
-          <button className="social-btn facebook-btn">
+          <button className="social-btn facebook-btn" onClick={() => navigate('/create-account')}>
             <FaFacebookF className="icon" />
             Continue with Facebook
           </button>

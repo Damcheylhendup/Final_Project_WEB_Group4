@@ -8,6 +8,8 @@ import TripsPage from './Pages/TripsPage/TripsPage.jsx';
 import PaymentsPage from './Pages/PaymentsPage/PaymentsPage.jsx';
 import MapPage from './Pages/MapPage/MapPage.jsx';
 import AccountSettingsPage from './Pages/AccountSettingsPage/AccountSettingsPage.jsx';
+import CreateAccountPage from './Pages/CreateAccountPage/CreateAccountPage.jsx';
+import DriverDashboardPage from './Pages/DriverDashboardPage/DriverDashboardPage.jsx';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="/payments" element={<PaymentsPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/account" element={<AccountSettingsPage />} />
+        <Route path="/create-account" element={<CreateAccountPage />} />
+        <Route path="/driver-dashboard" element={<DriverDashboardPage />} />
       </Routes>
     </Router>
   );
