@@ -35,7 +35,6 @@ function TripsPage() {
           <div className="trip-image-container">
             <img src={tripImg} alt="trip illustration" className="trip-image" />
           </div>
-
           <p>View your current and past Rydo bookings.</p>
         </div>
 
