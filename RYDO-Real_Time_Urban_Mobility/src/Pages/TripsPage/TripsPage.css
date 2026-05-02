@@ -3,6 +3,7 @@
   background: #f5f5f5;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .trips-container {
@@ -16,6 +17,7 @@
   padding: 28px;
   margin-bottom: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .back-btn {
@@ -24,15 +26,19 @@
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 16px;
+  color: inherit;
 }
 
 .trips-header h1 {
   margin: 0;
   font-size: 2.2rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .trips-header p {
   color: #666;
+  transition: color 0.3s ease;
 }
 
 .empty-box {
@@ -41,6 +47,7 @@
   padding: 36px;
   text-align: center;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .empty-box button,
@@ -73,6 +80,7 @@
   border-radius: 24px;
   padding: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .trip-top {
@@ -83,6 +91,8 @@
 
 .trip-top h2 {
   margin: 0;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .status {
@@ -114,6 +124,7 @@
 .trip-info p {
   color: #444;
   margin: 8px 0;
+  transition: color 0.3s ease;
 }
 
 .trip-actions {
@@ -125,6 +136,74 @@
 .clear-btn {
   margin-top: 24px;
   width: 100%;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-header,
+html.dark-mode .trip-card,
+html.dark-mode .empty-box {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .trips-header h1,
+html.dark-mode .trip-top h2 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-header p,
+html.dark-mode .trip-info p {
+  color: #aaa;
+}
+
+html.dark-mode .pending {
+  background: #3a2f1a;
+  color: #ffd966;
+}
+
+html.dark-mode .accepted {
+  background: #123b2f;
+  color: #34d399;
+}
+
+html.dark-mode .completed {
+  background: #1e2a44;
+  color: #60a5fa;
+}
+
+html.dark-mode .empty-box button,
+html.dark-mode .trip-actions button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .empty-box button:hover,
+html.dark-mode .trip-actions button:hover {
+  background: #ddd;
+}
+
+html.dark-mode .clear-btn {
+  background: #2a2a2a;
+  color: #ff6b6b;
+}
+
+html.dark-mode .clear-btn:hover {
+  background: #3a1f1f;
 }
 
 @media (max-width: 600px) {

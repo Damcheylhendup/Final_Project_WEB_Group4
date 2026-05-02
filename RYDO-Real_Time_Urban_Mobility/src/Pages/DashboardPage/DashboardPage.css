@@ -4,6 +4,7 @@
   color: #111;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .dashboard-container {
@@ -56,17 +57,21 @@
   padding: 32px;
   margin-bottom: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .welcome-section h1 {
   margin: 0;
   font-size: 2.4rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .welcome-section p {
   color: #666;
   font-size: 1.1rem;
   margin-bottom: 0;
+  transition: color 0.3s ease;
 }
 
 .dashboard-grid {
@@ -80,7 +85,7 @@
   border-radius: 24px;
   padding: 28px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dashboard-card:hover {
@@ -92,6 +97,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .dashboard-card h2 svg {
@@ -101,6 +108,7 @@
 .dashboard-card p {
   color: #666;
   font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 .dashboard-card button {
@@ -118,6 +126,49 @@
 .dashboard-card button:hover {
   background: #222;
   transform: translateY(-2px);
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .dashboard-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .welcome-section,
+html.dark-mode .dashboard-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .welcome-section h1,
+html.dark-mode .dashboard-card h2 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .welcome-section p,
+html.dark-mode .dashboard-card p {
+  color: #aaa;
+}
+
+html.dark-mode .logout-btn,
+html.dark-mode .dashboard-card button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .logout-btn:hover,
+html.dark-mode .dashboard-card button:hover {
+  background: #ddd;
 }
 
 @media (max-width: 768px) {

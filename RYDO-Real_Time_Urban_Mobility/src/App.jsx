@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage/LandingPage.jsx';
 import LoginPage from './Pages/LoginPage/LoginPage.jsx';
@@ -13,6 +14,11 @@ import DriverDashboardPage from './Pages/DriverDashboardPage/DriverDashboardPage
 import ProtectedRoute from './Components/ProtectedRoute.jsx';
 
 function App() {
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    document.documentElement.classList.toggle('dark-mode', savedDarkMode);
+  }, []);
+
   return (
     <Router>
       <Routes>

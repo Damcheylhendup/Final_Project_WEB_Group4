@@ -3,6 +3,7 @@
   background: #f5f5f5;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .driver-container {
@@ -86,16 +87,20 @@
   align-items: center;
   gap: 22px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .driver-welcome h1 {
   margin: 0;
   font-size: 2.2rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .driver-welcome p {
   color: #666;
   margin: 8px 0 0;
+  transition: color 0.3s ease;
 }
 
 .driver-status-box {
@@ -104,15 +109,18 @@
   padding: 18px 22px;
   min-width: 160px;
   text-align: center;
+  transition: background 0.3s ease;
 }
 
 .driver-status-box p {
   margin: 0;
   color: #666;
+  transition: color 0.3s ease;
 }
 
 .driver-status-box h2 {
   margin: 6px 0 0;
+  color: inherit;
 }
 
 .stats-grid {
@@ -130,6 +138,7 @@
   align-items: center;
   gap: 16px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .stat-card svg {
@@ -139,16 +148,17 @@
 
 .stat-card h3 {
   margin: 0;
+  color: inherit;
 }
 
 .stat-card p {
   margin: 6px 0 0;
   color: #666;
+  transition: color 0.3s ease;
 }
 
 .clickable-card {
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 .clickable-card:hover {
@@ -167,10 +177,12 @@
   border-radius: 24px;
   padding: 26px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .driver-card h2 {
   margin-top: 0;
+  color: inherit;
 }
 
 .offline-box {
@@ -178,6 +190,7 @@
   border-radius: 16px;
   padding: 20px;
   color: #666;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .requests-list {
@@ -190,6 +203,7 @@
   background: #f3f3f3;
   border-radius: 18px;
   padding: 18px;
+  transition: background 0.3s ease;
 }
 
 .request-top {
@@ -200,6 +214,7 @@
 
 .request-top h3 {
   margin: 0;
+  color: inherit;
 }
 
 .request-top span {
@@ -208,11 +223,13 @@
   color: #fff;
   border-radius: 999px;
   padding: 6px 12px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .request-card p,
 .current-ride p {
   color: #444;
+  transition: color 0.3s ease;
 }
 
 .request-card button,
@@ -238,10 +255,87 @@
   background: #f3f3f3;
   border-radius: 18px;
   padding: 20px;
+  transition: background 0.3s ease;
 }
 
 .current-ride h3 {
   margin-top: 0;
+  color: inherit;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .driver-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .driver-welcome,
+html.dark-mode .stat-card,
+html.dark-mode .driver-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .driver-welcome h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .driver-welcome p,
+html.dark-mode .driver-status-box p,
+html.dark-mode .stat-card p,
+html.dark-mode .offline-box,
+html.dark-mode .request-card p,
+html.dark-mode .current-ride p {
+  color: #aaa;
+}
+
+html.dark-mode .driver-status-box,
+html.dark-mode .offline-box,
+html.dark-mode .request-card,
+html.dark-mode .current-ride {
+  background: #252525;
+}
+
+html.dark-mode .clickable-card:hover {
+  background: #252525;
+}
+
+html.dark-mode .status-btn.online {
+  background: #123b2f;
+  color: #34d399;
+}
+
+html.dark-mode .status-btn.offline {
+  background: #3a1f1f;
+  color: #ff6b6b;
+}
+
+html.dark-mode .logout-btn,
+html.dark-mode .request-card button,
+html.dark-mode .current-ride button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .logout-btn:hover,
+html.dark-mode .request-card button:hover,
+html.dark-mode .current-ride button:hover {
+  background: #ddd;
+}
+
+html.dark-mode .request-top span {
+  background: #f0f0f0;
+  color: #000;
 }
 
 @media (max-width: 1000px) {

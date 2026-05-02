@@ -6,6 +6,7 @@
   align-items: center;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .create-card {
@@ -15,6 +16,7 @@
   border-radius: 24px;
   padding: 28px;
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .create-logo {
@@ -42,12 +44,15 @@
   text-align: center;
   margin: 0;
   font-size: 2rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .create-subtitle {
   text-align: center;
   color: #666;
   margin: 10px 0 24px;
+  transition: color 0.3s ease;
 }
 
 .create-form {
@@ -66,6 +71,8 @@
   background: #e9e9e9;
   padding: 0 16px;
   font-size: 1rem;
+  color: #111;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .driver-section {
@@ -75,10 +82,12 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: background 0.3s ease;
 }
 
 .driver-section h3 {
   margin: 0;
+  color: inherit;
 }
 
 .create-btn {
@@ -113,7 +122,9 @@
 .login-text a {
   color: #111;
   font-weight: 700;
+  transition: color 0.3s ease;
 }
+
 .qr-upload-box {
   background: #ffffff;
   border-radius: 14px;
@@ -121,11 +132,13 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  transition: background 0.3s ease;
 }
 
 .qr-upload-box label {
   font-weight: 700;
   color: #111;
+  transition: color 0.3s ease;
 }
 
 .qr-upload-box input[type='file'] {
@@ -133,6 +146,7 @@
   border-radius: 12px;
   padding: 12px;
   cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .qr-preview-box {
@@ -140,6 +154,7 @@
   background: #f3f3f3;
   border-radius: 14px;
   padding: 14px;
+  transition: background 0.3s ease;
 }
 
 .qr-preview-image {
@@ -149,6 +164,7 @@
   border: 3px solid #000;
   border-radius: 12px;
   background: #fff;
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 .qr-preview-box p {
@@ -156,4 +172,83 @@
   font-size: 0.9rem;
   font-weight: 700;
   margin: 8px 0 0;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .create-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .create-card {
+  background: #1a1a1a;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .create-card h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .create-subtitle {
+  color: #aaa;
+}
+
+html.dark-mode .create-form input,
+html.dark-mode .create-form select {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html.dark-mode .driver-section,
+html.dark-mode .qr-preview-box {
+  background: #252525;
+}
+
+html.dark-mode .create-btn {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .create-btn:hover {
+  background: #ddd;
+}
+
+html.dark-mode .error-text {
+  color: #ff6b6b;
+}
+
+html.dark-mode .login-text a {
+  color: #f0f0f0;
+}
+
+html.dark-mode .qr-upload-box {
+  background: #252525;
+}
+
+html.dark-mode .qr-upload-box label {
+  color: #f0f0f0;
+}
+
+html.dark-mode .qr-upload-box input[type='file'] {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html.dark-mode .qr-preview-image {
+  border-color: #f0f0f0;
+  background: #1a1a1a;
+}
+
+html.dark-mode .qr-preview-box p {
+  color: #34d399;
 }

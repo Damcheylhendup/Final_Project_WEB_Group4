@@ -21,26 +21,19 @@ function AccountSettingsPage() {
 
   const [profile, setProfile] = useState(savedUser);
 
-  const [settings, setSettings] = useState(() => {
-    return {
-      notifications: true,
-      darkMode: localStorage.getItem('darkMode') === 'true',
-      language: 'English',
-    };
-  });
+  const [settings, setSettings] = useState(() => ({
+    notifications: true,
+    darkMode: localStorage.getItem('darkMode') === 'true',
+    language: 'English',
+  }));
 
   const [isEditing, setIsEditing] = useState(false);
 
   const isDriver = profile.role === 'driver';
 
   useEffect(() => {
-    if (settings.darkMode) {
-      document.documentElement.classList.add('dark-mode');
-    } else {
-      document.documentElement.classList.remove('dark-mode');
-    }
-
-    localStorage.setItem('darkMode', settings.darkMode);
+    document.documentElement.classList.toggle('dark-mode', settings.darkMode);
+    localStorage.setItem('darkMode', String(settings.darkMode));
   }, [settings.darkMode]);
 
   const handleProfileChange = (e) => {
