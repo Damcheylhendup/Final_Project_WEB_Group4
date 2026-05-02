@@ -1,0 +1,384 @@
+.driver-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.driver-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.driver-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.driver-logo {
+  background: #000;
+  border-radius: 16px;
+  padding: 16px 22px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.yellow {
+  color: #ffd21f;
+}
+
+.red {
+  color: #f05a1a;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.status-btn,
+.logout-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-btn svg {
+  font-size: 1.2rem;
+}
+
+.status-btn.online {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-btn.offline {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.logout-btn {
+  background: #000;
+  color: #fff;
+}
+
+.status-btn:hover,
+.logout-btn:hover {
+  transform: translateY(-2px);
+}
+
+.driver-welcome {
+  background: #fff;
+  border-radius: 24px;
+  padding: 30px;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 22px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.driver-welcome h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  color: #111;
+  transition: color 0.3s ease;
+}
+
+.driver-welcome p {
+  color: #666;
+  margin: 8px 0 0;
+  transition: color 0.3s ease;
+}
+
+.driver-status-box {
+  background: #f3f3f3;
+  border-radius: 18px;
+  padding: 18px 22px;
+  min-width: 160px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.driver-status-box p {
+  margin: 0;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.driver-status-box h2 {
+  margin: 6px 0 0;
+  color: inherit;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.stat-card svg {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.stat-card h3 {
+  margin: 0;
+  color: inherit;
+}
+
+.stat-card p {
+  margin: 6px 0 0;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.clickable-card {
+  cursor: pointer;
+}
+
+.clickable-card:hover {
+  transform: translateY(-4px);
+  background: #f3f3f3;
+}
+
+.driver-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 22px;
+}
+
+.driver-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 26px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.driver-card h2 {
+  margin-top: 0;
+  color: inherit;
+}
+
+.offline-box {
+  background: #f3f3f3;
+  border-radius: 16px;
+  padding: 20px;
+  color: #666;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.request-card {
+  background: #f3f3f3;
+  border-radius: 18px;
+  padding: 18px;
+  transition: background 0.3s ease;
+}
+
+.request-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.request-top h3 {
+  margin: 0;
+  color: inherit;
+}
+
+.request-top span {
+  font-weight: 700;
+  background: #000;
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.request-card p,
+.current-ride p {
+  color: #444;
+  transition: color 0.3s ease;
+}
+
+.request-card button,
+.current-ride button {
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+.request-card button:hover,
+.current-ride button:hover {
+  background: #222;
+  transform: translateY(-2px);
+}
+
+.current-ride {
+  background: #f3f3f3;
+  border-radius: 18px;
+  padding: 20px;
+  transition: background 0.3s ease;
+}
+
+.current-ride h3 {
+  margin-top: 0;
+  color: inherit;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .driver-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .driver-welcome,
+html.dark-mode .stat-card,
+html.dark-mode .driver-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .driver-welcome h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .driver-welcome p,
+html.dark-mode .driver-status-box p,
+html.dark-mode .stat-card p,
+html.dark-mode .offline-box,
+html.dark-mode .request-card p,
+html.dark-mode .current-ride p {
+  color: #aaa;
+}
+
+html.dark-mode .driver-status-box,
+html.dark-mode .offline-box,
+html.dark-mode .request-card,
+html.dark-mode .current-ride {
+  background: #252525;
+}
+
+html.dark-mode .clickable-card:hover {
+  background: #252525;
+}
+
+html.dark-mode .status-btn.online {
+  background: #123b2f;
+  color: #34d399;
+}
+
+html.dark-mode .status-btn.offline {
+  background: #3a1f1f;
+  color: #ff6b6b;
+}
+
+html.dark-mode .logout-btn,
+html.dark-mode .request-card button,
+html.dark-mode .current-ride button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .logout-btn:hover,
+html.dark-mode .request-card button:hover,
+html.dark-mode .current-ride button:hover {
+  background: #ddd;
+}
+
+html.dark-mode .request-top span {
+  background: #f0f0f0;
+  color: #000;
+}
+
+@media (max-width: 1000px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .driver-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .driver-welcome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .driver-status-box {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .driver-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .status-btn,
+  .logout-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .driver-welcome h1 {
+    font-size: 1.8rem;
+  }
+}

@@ -4,11 +4,12 @@
 
 .login-page {
   min-height: 100vh;
-  background: #fff;
+  background: #f5f5f5;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 24px 16px;
+  transition: background 0.3s ease;
 }
 
 .login-card {
@@ -18,6 +19,7 @@
   border-radius: 24px;
   padding: 28px 24px;
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45);
+  transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-card:hover {
@@ -28,7 +30,6 @@
   width: 90px;
   height: 90px;
   background: #000;
-  color: #ffd21f;
   border-radius: 18px;
   display: flex;
   justify-content: center;
@@ -43,18 +44,27 @@
   margin: 0;
   font-size: 2rem;
   color: #111;
+  transition: color 0.3s ease;
 }
 
 .login-subtitle {
   text-align: center;
   color: #666;
   margin: 12px 0 28px;
+  transition: color 0.3s ease;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+}
+
+/* Each input + error message group */
+.login-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .login-input {
@@ -67,6 +77,18 @@
   padding: 0 16px;
   font-size: 1rem;
   color: #111;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.login-input:focus {
+  background: #dedede;
+}
+
+.error-text {
+  color: #e53935;
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.3;
 }
 
 .login-btn {
@@ -78,7 +100,7 @@
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 6px;
+  margin-top: 2px;
   transition: all 0.2s ease;
 }
 
@@ -91,31 +113,71 @@
   transform: scale(0.98);
 }
 
-.error-text {
-  color: red;
-  font-size: 0.85rem;
-  margin: 6px 0 0;
-}
-
 .forgot-text {
   text-align: center;
   margin-top: 18px;
   color: #444;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .bottom-text {
   text-align: center;
   margin-top: 16px;
   font-size: 0.95rem;
+  color: #444;
+  transition: color 0.3s ease;
 }
 
 .bottom-text a {
-  color: #111;
+  color: #f05a1a;
   font-weight: 600;
   text-decoration: none;
 }
 
 .bottom-text a:hover {
   text-decoration: underline;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────────────── */
+html.dark-mode .login-page {
+  background: #0f0f0f;
+}
+
+html.dark-mode .login-card {
+  background: #1a1a1a;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7);
+}
+
+html.dark-mode .login-title {
+  color: #f0f0f0;
+}
+
+html.dark-mode .login-subtitle {
+  color: #aaa;
+}
+
+html.dark-mode .login-input {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html.dark-mode .login-input::placeholder {
+  color: #777;
+}
+
+html.dark-mode .login-btn {
+  background: #f05a1a;
+}
+
+html.dark-mode .login-btn:hover {
+  background: #d44e14;
+}
+
+html.dark-mode .forgot-text {
+  color: #aaa;
+}
+
+html.dark-mode .bottom-text {
+  color: #aaa;
 }

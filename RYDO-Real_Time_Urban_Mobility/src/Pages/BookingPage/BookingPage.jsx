@@ -17,14 +17,47 @@ function BookingPage() {
   const rates = {
     Car: 80,
     Taxi: 100,
-    Bike: 50,
+    Bus: 20,
   };
+
+  const rideOptions = [
+  {
+    type: 'Car',
+    icon: '🚗',
+    label: 'Car',
+    description: 'Comfort ride',
+  },
+  {
+    type: 'Taxi',
+    icon: '🚕',
+    label: 'Taxi',
+    description: 'Standard taxi',
+  },
+  {
+    type: 'Bus',
+    icon: '🚌',
+    label: 'Bus',
+    description: 'Affordable group ride',
+  },
+];
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    setFare(null);
+    setError('');
+  };
+
+  const handleRideTypeSelect = (type) => {
+    setFormData({
+      ...formData,
+      rideType: type,
+    });
+
+    setFare(null);
     setError('');
   };
 
@@ -49,21 +82,28 @@ function BookingPage() {
       return;
     }
 
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     const ride = {
       id: Date.now(),
+      riderId: currentUser?.id || null,
+      riderName: currentUser?.fullName || 'Guest Rider',
       pickup: formData.pickup,
       destination: formData.destination,
       rideType: formData.rideType,
       distance: fare.distance,
       fare: fare.amount,
       status: 'Pending',
+      paymentStatus: 'Unpaid',
+      driverName: '',
       date: new Date().toLocaleString(),
     };
 
     const existingRides = JSON.parse(localStorage.getItem('rides')) || [];
+
     localStorage.setItem('rides', JSON.stringify([...existingRides, ride]));
 
-    alert('Ride booked successfully');
+    alert('Ride request sent to drivers');
     navigate('/trips');
   };
 
@@ -94,15 +134,33 @@ function BookingPage() {
             onChange={handleChange}
           />
 
-          <select
-            name="rideType"
-            value={formData.rideType}
-            onChange={handleChange}
-          >
-            <option value="Car">Car</option>
-            <option value="Taxi">Taxi</option>
-            <option value="Bike">Bike</option>
-          </select>
+          <div className="ride-type-section">
+            <p className="ride-type-label">Choose ride type</p>
+
+            <div className="ride-options">
+              {rideOptions.map((option) => (
+                <button
+                  key={option.type}
+                  type="button"
+                  className={
+                    formData.rideType === option.type
+                      ? 'ride-option selected'
+                      : 'ride-option'
+                  }
+                  onClick={() => handleRideTypeSelect(option.type)}
+                >
+                  <span className="ride-icon">{option.icon}</span>
+
+                  <span className="ride-text">
+                    <strong>{option.label}</strong>
+                    <small>{option.description}</small>
+                  </span>
+
+                  <span className="ride-price">Nu. {rates[option.type]}/km</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {error && <p className="error-text">{error}</p>}
 

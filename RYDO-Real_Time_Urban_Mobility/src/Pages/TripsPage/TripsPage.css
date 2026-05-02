@@ -2,11 +2,12 @@
   min-height: 100vh;
   background: #f5f5f5;
   padding: 24px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .trips-container {
-  max-width: 600px; /* Reduced for a more "mobile app" feel */
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -16,8 +17,7 @@
   padding: 28px;
   margin-bottom: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-  text-align: left;
-  overflow: hidden;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .back-btn {
@@ -26,46 +26,28 @@
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 16px;
-  padding: 0;
+  color: inherit;
 }
 
 .trips-header h1 {
-  margin: 0 0 10px 0;
+  margin: 0;
   font-size: 2.2rem;
-  font-weight: 800;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .trips-header p {
-  color: #888;
-  font-size: 0.9rem;
-  margin: 10px 0 0 0;
-}
-
-/* Image Logic Fixes */
-.trip-image-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 15px 0;
-}
-
-.trip-image {
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  object-fit: contain;
+  color: #666;
+  transition: color 0.3s ease;
 }
 
 .empty-box {
   background: #fff;
   border-radius: 24px;
-  padding: 40px 20px;
+  padding: 36px;
   text-align: center;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-}
-
-.empty-box h2 {
-  margin-top: 0;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .empty-box button,
@@ -74,16 +56,16 @@
   border: none;
   background: #000;
   color: #fff;
-  padding: 12px 24px;
+  padding: 12px 18px;
   border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
   transition: all 0.2s ease;
 }
 
 .empty-box button:hover,
+.trip-actions button:hover,
 .clear-btn:hover {
-  background: #333;
+  background: #222;
   transform: translateY(-2px);
 }
 
@@ -97,50 +79,141 @@
   background: #fff;
   border-radius: 24px;
   padding: 24px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .trip-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+}
+
+.trip-top h2 {
+  margin: 0;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
 .status {
-  background: #e7f3ff;
-  color: #007bff;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
   font-weight: 700;
 }
 
+.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.accepted {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.completed {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.trip-info {
+  margin-top: 16px;
+}
+
 .trip-info p {
-  margin: 5px 0;
-  color: #555;
-  font-size: 0.95rem;
+  color: #444;
+  margin: 8px 0;
+  transition: color 0.3s ease;
 }
 
 .trip-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.trip-actions button {
-  flex: 1;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .clear-btn {
-  margin-top: 30px;
+  margin-top: 24px;
   width: 100%;
-  background: #f8f9fa;
-  color: #dc3545;
-  border: 1px solid #eee;
 }
 
-.clear-btn:hover {
-  background: #fff5f5;
-  color: #bd2130;
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-header,
+html.dark-mode .trip-card,
+html.dark-mode .empty-box {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .trips-header h1,
+html.dark-mode .trip-top h2 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .trips-header p,
+html.dark-mode .trip-info p {
+  color: #aaa;
+}
+
+html.dark-mode .pending {
+  background: #3a2f1a;
+  color: #ffd966;
+}
+
+html.dark-mode .accepted {
+  background: #123b2f;
+  color: #34d399;
+}
+
+html.dark-mode .completed {
+  background: #1e2a44;
+  color: #60a5fa;
+}
+
+html.dark-mode .empty-box button,
+html.dark-mode .trip-actions button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .empty-box button:hover,
+html.dark-mode .trip-actions button:hover {
+  background: #ddd;
+}
+
+html.dark-mode .clear-btn {
+  background: #2a2a2a;
+  color: #ff6b6b;
+}
+
+html.dark-mode .clear-btn:hover {
+  background: #3a1f1f;
+}
+
+@media (max-width: 600px) {
+  .trip-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .trip-actions {
+    flex-direction: column;
+  }
 }

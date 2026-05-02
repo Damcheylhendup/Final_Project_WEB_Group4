@@ -3,6 +3,7 @@
   background: #f5f5f5;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .account-container {
@@ -16,6 +17,13 @@
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 18px;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  transform: translateX(-3px);
+  font-weight: 600;
 }
 
 .account-header {
@@ -27,6 +35,7 @@
   gap: 20px;
   margin-bottom: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .account-logo {
@@ -54,11 +63,13 @@
   margin: 0;
   font-size: 2.2rem;
   color: #111;
+  transition: color 0.3s ease;
 }
 
 .account-header p {
   color: #666;
   margin: 8px 0 0;
+  transition: color 0.3s ease;
 }
 
 .account-grid {
@@ -72,16 +83,25 @@
   border-radius: 24px;
   padding: 28px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-title-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card-title-row h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  line-height: 1.2;
 }
 
 .account-card h2 {
-  margin-top: 0;
+  color: inherit;
 }
 
 .profile-form {
@@ -94,6 +114,7 @@
   font-weight: 600;
   color: #333;
   margin-top: 8px;
+  transition: color 0.3s ease;
 }
 
 .profile-form input,
@@ -105,12 +126,54 @@
   border-radius: 12px;
   padding: 0 16px;
   font-size: 1rem;
+  color: #111;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .profile-form input:disabled,
 .profile-form select:disabled {
   color: #555;
   cursor: not-allowed;
+}
+
+.driver-account-section {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.driver-account-section h3 {
+  margin: 8px 0 4px;
+}
+
+.settings-qr-preview {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+}
+
+.settings-qr-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 3px solid #000;
+  background: #fff;
+}
+
+.no-qr-text {
+  color: #666;
+  margin: 4px 0;
+}
+
+.settings-file-input {
+  padding: 12px !important;
+  cursor: pointer;
 }
 
 .small-btn,
@@ -126,7 +189,13 @@
 .small-btn {
   background: #000;
   color: #fff;
-  padding: 10px 16px;
+  padding: 10px 18px;
+  min-width: 82px;
+  min-height: 48px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
 .edit-actions {
@@ -147,6 +216,7 @@
   min-height: 52px;
   background: #e9e9e9;
   color: #111;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .settings-list {
@@ -163,22 +233,26 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
+  transition: background 0.3s ease;
 }
 
 .setting-item h3 {
   margin: 0;
+  color: inherit;
 }
 
 .setting-item p {
   margin: 6px 0 0;
   color: #666;
   font-size: 0.95rem;
+  transition: color 0.3s ease;
 }
 
 .setting-item input[type='checkbox'] {
   width: 22px;
   height: 22px;
   cursor: pointer;
+  accent-color: #f05a1a;
 }
 
 .language-row select {
@@ -188,6 +262,8 @@
   background: #fff;
   padding: 0 12px;
   cursor: pointer;
+  color: #111;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .logout-main-btn {
@@ -211,6 +287,123 @@
   transform: translateY(-2px);
 }
 
+/* Dark Mode */
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .account-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .account-header {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .account-header h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .account-header p {
+  color: #aaa;
+}
+
+html.dark-mode .account-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+  color: #f0f0f0;
+}
+
+html.dark-mode .account-card h2 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .profile-form label {
+  color: #ccc;
+}
+
+html.dark-mode .profile-form input,
+html.dark-mode .profile-form select {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html.dark-mode .profile-form input:disabled,
+html.dark-mode .profile-form select:disabled {
+  color: #999;
+}
+
+html.dark-mode .driver-account-section {
+  background: #252525;
+}
+
+html.dark-mode .settings-qr-preview {
+  background: #1a1a1a;
+}
+
+html.dark-mode .settings-qr-image {
+  border-color: #f0f0f0;
+}
+
+html.dark-mode .no-qr-text {
+  color: #aaa;
+}
+
+html.dark-mode .setting-item {
+  background: #252525;
+}
+
+html.dark-mode .setting-item h3 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .setting-item p {
+  color: #aaa;
+}
+
+html.dark-mode .language-row select {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html.dark-mode .cancel-btn {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html.dark-mode .cancel-btn:hover {
+  background: #333;
+}
+
+html.dark-mode .back-btn {
+  color: #f0f0f0;
+}
+
+html.dark-mode .small-btn {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .small-btn:hover {
+  background: #ddd;
+}
+
+html.dark-mode .logout-main-btn {
+  background: #f05a1a;
+}
+
+html.dark-mode .logout-main-btn:hover {
+  background: #d44e14;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .account-grid {
     grid-template-columns: 1fr;
@@ -223,5 +416,19 @@
 
   .account-header h1 {
     font-size: 1.8rem;
+  }
+
+  .card-title-row {
+    align-items: flex-start;
+  }
+
+  .card-title-row h2 {
+    font-size: 1.5rem;
+  }
+
+  .small-btn {
+    min-width: 72px;
+    min-height: 42px;
+    padding: 8px 14px;
   }
 }

@@ -5,6 +5,7 @@ import './LoginPage.css';
 
 function LoginPage() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     emailOrPhone: '',
     password: '',
@@ -17,6 +18,11 @@ function LoginPage() {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+    });
+
+    setErrors({
+      ...errors,
+      [e.target.name]: '',
     });
   };
 
@@ -36,8 +42,30 @@ function LoginPage() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log('Login Data:', formData);
-      navigate('/dashboard');
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+
+      const matchedUser = users.find(
+        (user) =>
+          (user.email === formData.emailOrPhone ||
+            user.phone.replace(/\s+/g, '') ===
+              formData.emailOrPhone.replace(/\s+/g, '')) &&
+          user.password === formData.password
+      );
+
+      if (!matchedUser) {
+        setErrors({
+          emailOrPhone: 'Invalid email/phone or password',
+        });
+        return;
+      }
+
+      localStorage.setItem('currentUser', JSON.stringify(matchedUser));
+
+      if (matchedUser.role === 'driver') {
+        navigate('/driver-dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     }
   };
 
@@ -74,7 +102,9 @@ function LoginPage() {
                 onChange={handleChange}
                 className="login-input"
               />
-              {errors.password && <p className="error-text">{errors.password}</p>}
+              {errors.password && (
+                <p className="error-text">{errors.password}</p>
+              )}
             </div>
 
             <button type="submit" className="login-btn">
@@ -82,10 +112,7 @@ function LoginPage() {
             </button>
           </form>
 
-          <p
-            className="forgot-text"
-            onClick={() => setShowForgot(true)}
-          >
+          <p className="forgot-text" onClick={() => setShowForgot(true)}>
             Forgot password?
           </p>
 
