@@ -1,0 +1,8 @@
+-- ADMINS (FOR MANAGING THE SYSTEM)
+CREATE TABLE admins (
+    admin_id SERIAL PRIMARY KEY,
+    admin_name VARCHAR(100),
+    admin_number VARCHAR(20),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
