@@ -73,7 +73,10 @@ function LoginPage() {
     <>
       <div className="login-page">
         <div className="login-card">
-          <div className="login-logo">RYDO</div>
+          <div className="login-logo">
+            <span className="yellow">RY</span>
+            <span className="red">DO</span>
+          </div>
 
           <h1 className="login-title">Welcome back</h1>
           <p className="login-subtitle">Log in to continue using Rydo</p>

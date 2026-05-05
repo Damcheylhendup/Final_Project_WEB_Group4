@@ -29,7 +29,7 @@
 .login-logo {
   width: 90px;
   height: 90px;
-  background: #000;
+  background: #000000;
   border-radius: 18px;
   display: flex;
   justify-content: center;
@@ -38,12 +38,19 @@
   font-size: 22px;
   font-weight: 700;
 }
+.yellow {
+  color: #ffd21f;
+}
+
+.red {
+  color: #f05a1a;
+}
 
 .login-title {
   text-align: center;
   margin: 0;
   font-size: 2rem;
-  color: #111;
+  color: #000000;
   transition: color 0.3s ease;
 }
 
