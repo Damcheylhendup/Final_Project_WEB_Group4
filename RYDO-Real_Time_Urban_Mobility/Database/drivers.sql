@@ -1,0 +1,11 @@
+-- DRIVERS
+CREATE TABLE drivers (
+    driver_id SERIAL PRIMARY KEY,
+    driver_name VARCHAR(100) NOT NULL,
+    driver_number VARCHAR(20) UNIQUE NOT NULL,
+    vehicle_number VARCHAR(50) UNIQUE NOT NULL,
+    vehicle_type VARCHAR(50) NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

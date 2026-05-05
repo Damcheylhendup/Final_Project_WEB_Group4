@@ -3,7 +3,7 @@ import React from "react";
 const SignupPage = () => {
   return (
     <div className="signup-page">
-      <style>{`
+      <style>{` 
         .signup-page {
           width: 100%;
           min-height: 100vh;
