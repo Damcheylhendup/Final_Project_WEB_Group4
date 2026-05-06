@@ -3,20 +3,42 @@
 -- ============================================================
 
 -- Users
-CREATE INDEX idx_users_number ON users (user_number);
+CREATE INDEX idx_users_number   ON users (user_number);
+CREATE INDEX idx_users_email    ON users (user_email);
+CREATE INDEX idx_users_active   ON users (is_active);
 
 -- Drivers
-CREATE INDEX idx_drivers_number ON drivers (driver_number);
--- fast lookup for available drivers
-CREATE INDEX idx_drivers_available ON drivers (is_available);
+CREATE INDEX idx_drivers_number       ON drivers (driver_number);
+CREATE INDEX idx_drivers_available    ON drivers (is_available);
+CREATE INDEX idx_drivers_status       ON drivers (driver_status);
+
+-- Vehicles
+CREATE INDEX idx_vehicles_driver_id   ON vehicles (driver_id);
+CREATE INDEX idx_vehicles_type        ON vehicles (vehicle_type);
+CREATE INDEX idx_vehicles_active      ON vehicles (is_active);
 
 -- Bookings
-CREATE INDEX idx_bookings_user_id ON bookings (user_id);
-CREATE INDEX idx_bookings_driver_id ON bookings (driver_id);
-CREATE INDEX idx_bookings_date ON bookings (booking_date);
--- filter by status quickly
-CREATE INDEX idx_bookings_status ON bookings (booking_status);
+CREATE INDEX idx_bookings_user_id        ON bookings (user_id);
+CREATE INDEX idx_bookings_driver_id      ON bookings (driver_id);
+CREATE INDEX idx_bookings_date           ON bookings (booking_date);
+CREATE INDEX idx_bookings_status         ON bookings (booking_status);
+CREATE INDEX idx_bookings_vehicle_type   ON bookings (vehicle_type_requested);
 
 -- Payments
 CREATE INDEX idx_payments_booking_id ON payments (booking_id);
-CREATE INDEX idx_payments_status ON payments (payment_status);
+CREATE INDEX idx_payments_user_id    ON payments (user_id);
+CREATE INDEX idx_payments_driver_id  ON payments (driver_id);
+CREATE INDEX idx_payments_status     ON payments (payment_status);
+
+-- Driver Locations
+CREATE INDEX idx_locations_driver_id   ON driver_locations (driver_id);
+CREATE INDEX idx_locations_recorded_at ON driver_locations (recorded_at);
+CREATE INDEX idx_locations_booking_id  ON driver_locations (booking_id);
+
+-- Notifications
+CREATE INDEX idx_notifications_recipient ON notifications (recipient_type, recipient_id);
+CREATE INDEX idx_notifications_is_read   ON notifications (is_read);
+
+-- OTP
+CREATE INDEX idx_otp_number  ON otp_verifications (recipient_number);
+CREATE INDEX idx_otp_expires ON otp_verifications (expires_at);

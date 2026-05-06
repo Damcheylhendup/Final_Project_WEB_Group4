@@ -2,21 +2,26 @@
 -- PAYMENTS
 -- ============================================================
 CREATE TABLE payments (
-    payment_id INT AUTO_INCREMENT PRIMARY KEY,
-    booking_id INT NOT NULL,
+    payment_id     INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id     INT NOT NULL,
+    user_id        INT NOT NULL,
+    driver_id      INT,                    -- for driver earnings tracking
 
     payment_method ENUM('cash', 'card', 'mobile_money', 'wallet') NOT NULL,
     payment_status ENUM(
         'pending', 'completed', 'failed', 'refunded'
     ) DEFAULT 'pending',
 
-    amount DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
-    extra_charge DECIMAL(10, 2) DEFAULT 0,
+    amount         DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
+    extra_charge   DECIMAL(10, 2) DEFAULT 0.00,
+    total_amount   DECIMAL(10, 2) GENERATED ALWAYS AS (amount + extra_charge) STORED,
 
     transaction_id VARCHAR(255) UNIQUE,
-    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    payment_date   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (booking_id) REFERENCES bookings (booking_id) ON DELETE CASCADE
+    FOREIGN KEY (booking_id) REFERENCES bookings (booking_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id)    REFERENCES users    (user_id)    ON DELETE CASCADE,
+    FOREIGN KEY (driver_id)  REFERENCES drivers  (driver_id)  ON DELETE SET NULL
 );
