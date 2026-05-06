@@ -3,6 +3,7 @@
   background: #f5f5f5;
   padding: 24px;
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .map-container {
@@ -16,16 +17,29 @@
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 16px;
+  color: inherit;
 }
 
-.map-container h1 {
+.map-header {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.map-header h1 {
   margin: 0;
   font-size: 2.2rem;
+  color: #111;
+  transition: color 0.3s ease;
 }
 
-.subtitle {
+.map-header p {
   color: #666;
-  margin-bottom: 24px;
+  margin-bottom: 0;
+  transition: color 0.3s ease;
 }
 
 .role-switch {
@@ -58,13 +72,15 @@
 .map-box {
   position: relative;
   width: 100%;
-  height: 360px;
+  height: 380px;
   background: #dfe7ef;
   border-radius: 24px;
   overflow: hidden;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 /* Leaflet map needs a child with explicit height */
 .leaflet-map {
@@ -78,38 +94,119 @@
 }
 
 .road-line {
+
+.map-grid {
+
   position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.road {
+  position: absolute;
+  background: #333;
+  border-radius: 999px;
+  transition: background 0.3s ease;
+}
+
+.horizontal-road {
   top: 50%;
   left: 10%;
   width: 80%;
-  height: 10px;
-  background: #333;
-  border-radius: 999px;
+  height: 14px;
   transform: translateY(-50%);
+}
+
+.vertical-road {
+  width: 14px;
+  height: 140px;
+}
+
+.left-road {
+  left: 25%;
+  top: 18%;
+}
+
+.right-road {
+  right: 22%;
+  bottom: 12%;
 }
 
 .location {
   position: absolute;
-  top: 42%;
-  transform: translateX(-50%);
-  font-size: 2rem;
+  transform: translate(-50%, -50%);
   text-align: center;
+  z-index: 3;
+}
+
+.pickup {
+  left: 12%;
+  top: 50%;
+}
+
+.destination {
+  left: 88%;
+  top: 50%;
+}
+
+.marker {
+  font-size: 2rem;
 }
 
 .location span {
   display: block;
-  font-size: 0.8rem;
   margin-top: 6px;
+  background: #fff;
   color: #111;
-  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.driver {
+.driver-car {
   position: absolute;
-  top: 45%;
-  transform: translate(-50%, -50%);
-  font-size: 2.4rem;
-  transition: left 0.4s ease;
+  top: 50%;
+  transform: translate(-50%, -58%);
+  font-size: 2.5rem;
+  z-index: 4;
+  transition: left 0.6s ease;
+}
+
+.progress-section {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e9e9e9;
+  border-radius: 999px;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #000;
+  border-radius: 999px;
+  transition: width 0.6s ease, background 0.3s ease;
 }
 
 .tracking-card {
@@ -117,14 +214,17 @@
   border-radius: 24px;
   padding: 24px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tracking-card h2 {
   margin-top: 0;
+  color: inherit;
 }
 
 .tracking-card p {
   color: #444;
+  transition: color 0.3s ease;
 }
 
 .tracking-card button {
@@ -136,8 +236,100 @@
   color: white;
   font-size: 1rem;
   cursor: pointer;
+  transition: background 0.2s ease, color 0.3s ease;
 }
 
 .tracking-card button:hover {
   background: #222;
 }
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .map-page {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+html.dark-mode .map-header,
+html.dark-mode .progress-section,
+html.dark-mode .tracking-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .map-header h1 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .map-header p,
+html.dark-mode .tracking-card p {
+  color: #aaa;
+}
+
+html.dark-mode .map-box {
+  background: #1a1f26;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .map-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+}
+
+html.dark-mode .road {
+  background: #ccc;
+}
+
+html.dark-mode .location span {
+  background: #252525;
+  color: #f0f0f0;
+}
+
+html.dark-mode .progress-bar {
+  background: #2a2a2a;
+}
+
+html.dark-mode .progress-fill {
+  background: #f0f0f0;
+}
+
+html.dark-mode .tracking-card button {
+  background: #f0f0f0;
+  color: #000;
+}
+
+html.dark-mode .tracking-card button:hover {
+  background: #ddd;
+}
+
+@media (max-width: 600px) {
+  .map-page {
+    padding: 16px;
+  }
+
+  .map-box {
+    height: 300px;
+  }
+
+  .map-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .driver-car {
+    font-size: 2rem;
+  }
+
+  .marker {
+    font-size: 1.7rem;
+  }
+}}

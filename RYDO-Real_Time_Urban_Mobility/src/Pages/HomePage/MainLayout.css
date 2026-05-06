@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Layout */
@@ -19,6 +20,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Logo */
@@ -75,6 +77,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Topbar */
@@ -82,9 +85,54 @@ body {
   padding: 20px;
   background: #fff;
   border-bottom: 1px solid #ddd;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 /* Page content */
 .page-content {
   padding: 20px;
+}
+
+/* ─── Dark Mode ───────────────────────────────────────── */
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode body {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+/* Sidebar stays dark but smoother */
+html.dark-mode .sidebar {
+  background: #111;
+  color: #f0f0f0;
+}
+
+/* Menu */
+html.dark-mode .menu-item:hover {
+  background: #2a2a2a;
+}
+
+html.dark-mode .menu-item.active {
+  background: #ffd21f;
+  color: #000;
+}
+
+html.dark-mode .menu-item.highlight {
+  background: #f05a1a;
+  color: #fff;
+}
+
+/* Content */
+html.dark-mode .content {
+  background: #0f0f0f;
+  color: #f0f0f0;
+}
+
+/* Topbar */
+html.dark-mode .topbar {
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
 }

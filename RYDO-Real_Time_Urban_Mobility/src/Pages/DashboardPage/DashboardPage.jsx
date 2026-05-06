@@ -1,19 +1,28 @@
 import './DashboardPage.css';
 import { useNavigate } from 'react-router-dom';
-import { FaCar, FaHistory, FaMapMarkedAlt, FaWallet } from 'react-icons/fa';
+import {
+  FaCar,
+  FaHistory,
+  FaMapMarkedAlt,
+  FaWallet,
+  FaUserCog,
+} from 'react-icons/fa';
 
 function DashboardPage() {
   const navigate = useNavigate();
 
+  const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {
+    fullName: 'Rider',
+  };
+
   const handleLogout = () => {
+    localStorage.removeItem('currentUser');
     navigate('/login');
   };
 
   return (
     <div className="dashboard-page">
       <div className="dashboard-container">
-
-        {/* Header */}
         <header className="dashboard-header">
           <div className="dashboard-logo">
             <span className="yellow">RY</span>
@@ -25,39 +34,56 @@ function DashboardPage() {
           </button>
         </header>
 
-        {/* Welcome */}
         <section className="welcome-section">
           <h1>Welcome to Rydo</h1>
-          <p>Book rides, track drivers, and manage your trips.</p>
+          <p>
+            Hello, {currentUser.fullName}. Book rides, track drivers, and manage
+            your trips.
+          </p>
         </section>
 
-        {/* Cards */}
         <section className="dashboard-grid">
-
           <div className="dashboard-card">
-            <h2><FaCar /> Book a Ride</h2>
+            <h2>
+              <FaCar /> Book a Ride
+            </h2>
             <p>Choose pickup and destination to request a ride.</p>
             <button onClick={() => navigate('/booking')}>Book Now</button>
           </div>
 
           <div className="dashboard-card">
-            <h2><FaHistory /> My Trips</h2>
+            <h2>
+              <FaHistory /> My Trips
+            </h2>
             <p>View your current and past ride history.</p>
             <button onClick={() => navigate('/trips')}>View Trips</button>
           </div>
 
           <div className="dashboard-card">
-            <h2><FaMapMarkedAlt /> Live Tracking</h2>
+            <h2>
+              <FaMapMarkedAlt /> Live Tracking
+            </h2>
             <p>Track your driver in real time on the map.</p>
             <button onClick={() => navigate('/map')}>Open Map</button>
           </div>
 
           <div className="dashboard-card">
-            <h2><FaWallet /> Transactions</h2>
+            <h2>
+              <FaWallet /> Transactions
+            </h2>
             <p>View fare details and payments.</p>
-            <button onClick={() => navigate('/Payments')}>View Transactions</button>
+            <button onClick={() => navigate('/payments')}>
+              View Transactions
+            </button>
           </div>
 
+          <div className="dashboard-card">
+            <h2>
+              <FaUserCog /> Account & Settings
+            </h2>
+            <p>Manage your profile and app preferences.</p>
+            <button onClick={() => navigate('/account')}>Open Settings</button>
+          </div>
         </section>
       </div>
     </div>

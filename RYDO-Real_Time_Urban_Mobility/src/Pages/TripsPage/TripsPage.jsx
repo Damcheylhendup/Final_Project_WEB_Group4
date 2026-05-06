@@ -1,45 +1,56 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TripsPage.css';
-import tripImg from "../../assets/trip.png";
 
 function TripsPage() {
   const navigate = useNavigate();
   const [rides, setRides] = useState([]);
 
-  useEffect(() => {
+  const loadRides = () => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const savedRides = JSON.parse(localStorage.getItem('rides')) || [];
-    setRides(savedRides);
+
+    const userRides = savedRides.filter(
+      (ride) => ride.riderId === currentUser?.id || ride.riderName === currentUser?.fullName
+    );
+
+    setRides(userRides);
+  };
+
+  useEffect(() => {
+    loadRides();
   }, []);
 
   const clearTrips = () => {
-    if (window.confirm("Clear all trip history?")) {
-      localStorage.removeItem('rides');
-      setRides([]);
-    }
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const savedRides = JSON.parse(localStorage.getItem('rides')) || [];
+
+    const remainingRides = savedRides.filter(
+      (ride) => ride.riderId !== currentUser?.id && ride.riderName !== currentUser?.fullName
+    );
+
+    localStorage.setItem('rides', JSON.stringify(remainingRides));
+    setRides([]);
+  };
+
+  const getStatusClass = (status) => {
+    if (status === 'Accepted') return 'status accepted';
+    if (status === 'Completed') return 'status completed';
+    return 'status pending';
   };
 
   return (
     <div className="trips-page">
       <div className="trips-container">
-        
-        {/* Header Section */}
         <div className="trips-header">
           <button className="back-btn" onClick={() => navigate('/dashboard')}>
             ← Back
           </button>
 
           <h1>My Trips</h1>
-          
-          {/* This container allows the CSS to center and size the car correctly */}
-          <div className="trip-image-container">
-            <img src={tripImg} alt="trip illustration" className="trip-image" />
-          </div>
-
           <p>View your current and past Rydo bookings.</p>
         </div>
 
-        {/* Empty State vs List Logic */}
         {rides.length === 0 ? (
           <div className="empty-box">
             <h2>No trips yet</h2>
@@ -50,10 +61,12 @@ function TripsPage() {
           <>
             <div className="trips-list">
               {rides.map((ride) => (
-                <div className="trip-card" key={ride.id || Math.random()}>
+                <div className="trip-card" key={ride.id}>
                   <div className="trip-top">
                     <h2>{ride.rideType} Ride</h2>
-                    <span className="status">{ride.status || 'Scheduled'}</span>
+                    <span className={getStatusClass(ride.status)}>
+                      {ride.status}
+                    </span>
                   </div>
 
                   <div className="trip-info">
@@ -61,19 +74,31 @@ function TripsPage() {
                     <p><strong>Destination:</strong> {ride.destination}</p>
                     <p><strong>Distance:</strong> {ride.distance} km</p>
                     <p><strong>Fare:</strong> Nu. {ride.fare}</p>
+                    <p><strong>Status:</strong> {ride.status}</p>
+                    <p><strong>Payment:</strong> {ride.paymentStatus || 'Unpaid'}</p>
+
+                    {ride.driverName && (
+                      <p><strong>Driver:</strong> {ride.driverName}</p>
+                    )}
+
                     <p><strong>Date:</strong> {ride.date}</p>
                   </div>
 
                   <div className="trip-actions">
-                    <button onClick={() => navigate('/map')}>Track Ride</button>
-                    <button onClick={() => navigate('/payments')}>Pay Now</button>
+                    <button onClick={() => navigate('/map')}>
+                      Track Ride
+                    </button>
+
+                    <button onClick={() => navigate('/payments')}>
+                      Pay Now
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
 
             <button className="clear-btn" onClick={clearTrips}>
-              Clear Trip History
+              Clear My Trip History
             </button>
           </>
         )}

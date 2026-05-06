@@ -1,71 +1,149 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./PaymentsPage.css";
-import map from "../../assets/map.jpg";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './PaymentsPage.css';
 
 function PaymentsPage() {
   const navigate = useNavigate();
   const [latestRide, setLatestRide] = useState(null);
-  const [reference, setReference] = useState("");
+  const [reference, setReference] = useState('');
 
   useEffect(() => {
-    const rides = JSON.parse(localStorage.getItem("rides")) || [];
-    if (rides.length > 0) {
-      setLatestRide(rides[rides.length - 1]);
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+
+    const userRides = rides.filter(
+      (ride) =>
+        ride.riderId === currentUser?.id ||
+        ride.riderName === currentUser?.fullName
+    );
+
+    if (userRides.length > 0) {
+      setLatestRide(userRides[userRides.length - 1]);
     }
   }, []);
 
   const handlePayment = () => {
-    if (!reference.trim()) {
-      alert("Please enter payment reference number");
+    if (!latestRide) {
+      alert('No ride found');
       return;
     }
 
-    alert("Payment submitted successfully");
-    navigate("/trips");
+    if (!reference.trim()) {
+      alert('Please enter payment reference number');
+      return;
+    }
+
+    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+
+    const updatedRides = rides.map((ride) =>
+      ride.id === latestRide.id
+        ? {
+            ...ride,
+            paymentStatus: 'Paid',
+            paymentReference: reference,
+          }
+        : ride
+    );
+
+    localStorage.setItem('rides', JSON.stringify(updatedRides));
+
+    alert('Payment submitted successfully');
+    navigate('/trips');
   };
 
   return (
     <div className="payments-page">
       <div className="payments-card">
-        <button className="back-btn" onClick={() => navigate("/dashboard")}>
+        <button className="back-btn" onClick={() => navigate('/trips')}>
           ← Back
         </button>
 
-        <h1>Transaction Records</h1>
-
-        {/* ✅ Image section */}
-        <div className="map-container">
-          <img src={map} alt="Map" className="map-image" />
-        </div>
-
+        <h1>Payment</h1>
         <p className="subtitle">
-          View your past transactions and payment history.
+          Complete your payment using the accepted driver’s bank details.
         </p>
 
         {!latestRide ? (
           <div className="empty-payment">
             <h2>No ride found</h2>
             <p>Please book a ride before making payment.</p>
-            <button onClick={() => navigate("/booking")}>
-              Book Ride
-            </button>
+            <button onClick={() => navigate('/booking')}>Book Ride</button>
           </div>
         ) : (
           <>
             <div className="payment-summary">
               <h2>Ride Summary</h2>
-              <p><strong>Pickup:</strong> {latestRide.pickup}</p>
-              <p><strong>Destination:</strong> {latestRide.destination}</p>
-              <p><strong>Ride Type:</strong> {latestRide.rideType}</p>
-              <p><strong>Distance:</strong> {latestRide.distance} km</p>
+
+              <p>
+                <strong>Pickup:</strong> {latestRide.pickup}
+              </p>
+
+              <p>
+                <strong>Destination:</strong> {latestRide.destination}
+              </p>
+
+              <p>
+                <strong>Ride Type:</strong> {latestRide.rideType}
+              </p>
+
+              <p>
+                <strong>Distance:</strong> {latestRide.distance} km
+              </p>
+
+              <p>
+                <strong>Status:</strong> {latestRide.status}
+              </p>
+
+              <p>
+                <strong>Payment:</strong> {latestRide.paymentStatus || 'Unpaid'}
+              </p>
+
               <h3>Total: Nu. {latestRide.fare}</h3>
             </div>
 
+            <div className="driver-payment-details">
+              <h2>Driver Payment Details</h2>
+
+              <p>
+                <strong>Driver:</strong>{' '}
+                {latestRide.driverName || 'Not assigned yet'}
+              </p>
+
+              <p>
+                <strong>Bank:</strong>{' '}
+                {latestRide.driverBankName || 'Not provided'}
+              </p>
+
+              <p>
+                <strong>Account Holder:</strong>{' '}
+                {latestRide.driverAccountHolder || 'Not provided'}
+              </p>
+
+              <p>
+                <strong>Account Number:</strong>{' '}
+                {latestRide.driverAccountNumber || 'Not provided'}
+              </p>
+            </div>
+
             <div className="qr-box">
-              <div className="fake-qr">QR</div>
+              {latestRide.driverQrImage ? (
+                <img
+                  src={latestRide.driverQrImage}
+                  alt="Driver payment QR"
+                  className="payment-qr-image"
+                />
+              ) : (
+                <div className="fake-qr">QR</div>
+              )}
+
               <p>Scan using mBoB / Mpay / Bank app</p>
             </div>
+
+            {latestRide.status === 'Pending' && (
+              <p className="payment-warning">
+                A driver has not accepted this ride yet. Payment details may be incomplete.
+              </p>
+            )}
 
             <input
               type="text"

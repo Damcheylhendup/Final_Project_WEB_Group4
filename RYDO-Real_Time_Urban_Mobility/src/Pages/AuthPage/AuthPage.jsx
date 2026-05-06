@@ -1,24 +1,36 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './AuthPage.css';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 
 function AuthPage() {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const validateBhutanNumber = (number) => {
+    const cleanedPhone = number.replace(/\s+/g, '');
+    return /^(17|77|16)\d{6}$/.test(cleanedPhone);
+  };
 
   const handleContinue = () => {
     const cleanedPhone = phone.replace(/\s+/g, '');
-    const phoneRegex = /^\+975\d{8}$/;
 
-    if (!phone.trim()) {
+    if (!cleanedPhone) {
       setError('Phone number is required');
-    } else if (!phoneRegex.test(cleanedPhone)) {
-      setError('Enter a valid Bhutan number (e.g. +97517660994)');
-    } else {
-      setError('');
-      alert('Valid number!');
+      return;
     }
+
+    if (!validateBhutanNumber(cleanedPhone)) {
+      setError('Enter a valid Bhutan number, e.g. 17660994');
+      return;
+    }
+
+    navigate('/create-account', {
+      state: {
+        phone: cleanedPhone,
+      },
+    });
   };
 
   return (
@@ -45,21 +57,23 @@ function AuthPage() {
             <input
               id="phone"
               type="tel"
-              placeholder="+975 17660994"
+              placeholder="17660994"
               className="phone-input"
               value={phone}
+              maxLength="8"
               onChange={(e) => {
-                setPhone(e.target.value);
+                const onlyNumbers = e.target.value.replace(/\D/g, '');
+                setPhone(onlyNumbers);
                 setError('');
               }}
             />
           </div>
 
-          {error && <p className="error-text">{error}</p>}
+          {error && <p className="auth-error-text">{error}</p>}
         </div>
 
         <button className="continue-btn" onClick={handleContinue}>
-          Signup
+          Continue
         </button>
 
         <div className="divider">
@@ -69,14 +83,20 @@ function AuthPage() {
         </div>
 
         <div className="social-buttons">
-          <button className="social-btn">
+          <button
+            className="social-btn"
+            onClick={() => navigate('/create-account')}
+          >
             <FaGoogle className="icon" />
-            Continue with Google
+            <span>Continue with Google</span>
           </button>
 
-          <button className="social-btn facebook-btn">
+          <button
+            className="social-btn facebook-btn"
+            onClick={() => navigate('/create-account')}
+          >
             <FaFacebookF className="icon" />
-            Continue with Facebook
+            <span>Continue with Facebook</span>
           </button>
         </div>
 
