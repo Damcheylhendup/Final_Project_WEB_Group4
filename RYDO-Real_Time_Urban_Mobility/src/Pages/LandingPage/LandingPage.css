@@ -38,6 +38,7 @@
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 400;
   margin: 25px 0 140px;
+  color: white;
 }
 
 .bottom-section {
