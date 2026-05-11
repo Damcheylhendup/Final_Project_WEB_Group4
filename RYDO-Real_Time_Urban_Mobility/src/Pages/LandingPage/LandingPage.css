@@ -1,68 +1,105 @@
-.landing-page {
+* {
+  box-sizing: border-box;
+}
+
+.splash-screen {
   width: 100%;
   min-height: 100vh;
-  background: #000;
-  color: white;
+  background-color: #000000;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  padding: 20px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.landing-content {
+.content {
   width: 100%;
+  max-width: 500px;
   min-height: 100vh;
-  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.logo {
-  font-size: clamp(4rem, 10vw, 6rem);
+.logo.box {
+  font-family: 'Poppins', sans-serif;
+  font-size: 56px;
   font-weight: 800;
-  letter-spacing: 8px;
+  letter-spacing: 0.08em;
+  line-height: 1;
   margin: 0;
 }
 
 .yellow {
-  color: #ffd000;
+  color: #ffd21f;
 }
 
-.orange {
-  color: #ff5a14;
-}
-
-.subtitle {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 400;
-  margin: 25px 0 140px;
-  color: white;
-}
-
-.bottom-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-}
-
-.start-btn {
-  background: #ffb000;
-  color: white;
-  border: none;
-  border-radius: 40px;
-  padding: 22px 58px;
-  font-size: clamp(1.4rem, 2vw, 2rem);
-  cursor: pointer;
-}
-
-.start-btn span {
-  margin-left: 20px;
+.red {
+  color: #f05a1a;
 }
 
 .tagline {
-  font-size: clamp(1.2rem, 2vw, 1.8rem);
-  margin: 0;
+  margin-top: 18px;
+  color: #ffffff;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.start-btn {
+  margin-top: 100px;
+  margin-bottom: 0;
+  background: #f7a800;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 38px;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease, background 0.3s ease;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+.arrow {
+  margin-left: 10px;
+}
+
+.subtag {
+  position: static;
+  margin-top: 35px;
+  color: #ffffff;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  text-align: center;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode .splash-screen {
+  background-color: #000000;
+  color: #f0f0f0;
+}
+
+html.dark-mode .tagline,
+html.dark-mode .subtag {
+  color: #f0f0f0;
+}
+
+html.dark-mode .start-btn {
+  background: #f05a1a;
+  color: #ffffff;
+}
+
+html.dark-mode .start-btn:hover {
+  opacity: 0.9;
 }
