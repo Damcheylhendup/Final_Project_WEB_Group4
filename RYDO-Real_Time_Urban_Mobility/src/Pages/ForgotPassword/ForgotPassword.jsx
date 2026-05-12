@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
 
 const DEMO_OTP = "1234";
 
 export default function ForgotPassword({ isOpen, onClose }) {
+  const navigate = useNavigate();
+
   const [sheetVisible, setSheetVisible] = useState(false);
   const [step, setStep] = useState("input"); // input | otp | success
   const [contact, setContact] = useState("");
@@ -86,7 +89,7 @@ export default function ForgotPassword({ isOpen, onClose }) {
       setStep("success");
     } else {
       setOtpError("Incorrect OTP. Please try again.");
-      setOtp(["", "", "", ""]);
+      setOtp(["", "", "", "",]);
       setTimeout(() => otpRefs[0].current?.focus(), 50);
     }
   };
@@ -102,17 +105,14 @@ export default function ForgotPassword({ isOpen, onClose }) {
 
   return (
     <>
-      {/* Overlay */}
       <div
         className={`fp-overlay ${sheetVisible ? "fp-overlay--visible" : ""}`}
         onClick={handleClose}
       />
 
-      {/* Bottom Sheet */}
       <div className={`fp-sheet ${sheetVisible ? "fp-sheet--visible" : ""}`}>
         <div className="fp-pill" />
 
-        {/* Step 1: Enter contact */}
         {step === "input" && (
           <div className="fp-step">
             <h2 className="fp-title">Forgot password?</h2>
@@ -129,20 +129,19 @@ export default function ForgotPassword({ isOpen, onClose }) {
               onChange={(e) => setContact(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendOtp()}
             />
-            {contactError && (
-              <p className="fp-error-hint">{contactError}</p>
-            )}
+
+            {contactError && <p className="fp-error-hint">{contactError}</p>}
 
             <button className="fp-btn-primary" onClick={sendOtp}>
               Send OTP
             </button>
+
             <button className="fp-btn-ghost" onClick={handleClose}>
               Cancel
             </button>
           </div>
         )}
 
-        {/* Step 2: Enter OTP */}
         {step === "otp" && (
           <div className="fp-step">
             <h2 className="fp-title">Enter OTP</h2>
@@ -157,7 +156,9 @@ export default function ForgotPassword({ isOpen, onClose }) {
                 <input
                   key={i}
                   ref={otpRefs[i]}
-                  className={`fp-otp-box ${otpError ? "fp-otp-box--error" : ""} ${digit ? "fp-otp-box--filled" : ""}`}
+                  className={`fp-otp-box ${otpError ? "fp-otp-box--error" : ""} ${
+                    digit ? "fp-otp-box--filled" : ""
+                  }`}
                   type="text"
                   inputMode="numeric"
                   maxLength={1}
@@ -200,7 +201,6 @@ export default function ForgotPassword({ isOpen, onClose }) {
           </div>
         )}
 
-        {/* Step 3: Success */}
         {step === "success" && (
           <div className="fp-step fp-step--center">
             <div className="fp-success-icon">
@@ -214,12 +214,21 @@ export default function ForgotPassword({ isOpen, onClose }) {
                 />
               </svg>
             </div>
+
             <h2 className="fp-title">Identity verified!</h2>
+
             <p className="fp-subtitle">
               Your identity has been confirmed. You can now reset your
               password.
             </p>
-            <button className="fp-btn-primary">Set new password</button>
+
+            <button
+              className="fp-btn-primary"
+              onClick={() => navigate("/reset-password")}
+            >
+              Set new password
+            </button>
+
             <button className="fp-btn-ghost" onClick={handleClose}>
               Back to login
             </button>
