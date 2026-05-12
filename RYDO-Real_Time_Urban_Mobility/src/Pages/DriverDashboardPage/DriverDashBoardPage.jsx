@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
   FaCar,
   FaMoneyBillWave,
@@ -9,90 +10,114 @@ import {
   FaToggleOff,
   FaMapMarkerAlt,
 } from 'react-icons/fa';
+
+import {
+  getPendingRides,
+  acceptRide,
+} from '../../api/rideApi';
+
 import './DriverDashboardPage.css';
 
 function DriverDashboardPage() {
   const navigate = useNavigate();
 
-  const [isOnline, setIsOnline] = useState(false);
-  const [currentRide, setCurrentRide] = useState(null);
-  const [rideRequests, setRideRequests] = useState([]);
+  const [isOnline, setIsOnline] =
+    useState(false);
 
-  const driver = JSON.parse(localStorage.getItem('currentUser')) || {
-    fullName: 'Driver',
-    vehicleType: 'Taxi',
-    vehicleNumber: 'Not set',
-    bankName: '',
-    accountHolder: '',
-    accountNumber: '',
-    qrImage: '',
-  };
+  const [currentRide, setCurrentRide] =
+    useState(null);
 
-  const loadRideRequests = () => {
-    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+  const [rideRequests, setRideRequests] =
+    useState([]);
 
-    const pendingRides = rides.filter((ride) => ride.status === 'Pending');
-    setRideRequests(pendingRides);
+  const driver =
+    JSON.parse(
+      localStorage.getItem(
+        'currentUser'
+      )
+    ) || {
+      fullName: 'Driver',
 
-    const acceptedRide = rides.find(
-      (ride) =>
-        ride.status === 'Accepted' &&
-        ride.driverName === driver.fullName
-    );
+      vehicleType: 'Taxi',
 
-    setCurrentRide(acceptedRide || null);
-  };
+      vehicleNumber:
+        'Not set',
+
+      bankName: '',
+
+      accountHolder: '',
+
+      accountNumber: '',
+
+      qrImage: '',
+    };
+
+  const loadRideRequests =
+    async () => {
+      try {
+        const response =
+          await getPendingRides();
+
+        setRideRequests(
+          response.data
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
   useEffect(() => {
     loadRideRequests();
   }, []);
 
-  const handleAcceptRide = (ride) => {
-    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+  const handleAcceptRide =
+    async (ride) => {
+      try {
+        const response =
+          await acceptRide(
+            ride.id
+          );
 
-    const updatedRides = rides.map((item) =>
-      item.id === ride.id
-        ? {
-            ...item,
-            status: 'Accepted',
-            driverId: driver.id,
-            driverName: driver.fullName,
-            driverBankName: driver.bankName || '',
-            driverAccountHolder: driver.accountHolder || '',
-            driverAccountNumber: driver.accountNumber || '',
-            driverQrImage: driver.qrImage || '',
-          }
-        : item
-    );
+        alert(
+          response.data.message
+        );
 
-    localStorage.setItem('rides', JSON.stringify(updatedRides));
+        setCurrentRide(
+          response.data.ride
+        );
 
-    alert('Ride accepted successfully');
-    loadRideRequests();
-  };
+        loadRideRequests();
+      } catch (error) {
+        alert(
+          error.response?.data
+            ?.message ||
+            'Failed to accept ride'
+        );
+      }
+    };
 
-  const handleCompleteRide = () => {
-    if (!currentRide) return;
+  const handleCompleteRide =
+    () => {
+      if (!currentRide) return;
 
-    const rides = JSON.parse(localStorage.getItem('rides')) || [];
+      alert(
+        'Ride completion backend coming next'
+      );
 
-    const updatedRides = rides.map((ride) =>
-      ride.id === currentRide.id
-        ? {
-            ...ride,
-            status: 'Completed',
-          }
-        : ride
-    );
+      setCurrentRide(null);
 
-    localStorage.setItem('rides', JSON.stringify(updatedRides));
-
-    alert('Ride completed successfully');
-    loadRideRequests();
-  };
+      loadRideRequests();
+    };
 
   const handleLogout = () => {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem(
+      'currentUser'
+    );
+
+    localStorage.removeItem(
+      'token'
+    );
+
     navigate('/login');
   };
 
@@ -101,20 +126,45 @@ function DriverDashboardPage() {
       <div className="driver-container">
         <header className="driver-header">
           <div className="driver-logo">
-            <span className="yellow">RY</span>
-            <span className="red">DO</span>
+            <span className="yellow">
+              RY
+            </span>
+
+            <span className="red">
+              DO
+            </span>
           </div>
 
           <div className="header-actions">
             <button
-              className={isOnline ? 'status-btn online' : 'status-btn offline'}
-              onClick={() => setIsOnline(!isOnline)}
+              className={
+                isOnline
+                  ? 'status-btn online'
+                  : 'status-btn offline'
+              }
+              onClick={() =>
+                setIsOnline(
+                  !isOnline
+                )
+              }
             >
-              {isOnline ? <FaToggleOn /> : <FaToggleOff />}
-              {isOnline ? 'Online' : 'Offline'}
+              {isOnline ? (
+                <FaToggleOn />
+              ) : (
+                <FaToggleOff />
+              )}
+
+              {isOnline
+                ? 'Online'
+                : 'Offline'}
             </button>
 
-            <button className="logout-btn" onClick={handleLogout}>
+            <button
+              className="logout-btn"
+              onClick={
+                handleLogout
+              }
+            >
               Logout
             </button>
           </div>
@@ -122,140 +172,285 @@ function DriverDashboardPage() {
 
         <section className="driver-welcome">
           <div>
-            <h1>Driver Dashboard</h1>
-            <p>Welcome, {driver.fullName}. Manage rides and earnings here.</p>
+            <h1>
+              Driver Dashboard
+            </h1>
+
+            <p>
+              Welcome,{' '}
+              {
+                driver.fullName
+              }
+              . Manage rides
+              and earnings
+              here.
+            </p>
           </div>
 
           <div className="driver-status-box">
             <p>Status</p>
-            <h2>{isOnline ? 'Available' : 'Unavailable'}</h2>
+
+            <h2>
+              {isOnline
+                ? 'Available'
+                : 'Unavailable'}
+            </h2>
           </div>
         </section>
 
         <section className="stats-grid">
           <div className="stat-card">
             <FaCar />
+
             <div>
               <h3>Vehicle</h3>
+
               <p>
-                {driver.vehicleType || 'Taxi'} -{' '}
-                {driver.vehicleNumber || 'Not set'}
+                {driver.vehicleType ||
+                  'Taxi'}{' '}
+                -{' '}
+                {driver.vehicleNumber ||
+                  'Not set'}
               </p>
             </div>
           </div>
 
           <div className="stat-card">
             <FaMoneyBillWave />
+
             <div>
-              <h3>Today’s Earnings</h3>
+              <h3>
+                Today’s Earnings
+              </h3>
+
               <p>Nu. 550</p>
             </div>
           </div>
 
           <div className="stat-card">
             <FaUser />
+
             <div>
               <h3>Total Trips</h3>
-              <p>8 completed</p>
+
+              <p>
+                8 completed
+              </p>
             </div>
           </div>
 
           <div
             className="stat-card clickable-card"
-            onClick={() => navigate('/account')}
+            onClick={() =>
+              navigate(
+                '/account'
+              )
+            }
           >
             <FaUserCog />
+
             <div>
-              <h3>Account & Settings</h3>
-              <p>Manage profile and preferences</p>
+              <h3>
+                Account &
+                Settings
+              </h3>
+
+              <p>
+                Manage profile
+                and preferences
+              </p>
             </div>
           </div>
         </section>
 
         <section className="driver-grid">
           <div className="driver-card">
-            <h2>Available Ride Requests</h2>
+            <h2>
+              Available Ride
+              Requests
+            </h2>
 
             {!isOnline ? (
               <div className="offline-box">
-                <p>You are offline. Go online to receive ride requests.</p>
+                <p>
+                  You are
+                  offline. Go
+                  online to
+                  receive ride
+                  requests.
+                </p>
               </div>
             ) : currentRide ? (
               <div className="offline-box">
-                <p>You already have an active ride.</p>
+                <p>
+                  You already
+                  have an
+                  active ride.
+                </p>
               </div>
-            ) : rideRequests.length === 0 ? (
+            ) : rideRequests.length ===
+              0 ? (
               <div className="offline-box">
-                <p>No pending ride requests right now.</p>
+                <p>
+                  No pending
+                  ride requests
+                  right now.
+                </p>
               </div>
             ) : (
               <div className="requests-list">
-                {rideRequests.map((ride) => (
-                  <div className="request-card" key={ride.id}>
-                    <div className="request-top">
-                      <h3>{ride.riderName}</h3>
-                      <span>Nu. {ride.fare}</span>
+                {rideRequests.map(
+                  (ride) => (
+                    <div
+                      className="request-card"
+                      key={
+                        ride.id
+                      }
+                    >
+                      <div className="request-top">
+                        <h3>
+                          {
+                            ride.riderName
+                          }
+                        </h3>
+
+                        <span>
+                          Nu.{' '}
+                          {
+                            ride.fare
+                          }
+                        </span>
+                      </div>
+
+                      <p>
+                        <FaMapMarkerAlt />{' '}
+                        <strong>
+                          Pickup:
+                        </strong>{' '}
+                        {
+                          ride.pickup
+                        }
+                      </p>
+
+                      <p>
+                        <FaMapMarkerAlt />{' '}
+                        <strong>
+                          Destination:
+                        </strong>{' '}
+                        {
+                          ride.destination
+                        }
+                      </p>
+
+                      <p>
+                        <strong>
+                          Distance:
+                        </strong>{' '}
+                        {
+                          ride.distance
+                        }{' '}
+                        km
+                      </p>
+
+                      <p>
+                        <strong>
+                          Ride Type:
+                        </strong>{' '}
+                        {
+                          ride.rideType
+                        }
+                      </p>
+
+                      <button
+                        onClick={() =>
+                          handleAcceptRide(
+                            ride
+                          )
+                        }
+                      >
+                        Accept
+                        Ride
+                      </button>
                     </div>
-
-                    <p>
-                      <FaMapMarkerAlt /> <strong>Pickup:</strong> {ride.pickup}
-                    </p>
-
-                    <p>
-                      <FaMapMarkerAlt /> <strong>Destination:</strong>{' '}
-                      {ride.destination}
-                    </p>
-
-                    <p>
-                      <strong>Distance:</strong> {ride.distance} km
-                    </p>
-
-                    <p>
-                      <strong>Ride Type:</strong> {ride.rideType}
-                    </p>
-
-                    <button onClick={() => handleAcceptRide(ride)}>
-                      Accept Ride
-                    </button>
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             )}
           </div>
 
           <div className="driver-card">
-            <h2>Current Ride</h2>
+            <h2>
+              Current Ride
+            </h2>
 
             {currentRide ? (
               <div className="current-ride">
-                <h3>{currentRide.riderName}</h3>
+                <h3>
+                  {
+                    currentRide.riderName
+                  }
+                </h3>
 
                 <p>
-                  <strong>Pickup:</strong> {currentRide.pickup}
+                  <strong>
+                    Pickup:
+                  </strong>{' '}
+                  {
+                    currentRide.pickup
+                  }
                 </p>
 
                 <p>
-                  <strong>Destination:</strong> {currentRide.destination}
+                  <strong>
+                    Destination:
+                  </strong>{' '}
+                  {
+                    currentRide.destination
+                  }
                 </p>
 
                 <p>
-                  <strong>Fare:</strong> Nu. {currentRide.fare}
+                  <strong>
+                    Fare:
+                  </strong>{' '}
+                  Nu.{' '}
+                  {
+                    currentRide.fare
+                  }
                 </p>
 
                 <p>
-                  <strong>Status:</strong> {currentRide.status}
+                  <strong>
+                    Status:
+                  </strong>{' '}
+                  {
+                    currentRide.status
+                  }
                 </p>
 
                 <p>
-                  <strong>Payment:</strong>{' '}
-                  {currentRide.paymentStatus || 'Unpaid'}
+                  <strong>
+                    Payment:
+                  </strong>{' '}
+                  {currentRide.paymentStatus ||
+                    'Unpaid'}
                 </p>
 
-                <button onClick={handleCompleteRide}>Complete Ride</button>
+                <button
+                  onClick={
+                    handleCompleteRide
+                  }
+                >
+                  Complete
+                  Ride
+                </button>
               </div>
             ) : (
               <div className="offline-box">
-                <p>No active ride yet.</p>
+                <p>
+                  No active
+                  ride yet.
+                </p>
               </div>
             )}
           </div>
