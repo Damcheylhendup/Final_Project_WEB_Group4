@@ -1,5 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  useNavigate,
+} from 'react-router-dom';
 
 import {
   FaCar,
@@ -14,12 +20,16 @@ import {
 import {
   getPendingRides,
   acceptRide,
+  getMyRides,
+  verifyPayment,
+  rejectPayment,
 } from '../../api/rideApi';
 
 import './DriverDashboardPage.css';
 
 function DriverDashboardPage() {
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
   const [isOnline, setIsOnline] =
     useState(false);
@@ -28,6 +38,9 @@ function DriverDashboardPage() {
     useState(null);
 
   const [rideRequests, setRideRequests] =
+    useState([]);
+
+  const [driverRides, setDriverRides] =
     useState([]);
 
   const driver =
@@ -42,14 +55,6 @@ function DriverDashboardPage() {
 
       vehicleNumber:
         'Not set',
-
-      bankName: '',
-
-      accountHolder: '',
-
-      accountNumber: '',
-
-      qrImage: '',
     };
 
   const loadRideRequests =
@@ -66,8 +71,45 @@ function DriverDashboardPage() {
       }
     };
 
+  const loadDriverRides =
+    async () => {
+      try {
+        const response =
+          await getMyRides();
+
+        const acceptedRides =
+          response.data.filter(
+            (ride) =>
+              ride.driverId
+          );
+
+        setDriverRides(
+          acceptedRides
+        );
+
+        const activeRide =
+          acceptedRides.find(
+            (ride) =>
+              ride.status ===
+                'Accepted' ||
+              ride.status ===
+                'Ongoing'
+          );
+
+        if (activeRide) {
+          setCurrentRide(
+            activeRide
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
   useEffect(() => {
     loadRideRequests();
+
+    loadDriverRides();
   }, []);
 
   const handleAcceptRide =
@@ -79,14 +121,18 @@ function DriverDashboardPage() {
           );
 
         alert(
-          response.data.message
+          response.data
+            .message
         );
 
         setCurrentRide(
-          response.data.ride
+          response.data
+            .ride
         );
 
         loadRideRequests();
+
+        loadDriverRides();
       } catch (error) {
         alert(
           error.response?.data
@@ -96,17 +142,50 @@ function DriverDashboardPage() {
       }
     };
 
-  const handleCompleteRide =
-    () => {
-      if (!currentRide) return;
+  const handleVerifyPayment =
+    async (rideId) => {
+      try {
+        const response =
+          await verifyPayment(
+            rideId
+          );
 
-      alert(
-        'Ride completion backend coming next'
-      );
+        alert(
+          response.data
+            .message
+        );
 
-      setCurrentRide(null);
+        loadDriverRides();
+      } catch (error) {
+        alert(
+          error.response?.data
+            ?.message ||
+            'Verification failed'
+        );
+      }
+    };
 
-      loadRideRequests();
+  const handleRejectPayment =
+    async (rideId) => {
+      try {
+        const response =
+          await rejectPayment(
+            rideId
+          );
+
+        alert(
+          response.data
+            .message
+        );
+
+        loadDriverRides();
+      } catch (error) {
+        alert(
+          error.response?.data
+            ?.message ||
+            'Rejection failed'
+        );
+      }
     };
 
   const handleLogout = () => {
@@ -181,9 +260,7 @@ function DriverDashboardPage() {
               {
                 driver.fullName
               }
-              . Manage rides
-              and earnings
-              here.
+              .
             </p>
           </div>
 
@@ -234,7 +311,10 @@ function DriverDashboardPage() {
               <h3>Total Trips</h3>
 
               <p>
-                8 completed
+                {
+                  driverRides.length
+                }{' '}
+                rides
               </p>
             </div>
           </div>
@@ -257,7 +337,6 @@ function DriverDashboardPage() {
 
               <p>
                 Manage profile
-                and preferences
               </p>
             </div>
           </div>
@@ -274,18 +353,14 @@ function DriverDashboardPage() {
               <div className="offline-box">
                 <p>
                   You are
-                  offline. Go
-                  online to
-                  receive ride
-                  requests.
+                  offline.
                 </p>
               </div>
             ) : currentRide ? (
               <div className="offline-box">
                 <p>
-                  You already
-                  have an
-                  active ride.
+                  Active ride
+                  in progress.
                 </p>
               </div>
             ) : rideRequests.length ===
@@ -293,8 +368,7 @@ function DriverDashboardPage() {
               <div className="offline-box">
                 <p>
                   No pending
-                  ride requests
-                  right now.
+                  rides.
                 </p>
               </div>
             ) : (
@@ -342,25 +416,6 @@ function DriverDashboardPage() {
                         }
                       </p>
 
-                      <p>
-                        <strong>
-                          Distance:
-                        </strong>{' '}
-                        {
-                          ride.distance
-                        }{' '}
-                        km
-                      </p>
-
-                      <p>
-                        <strong>
-                          Ride Type:
-                        </strong>{' '}
-                        {
-                          ride.rideType
-                        }
-                      </p>
-
                       <button
                         onClick={() =>
                           handleAcceptRide(
@@ -380,77 +435,92 @@ function DriverDashboardPage() {
 
           <div className="driver-card">
             <h2>
-              Current Ride
+              Payment
+              Verification
             </h2>
 
-            {currentRide ? (
-              <div className="current-ride">
-                <h3>
-                  {
-                    currentRide.riderName
-                  }
-                </h3>
-
-                <p>
-                  <strong>
-                    Pickup:
-                  </strong>{' '}
-                  {
-                    currentRide.pickup
-                  }
-                </p>
-
-                <p>
-                  <strong>
-                    Destination:
-                  </strong>{' '}
-                  {
-                    currentRide.destination
-                  }
-                </p>
-
-                <p>
-                  <strong>
-                    Fare:
-                  </strong>{' '}
-                  Nu.{' '}
-                  {
-                    currentRide.fare
-                  }
-                </p>
-
-                <p>
-                  <strong>
-                    Status:
-                  </strong>{' '}
-                  {
-                    currentRide.status
-                  }
-                </p>
-
-                <p>
-                  <strong>
-                    Payment:
-                  </strong>{' '}
-                  {currentRide.paymentStatus ||
-                    'Unpaid'}
-                </p>
-
-                <button
-                  onClick={
-                    handleCompleteRide
-                  }
-                >
-                  Complete
-                  Ride
-                </button>
-              </div>
-            ) : (
+            {driverRides.length ===
+            0 ? (
               <div className="offline-box">
                 <p>
-                  No active
-                  ride yet.
+                  No rides
+                  accepted yet.
                 </p>
+              </div>
+            ) : (
+              <div className="requests-list">
+                {driverRides.map(
+                  (ride) => (
+                    <div
+                      className="request-card"
+                      key={
+                        ride.id
+                      }
+                    >
+                      <h3>
+                        {
+                          ride.riderName
+                        }
+                      </h3>
+
+                      <p>
+                        <strong>
+                          Payment:
+                        </strong>{' '}
+                        {
+                          ride.paymentStatus
+                        }
+                      </p>
+
+                      {ride.paymentReference && (
+                        <p>
+                          <strong>
+                            Reference:
+                          </strong>{' '}
+                          {
+                            ride.paymentReference
+                          }
+                        </p>
+                      )}
+
+                      {ride.paymentScreenshot && (
+                        <img
+                          src={
+                            ride.paymentScreenshot
+                          }
+                          alt="Payment proof"
+                          className="payment-proof-image"
+                        />
+                      )}
+
+                      {ride.paymentStatus ===
+                        'Pending Verification' && (
+                        <div className="payment-actions">
+                          <button
+                            onClick={() =>
+                              handleVerifyPayment(
+                                ride.id
+                              )
+                            }
+                          >
+                            Verify
+                          </button>
+
+                          <button
+                            className="reject-btn"
+                            onClick={() =>
+                              handleRejectPayment(
+                                ride.id
+                              )
+                            }
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )
+                )}
               </div>
             )}
           </div>
