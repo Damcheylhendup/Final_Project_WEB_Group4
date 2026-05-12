@@ -1,15 +1,21 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+
 import './AuthPage.css';
-import { FaGoogle, FaFacebookF } from 'react-icons/fa';
+
+import { FaFacebookF } from 'react-icons/fa';
 
 function AuthPage() {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+
   const navigate = useNavigate();
 
   const validateBhutanNumber = (number) => {
     const cleanedPhone = number.replace(/\s+/g, '');
+
     return /^(17|77|16)\d{6}$/.test(cleanedPhone);
   };
 
@@ -33,6 +39,31 @@ function AuthPage() {
     });
   };
 
+  const handleGoogleSuccess = (credentialResponse) => {
+    const decoded = jwtDecode(credentialResponse.credential);
+
+    const googleUser = {
+      fullName: decoded.name,
+      email: decoded.email,
+      profilePicture: decoded.picture,
+      phone: phone || '',
+      role: 'Rider',
+      authProvider: 'google',
+    };
+
+    localStorage.setItem(
+      'googleUser',
+      JSON.stringify(googleUser)
+    );
+
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify(googleUser)
+    );
+
+    navigate('/dashboard');
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -41,7 +72,9 @@ function AuthPage() {
           <span className="red">DO</span>
         </div>
 
-        <h1 className="auth-title">Get started with Rydo</h1>
+        <h1 className="auth-title">
+          Get started with Rydo
+        </h1>
 
         <div className="input-group">
           <label className="input-label" htmlFor="phone">
@@ -62,17 +95,29 @@ function AuthPage() {
               value={phone}
               maxLength="8"
               onChange={(e) => {
-                const onlyNumbers = e.target.value.replace(/\D/g, '');
+                const onlyNumbers = e.target.value.replace(
+                  /\D/g,
+                  ''
+                );
+
                 setPhone(onlyNumbers);
+
                 setError('');
               }}
             />
           </div>
 
-          {error && <p className="auth-error-text">{error}</p>}
+          {error && (
+            <p className="auth-error-text">
+              {error}
+            </p>
+          )}
         </div>
 
-        <button className="continue-btn" onClick={handleContinue}>
+        <button
+          className="continue-btn"
+          onClick={handleContinue}
+        >
           Continue
         </button>
 
@@ -82,18 +127,21 @@ function AuthPage() {
           <span></span>
         </div>
 
+        <div className="google-login-wrapper">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              alert('Google Login Failed');
+            }}
+          />
+        </div>
+
         <div className="social-buttons">
           <button
-            className="social-btn"
-            onClick={() => navigate('/create-account')}
-          >
-            <FaGoogle className="icon" />
-            <span>Continue with Google</span>
-          </button>
-
-          <button
             className="social-btn facebook-btn"
-            onClick={() => navigate('/create-account')}
+            onClick={() =>
+              alert('Facebook login coming soon')
+            }
           >
             <FaFacebookF className="icon" />
             <span>Continue with Facebook</span>
@@ -107,11 +155,14 @@ function AuthPage() {
         </div>
 
         <p className="find-account-btn">
-          Already have an account? <Link to="/login">Log in</Link>
+          Already have an account?{' '}
+          <Link to="/login">Log in</Link>
         </p>
 
         <p className="terms-text">
-          By continuing, you agree to calls, WhatsApp, or texts from Rydo and its affiliates.
+          By continuing, you agree to calls,
+          WhatsApp, or texts from Rydo and its
+          affiliates.
         </p>
       </div>
     </div>

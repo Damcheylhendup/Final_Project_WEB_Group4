@@ -374,3 +374,10 @@ html.dark-mode .continue-btn:hover {
     font-size: 0.85rem;
   }
 }
+
+.google-login-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
