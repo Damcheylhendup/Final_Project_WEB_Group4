@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import { GoogleMap, MarkerF, TrafficLayer, useLoadScript } from '@react-google-maps/api';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import './MapPage.css';
@@ -82,25 +82,45 @@ function MapPage() {
     });
 
     return () => {
-      if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
+      if (watchIdRef.current) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+      }
     };
-  }, [isConnected, currentRole]);
+  }, [isConnected, currentRole, ride?.id]);
 
   const handleSendChat = (text) => {
-    socketRef.current?.emit('chat-message', { rideId: ride.id, text });
+    socketRef.current?.emit('chat-message', {
+      rideId: ride.id,
+      text,
+    });
   };
 
   return (
     <div className="map-page">
       <div className="map-container">
-        <button onClick={() => navigate('/trips')}>← Back</button>
+        <button className="back-btn" onClick={() => navigate('/trips')}>
+          ← Back
+        </button>
 
-        <h1>Live Tracking</h1>
-        <p>{isConnected ? 'Connected' : 'Connecting...'}</p>
+        <div className="map-header">
+          <h1>Live Tracking</h1>
+          <p>{isConnected ? 'Connected' : 'Connecting...'}</p>
 
-        <div>
-          <button onClick={() => setCurrentRole('passenger')}>Passenger</button>
-          <button onClick={() => setCurrentRole('driver')}>Driver</button>
+          <div className="role-switch">
+            <button
+              className={currentRole === 'passenger' ? 'active' : ''}
+              onClick={() => setCurrentRole('passenger')}
+            >
+              Passenger
+            </button>
+
+            <button
+              className={currentRole === 'driver' ? 'active' : ''}
+              onClick={() => setCurrentRole('driver')}
+            >
+              Driver
+            </button>
+          </div>
         </div>
 
         <div className="map-box">
@@ -115,35 +135,57 @@ function MapPage() {
               }
             >
               <TrafficLayer />
+
               {driverLatLng && (
-                <MarkerF position={{ lat: driverLatLng[0], lng: driverLatLng[1] }} />
+                <MarkerF
+                  position={{
+                    lat: driverLatLng[0],
+                    lng: driverLatLng[1],
+                  }}
+                />
               )}
+
               {passengerLatLng && (
-                <MarkerF position={{ lat: passengerLatLng[0], lng: passengerLatLng[1] }} />
+                <MarkerF
+                  position={{
+                    lat: passengerLatLng[0],
+                    lng: passengerLatLng[1],
+                  }}
+                />
               )}
             </GoogleMap>
           ) : (
-            <MapContainer center={[27.4728, 89.639]} zoom={12}>
+            <MapContainer
+              className="leaflet-map"
+              center={[27.4728, 89.639]}
+              zoom={12}
+            >
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              {driverLatLng && <Marker position={driverLatLng} icon={leafletMarkerIcon} />}
-              {passengerLatLng && <Marker position={passengerLatLng} icon={leafletMarkerIcon} />}
+
+              {driverLatLng && (
+                <Marker position={driverLatLng} icon={leafletMarkerIcon} />
+              )}
+
+              {passengerLatLng && (
+                <Marker position={passengerLatLng} icon={leafletMarkerIcon} />
+              )}
             </MapContainer>
           )}
         </div>
 
         {ride && (
-          <>
-            <div>
-              <h2>{ride.rideType}</h2>
-              <p>{ride.pickup} → {ride.destination}</p>
-            </div>
+          <div className="tracking-card">
+            <h2>{ride.rideType}</h2>
+            <p>
+              {ride.pickup} → {ride.destination}
+            </p>
 
             <RideChat
               messages={messages}
               currentRole={currentRole}
               onSend={handleSendChat}
             />
-          </>
+          </div>
         )}
       </div>
     </div>
