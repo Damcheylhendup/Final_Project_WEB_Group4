@@ -4,10 +4,12 @@
   border-radius: 24px;
   padding: 20px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .ride-chat h3 {
   margin: 0 0 8px;
+  color: #111;
 }
 
 .chat-hint {
@@ -56,6 +58,7 @@
 
 .message p {
   margin: 0;
+  color: #111;
 }
 
 .chat-form {
@@ -69,6 +72,8 @@
   border-radius: 10px;
   min-height: 42px;
   padding: 0 10px;
+  background: #fff;
+  color: #111;
 }
 
 .chat-form button {
@@ -78,4 +83,58 @@
   background: #111827;
   color: #fff;
   cursor: pointer;
+}
+
+/* Dark Mode */
+html.dark-mode .ride-chat {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .ride-chat h3 {
+  color: #f0f0f0;
+}
+
+html.dark-mode .chat-hint,
+html.dark-mode .chat-empty {
+  color: #aaa;
+}
+
+html.dark-mode .messages-box {
+  background: #111827;
+}
+
+html.dark-mode .message {
+  background: #252525;
+}
+
+html.dark-mode .message.mine {
+  background: #064e3b;
+}
+
+html.dark-mode .message.system {
+  background: #374151;
+}
+
+html.dark-mode .message .meta {
+  color: #cbd5e1;
+}
+
+html.dark-mode .message p {
+  color: #f0f0f0;
+}
+
+html.dark-mode .chat-form input {
+  background: #252525;
+  color: #f0f0f0;
+  border-color: #444;
+}
+
+html.dark-mode .chat-form input::placeholder {
+  color: #888;
+}
+
+html.dark-mode .chat-form button {
+  background: #f0f0f0;
+  color: #000;
 }

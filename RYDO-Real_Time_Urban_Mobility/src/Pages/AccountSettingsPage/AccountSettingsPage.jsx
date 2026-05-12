@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AccountSettingsPage.css';
+import ThemeToggle from "../../components/ThemeToggle";
 
 function AccountSettingsPage() {
   const navigate = useNavigate();
@@ -312,8 +313,7 @@ function AccountSettingsPage() {
                   <p>Receive ride updates and payment alerts.</p>
                 </div>
 
-                <input
-                  type="checkbox"
+                <ThemeToggle
                   name="notifications"
                   checked={settings.notifications}
                   onChange={handleSettingsChange}
@@ -325,13 +325,13 @@ function AccountSettingsPage() {
                   <h3>Dark Mode</h3>
                   <p>Switch app appearance to dark mode.</p>
                 </div>
-
-                <input
-                  type="checkbox"
+                
+                <ThemeToggle
                   name="darkMode"
                   checked={settings.darkMode}
                   onChange={handleSettingsChange}
                 />
+
               </div>
 
               <div className="setting-item language-row">
