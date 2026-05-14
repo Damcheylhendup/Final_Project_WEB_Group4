@@ -1,36 +1,80 @@
 const express = require('express');
 
-const router = express.Router();
+const router =
+  express.Router();
 
-const protect = require('../middleware/authMiddleware');
+const protect =
+  require(
+    '../middleware/authMiddleware'
+  );
 
-const allowRoles = require(
-  '../middleware/roleMiddleware'
+const upload =
+  require(
+    '../middleware/uploadMiddleware'
+  );
+
+const {
+  createRide,
+  getMyRides,
+  getPendingRides,
+  acceptRide,
+  submitPayment,
+  verifyPayment,
+  rejectPayment,
+} = require(
+  '../controllers/rideController'
 );
 
-/* ANY LOGGED IN USER */
+/* CREATE RIDE */
+router.post(
+  '/create',
+  protect,
+  createRide
+);
+
+/* GET MY RIDES */
 router.get(
   '/my-rides',
   protect,
-  (req, res) => {
-    res.json({
-      message: 'Protected rides route',
-      user: req.user,
-    });
-  }
+  getMyRides
 );
 
-/* DRIVER ONLY */
+/* GET PENDING RIDES */
 router.get(
-  '/driver',
+  '/pending',
   protect,
-  allowRoles('Driver'),
-  (req, res) => {
-    res.json({
-      message:
-        'Driver dashboard route',
-    });
-  }
+  getPendingRides
+);
+
+/* ACCEPT RIDE */
+router.put(
+  '/accept/:id',
+  protect,
+  acceptRide
+);
+
+/* SUBMIT PAYMENT */
+router.put(
+  '/payment/:id',
+  protect,
+  upload.single(
+    'paymentScreenshot'
+  ),
+  submitPayment
+);
+
+/* VERIFY PAYMENT */
+router.put(
+  '/verify-payment/:id',
+  protect,
+  verifyPayment
+);
+
+/* REJECT PAYMENT */
+router.put(
+  '/reject-payment/:id',
+  protect,
+  rejectPayment
 );
 
 module.exports = router;

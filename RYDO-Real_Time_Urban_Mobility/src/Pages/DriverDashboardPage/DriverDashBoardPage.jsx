@@ -93,6 +93,8 @@ function DriverDashboardPage() {
               ride.status ===
                 'Accepted' ||
               ride.status ===
+                'Driver Arriving' ||
+              ride.status ===
                 'Ongoing'
           );
 
@@ -188,6 +190,74 @@ function DriverDashboardPage() {
       }
     };
 
+  /* UPDATE STATUS */
+  const updateRideStatus =
+    (status) => {
+      if (!currentRide)
+        return;
+
+      const updatedRide = {
+        ...currentRide,
+        status,
+      };
+
+      setCurrentRide(
+        updatedRide
+      );
+
+      const allRides =
+        JSON.parse(
+          localStorage.getItem(
+            'rides'
+          )
+        ) || [];
+
+      const updatedRides =
+        allRides.map(
+          (ride) =>
+            ride.id ===
+            currentRide.id
+              ? updatedRide
+              : ride
+        );
+
+      localStorage.setItem(
+        'rides',
+        JSON.stringify(
+          updatedRides
+        )
+      );
+    };
+
+  const completeRide =
+    () => {
+      updateRideStatus(
+        'Completed'
+      );
+
+      alert(
+        'Ride completed successfully'
+      );
+
+      setCurrentRide(
+        null
+      );
+    };
+
+  const cancelRide = () => {
+    updateRideStatus(
+      'Cancelled'
+    );
+
+    alert(
+      'Ride cancelled'
+    );
+
+    setCurrentRide(
+      null
+    );
+  };
+
   const handleLogout = () => {
     localStorage.removeItem(
       'currentUser'
@@ -203,6 +273,7 @@ function DriverDashboardPage() {
   return (
     <div className="driver-page">
       <div className="driver-container">
+        {/* HEADER */}
         <header className="driver-header">
           <div className="driver-logo">
             <span className="yellow">
@@ -249,6 +320,7 @@ function DriverDashboardPage() {
           </div>
         </header>
 
+        {/* WELCOME */}
         <section className="driver-welcome">
           <div>
             <h1>
@@ -275,6 +347,7 @@ function DriverDashboardPage() {
           </div>
         </section>
 
+        {/* STATS */}
         <section className="stats-grid">
           <div className="stat-card">
             <FaCar />
@@ -342,7 +415,114 @@ function DriverDashboardPage() {
           </div>
         </section>
 
+        {/* ACTIVE RIDE */}
+        {currentRide && (
+          <div className="active-ride-card">
+            <div className="active-top">
+              <div>
+                <h2>
+                  Active Ride
+                </h2>
+
+                <p>
+                  {
+                    currentRide.riderName
+                  }
+                </p>
+              </div>
+
+              <span className="ride-status-badge">
+                {
+                  currentRide.status
+                }
+              </span>
+            </div>
+
+            <div className="active-details">
+              <p>
+                <strong>
+                  Pickup:
+                </strong>{' '}
+                {
+                  currentRide.pickup
+                }
+              </p>
+
+              <p>
+                <strong>
+                  Destination:
+                </strong>{' '}
+                {
+                  currentRide.destination
+                }
+              </p>
+
+              <p>
+                <strong>
+                  Fare:
+                </strong>{' '}
+                Nu.{' '}
+                {
+                  currentRide.fare
+                }
+              </p>
+            </div>
+
+            <div className="ride-progress-buttons">
+              <button
+                onClick={() =>
+                  updateRideStatus(
+                    'Driver Arriving'
+                  )
+                }
+              >
+                Driver Arriving
+              </button>
+
+              <button
+                onClick={() =>
+                  updateRideStatus(
+                    'Ongoing'
+                  )
+                }
+              >
+                Start Trip
+              </button>
+
+              <button
+                onClick={() =>
+                  navigate(
+                    '/map'
+                  )
+                }
+              >
+                Track Ride
+              </button>
+
+              <button
+                className="complete-btn"
+                onClick={
+                  completeRide
+                }
+              >
+                Complete
+              </button>
+
+              <button
+                className="cancel-btn"
+                onClick={
+                  cancelRide
+                }
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* GRID */}
         <section className="driver-grid">
+          {/* REQUESTS */}
           <div className="driver-card">
             <h2>
               Available Ride
@@ -433,6 +613,7 @@ function DriverDashboardPage() {
             )}
           </div>
 
+          {/* PAYMENTS */}
           <div className="driver-card">
             <h2>
               Payment
