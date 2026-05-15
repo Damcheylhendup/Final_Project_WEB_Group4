@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "rydo-real_time_urban_mobility",
   "private": true,
   "version": "0.0.0",

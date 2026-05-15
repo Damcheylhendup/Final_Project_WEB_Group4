@@ -1,71 +1,49 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../../api/authApi';
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import './LoginPage.css';
 
 function LoginPage() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    emailOrPhone: '',
-    password: '',
-  });
-
-  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({ emailOrPhone: '', password: '' });
+  const [errors, setErrors]     = useState({});
+  const [loading, setLoading]   = useState(false);
   const [showForgot, setShowForgot] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-
-    setErrors({
-      ...errors,
-      [e.target.name]: '',
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
-
-    if (!formData.emailOrPhone.trim()) {
-      newErrors.emailOrPhone = 'Email or phone is required';
-    }
-
-    if (!formData.password.trim()) {
-      newErrors.password = 'Password is required';
-    }
-
+    if (!formData.emailOrPhone.trim()) newErrors.emailOrPhone = 'Email or phone is required';
+    if (!formData.password.trim())     newErrors.password     = 'Password is required';
     setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
 
-    if (Object.keys(newErrors).length === 0) {
-      const users = JSON.parse(localStorage.getItem('users')) || [];
+    try {
+      setLoading(true);
+      const response = await loginUser(formData);
+      const { token, user } = response.data;
 
-      const matchedUser = users.find(
-        (user) =>
-          (user.email === formData.emailOrPhone ||
-            user.phone.replace(/\s+/g, '') ===
-              formData.emailOrPhone.replace(/\s+/g, '')) &&
-          user.password === formData.password
-      );
+      /* Save token and user to localStorage */
+      localStorage.setItem('token', token);
+      localStorage.setItem('currentUser', JSON.stringify({ ...user, role: user.role || 'rider' }));
 
-      if (!matchedUser) {
-        setErrors({
-          emailOrPhone: 'Invalid email/phone or password',
-        });
-        return;
-      }
-
-      localStorage.setItem('currentUser', JSON.stringify(matchedUser));
-
-      if (matchedUser.role === 'driver') {
+      if (user.role === 'driver') {
         navigate('/driver-dashboard');
       } else {
         navigate('/dashboard');
       }
+    } catch (error) {
+      setErrors({ emailOrPhone: error.response?.data?.message || 'Login failed. Please try again.' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,9 +69,7 @@ function LoginPage() {
                 onChange={handleChange}
                 className="login-input"
               />
-              {errors.emailOrPhone && (
-                <p className="error-text">{errors.emailOrPhone}</p>
-              )}
+              {errors.emailOrPhone && <p className="error-text">{errors.emailOrPhone}</p>}
             </div>
 
             <div>
@@ -105,30 +81,20 @@ function LoginPage() {
                 onChange={handleChange}
                 className="login-input"
               />
-              {errors.password && (
-                <p className="error-text">{errors.password}</p>
-              )}
+              {errors.password && <p className="error-text">{errors.password}</p>}
             </div>
 
-            <button type="submit" className="login-btn">
-              Log In
+            <button type="submit" className="login-btn" disabled={loading}>
+              {loading ? 'Logging in...' : 'Log In'}
             </button>
           </form>
 
-          <p className="forgot-text" onClick={() => setShowForgot(true)}>
-            Forgot password?
-          </p>
-
-          <p className="bottom-text">
-            Don’t have an account? <Link to="/auth">Sign up</Link>
-          </p>
+          <p className="forgot-text" onClick={() => setShowForgot(true)}>Forgot password?</p>
+          <p className="bottom-text">Don't have an account? <Link to="/auth">Sign up</Link></p>
         </div>
       </div>
 
-      <ForgotPassword
-        isOpen={showForgot}
-        onClose={() => setShowForgot(false)}
-      />
+      <ForgotPassword isOpen={showForgot} onClose={() => setShowForgot(false)} />
     </>
   );
 }
