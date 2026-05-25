@@ -3,7 +3,10 @@ const Booking = require('../models/Booking');
 /* CREATE RIDE — saves to database */
 const createRide = async (req, res) => {
     try {
-        const { pickup, destination, rideType, distance, fare } = req.body;
+        const {
+            pickup, destination, rideType, distance, fare,
+            pickupCoords, destinationCoords
+        } = req.body;
 
         if (!pickup || !destination || !fare || !rideType) {
             return res.status(400).json({ message: 'pickup, destination, rideType and fare are required.' });
@@ -16,6 +19,11 @@ const createRide = async (req, res) => {
             drop_address:           destination,
             distance_km:            distance || 0,
             fare:                   fare,
+            // FIX: extract lat/lng from coords arrays sent by frontend
+            pickup_latitude:        pickupCoords ? pickupCoords[0] : null,
+            pickup_longitude:       pickupCoords ? pickupCoords[1] : null,
+            drop_latitude:          destinationCoords ? destinationCoords[0] : null,
+            drop_longitude:         destinationCoords ? destinationCoords[1] : null,
             booking_date:           new Date().toISOString().split('T')[0],
             booking_time:           new Date().toTimeString().split(' ')[0],
             booking_status:         'pending',
@@ -84,8 +92,8 @@ const submitPayment = async (req, res) => {
         }
 
         await ride.update({
-            payment_status:    'pending_verification',
-            payment_reference: req.body.paymentReference || '',
+            payment_status:     'pending_verification',
+            payment_reference:  req.body.paymentReference || '',
             payment_screenshot: screenshotUrl,
         });
 
