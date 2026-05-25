@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMyRides } from '../../api/rideApi';
+import RideChat from './RideChat';
 import './TripsPage.css';
 
 function TripsPage() {
   const navigate = useNavigate();
-  const [rides,   setRides]   = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [rides,            setRides]            = useState([]);
+  const [loading,          setLoading]          = useState(true);
+  const [activeChatRideId, setActiveChatRideId] = useState(null);
+
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  const userName    = currentUser?.fullName || currentUser?.email || 'Rider';
 
   const loadRides = async () => {
     try {
@@ -28,6 +33,9 @@ function TripsPage() {
     if (status === 'in_progress') return 'status accepted';
     return 'status pending';
   };
+
+  const canChat = (status) =>
+    status === 'confirmed' || status === 'in_progress';
 
   return (
     <div className="trips-page">
@@ -58,24 +66,42 @@ function TripsPage() {
                 </div>
 
                 <div className="trip-info">
-                  <p><strong>Pickup:</strong> {ride.pickup_address}</p>
+                  <p><strong>Pickup:</strong>      {ride.pickup_address}</p>
                   <p><strong>Destination:</strong> {ride.drop_address}</p>
-                  <p><strong>Distance:</strong> {ride.distance_km} km</p>
-                  <p><strong>Fare:</strong> Nu. {ride.fare}</p>
-                  <p><strong>Payment:</strong> {ride.payment_status || 'unpaid'}</p>
+                  <p><strong>Distance:</strong>    {ride.distance_km} km</p>
+                  <p><strong>Fare:</strong>        Nu. {ride.fare}</p>
+                  <p><strong>Payment:</strong>     {ride.payment_status || 'unpaid'}</p>
                   {ride.driver_name && <p><strong>Driver:</strong> {ride.driver_name}</p>}
-                  <p><strong>Date:</strong> {ride.booking_date} {ride.booking_time}</p>
+                  <p><strong>Date:</strong>        {ride.booking_date} {ride.booking_time}</p>
                 </div>
 
                 <div className="trip-actions">
                   <button onClick={() => navigate('/map')}>Track Ride</button>
                   <button onClick={() => navigate('/payments')}>Pay Now</button>
+                  {canChat(ride.booking_status) && (
+                    <button
+                      className="chat-btn"
+                      onClick={() => setActiveChatRideId(String(ride.booking_id))}
+                    >
+                      💬 Chat with Driver
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Chat Modal */}
+      {activeChatRideId && (
+        <RideChat
+          rideId={activeChatRideId}
+          userName={userName}
+          role="rider"
+          onClose={() => setActiveChatRideId(null)}
+        />
+      )}
     </div>
   );
 }
