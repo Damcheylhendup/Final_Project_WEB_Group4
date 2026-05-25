@@ -1,43 +1,111 @@
+/* =========================
+   OVERLAY (backdrop)
+========================= */
+.ride-chat-overlay {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* =========================
+   CHAT WIDGET
+========================= */
 .ride-chat {
-  margin-top: 20px;
+  width: 320px;
+  max-height: 480px;
   background: #fff;
-  border-radius: 24px;
-  padding: 20px;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  animation: slideUp 0.25s ease;
 }
 
-.ride-chat h3 {
-  margin: 0 0 8px;
-  color: #111;
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
-.chat-hint {
-  margin: 0 0 16px;
-  color: #666;
-  font-size: 0.9rem;
+/* =========================
+   HEADER
+========================= */
+.chat-header {
+  background: #f5a623;
+  color: #fff;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
 }
 
+.chat-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.chat-header .chat-hint {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.chat-close-btn {
+  background: rgba(255,255,255,0.25);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chat-close-btn:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+/* =========================
+   MESSAGES BOX
+========================= */
 .messages-box {
-  min-height: 180px;
-  max-height: 260px;
+  flex: 1;
   overflow-y: auto;
   background: #f8fafc;
-  border-radius: 12px;
   padding: 10px;
-  margin-bottom: 12px;
+  min-height: 120px;
+  max-height: 260px;
 }
 
 .chat-empty {
   margin: 0;
-  color: #666;
+  color: #999;
+  text-align: center;
+  font-size: 0.85rem;
+  padding-top: 20px;
 }
 
+/* =========================
+   MESSAGES
+========================= */
 .message {
   background: #eef2ff;
   border-radius: 10px;
-  padding: 8px 10px;
-  margin-bottom: 8px;
+  padding: 7px 10px;
+  margin-bottom: 7px;
+  font-size: 0.85rem;
 }
 
 .message.mine {
@@ -51,8 +119,8 @@
 .message .meta {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 4px;
-  font-size: 0.78rem;
+  margin-bottom: 3px;
+  font-size: 0.72rem;
   color: #475569;
 }
 
@@ -61,43 +129,57 @@
   color: #111;
 }
 
+/* =========================
+   INPUT FORM
+========================= */
 .chat-form {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  padding: 10px 12px;
+  border-top: 1px solid #eee;
+  background: #fff;
+  flex-shrink: 0;
 }
 
 .chat-form input {
   flex: 1;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
-  min-height: 42px;
-  padding: 0 10px;
+  border-radius: 20px;
+  height: 36px;
+  padding: 0 12px;
+  font-size: 0.85rem;
   background: #fff;
   color: #111;
+  outline: none;
+}
+
+.chat-form input:focus {
+  border-color: #f5a623;
 }
 
 .chat-form button {
   border: none;
-  border-radius: 10px;
-  min-width: 90px;
-  background: #111827;
+  border-radius: 20px;
+  padding: 0 14px;
+  height: 36px;
+  background: #f5a623;
   color: #fff;
   cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-/* Dark Mode */
+.chat-form button:hover {
+  background: #e09520;
+}
+
+/* =========================
+   DARK MODE
+========================= */
 html.dark-mode .ride-chat {
   background: #1a1a1a;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-}
-
-html.dark-mode .ride-chat h3 {
-  color: #f0f0f0;
-}
-
-html.dark-mode .chat-hint,
-html.dark-mode .chat-empty {
-  color: #aaa;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 html.dark-mode .messages-box {
@@ -124,6 +206,15 @@ html.dark-mode .message p {
   color: #f0f0f0;
 }
 
+html.dark-mode .chat-empty {
+  color: #aaa;
+}
+
+html.dark-mode .chat-form {
+  background: #1a1a1a;
+  border-top-color: #333;
+}
+
 html.dark-mode .chat-form input {
   background: #252525;
   color: #f0f0f0;
@@ -135,6 +226,6 @@ html.dark-mode .chat-form input::placeholder {
 }
 
 html.dark-mode .chat-form button {
-  background: #f0f0f0;
-  color: #000;
+  background: #f5a623;
+  color: #fff;
 }

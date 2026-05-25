@@ -1,8 +1,13 @@
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
-const socket = io('http://localhost:4000', {
-  transports: ['websocket'],
-  autoConnect: true,
+export const socket = io("http://localhost:4000", {
+  autoConnect: true,           // ← was false, socket never started
+  transports: ["polling", "websocket"],  // ← polling first, then upgrades
+  withCredentials: true,
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
 });
 
-export default socket;
+socket.on("connect", () => console.log("✅ Connected:", socket.id));
+socket.on("connect_error", (err) => console.error("❌ Error:", err.message));

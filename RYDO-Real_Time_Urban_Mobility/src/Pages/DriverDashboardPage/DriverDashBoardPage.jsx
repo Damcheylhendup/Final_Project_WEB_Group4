@@ -4,25 +4,71 @@ import {
   FaCar, FaMoneyBillWave, FaUser,
   FaUserCog, FaToggleOn, FaToggleOff, FaMapMarkerAlt,
 } from 'react-icons/fa';
+
 import {
   getPendingRides, acceptRide, getMyRides,
   verifyPayment, rejectPayment,
 } from '../../api/rideApi';
+
 import RideChat from '../TripsPage/RideChat';
+import socket from '../../websocket/userRideSocket'; // ← IMPORT SOCKET
 import './DriverDashboardPage.css';
 
 function DriverDashboardPage() {
   const navigate = useNavigate();
 
-  const [isOnline,         setIsOnline]         = useState(false);
-  const [currentRide,      setCurrentRide]       = useState(null);
-  const [rideRequests,     setRideRequests]      = useState([]);
-  const [driverRides,      setDriverRides]       = useState([]);
-  const [chatOpen,         setChatOpen]          = useState(false);
+  const [isOnline, setIsOnline]     = useState(false);
+  const [currentRide, setCurrentRide] = useState(null);
+  const [rideRequests, setRideRequests] = useState([]);
+  const [driverRides, setDriverRides]   = useState([]);
+  const [chatOpen, setChatOpen]         = useState(false);
 
-  const driver = JSON.parse(localStorage.getItem('currentUser') || '{}');
-  const driverName = driver?.fullName || driver?.email || 'Driver';
+  const driver     = JSON.parse(localStorage.getItem('currentUser')) || {};
+  const driverName = driver.fullName || driver.email || 'Driver';
 
+  /* =========================
+     SOCKET SETUP
+  ========================= */
+  useEffect(() => {
+    // Confirm socket is alive
+    if (!socket.connected) socket.connect();
+
+    socket.on('ride-status-update', ({ rideId, status }) => {
+      setCurrentRide((prev) =>
+        prev && String(prev.id) === String(rideId)
+          ? { ...prev, status }
+          : prev
+      );
+    });
+
+    socket.on('participant-joined', ({ userName, role }) => {
+      console.log(`${role} ${userName} joined the ride room`);
+    });
+
+    return () => {
+      socket.off('ride-status-update');
+      socket.off('participant-joined');
+    };
+  }, []);
+
+  /* =========================
+     JOIN RIDE ROOM when currentRide changes
+  ========================= */
+  useEffect(() => {
+    if (!currentRide) return;
+
+    socket.emit('join-ride', {
+      rideId: String(currentRide.id),
+      role: 'driver',
+      userName: driverName,
+    });
+
+    console.log('🚗 Driver joined ride room:', currentRide.id);
+  }, [currentRide?.id]);
+
+  /* =========================
+     LOAD PENDING RIDES
+  ========================= */
   const loadRideRequests = async () => {
     try {
       const response = await getPendingRides();
@@ -32,18 +78,20 @@ function DriverDashboardPage() {
     }
   };
 
+  /* =========================
+     LOAD DRIVER RIDES
+  ========================= */
   const loadDriverRides = async () => {
     try {
       const response = await getMyRides();
-      const acceptedRides = response.data.filter((ride) => ride.driverId);
-      setDriverRides(acceptedRides);
+      const rides    = response.data || [];
 
-      const activeRide = acceptedRides.find(
-        (ride) =>
-          ride.status === 'Accepted' ||
-          ride.status === 'Driver Arriving' ||
-          ride.status === 'Ongoing'
+      setDriverRides(rides);
+
+      const activeRide = rides.find((ride) =>
+        ['Accepted', 'Driver Arriving', 'Ongoing'].includes(ride.status)
       );
+
       if (activeRide) setCurrentRide(activeRide);
     } catch (error) {
       console.log(error);
@@ -55,9 +103,12 @@ function DriverDashboardPage() {
     loadDriverRides();
   }, []);
 
+  /* =========================
+     ACCEPT RIDE
+  ========================= */
   const handleAcceptRide = async (ride) => {
     try {
-      const response = await acceptRide(ride.id);
+      const response = await acceptRide(ride.id || ride.booking_id);
       alert(response.data.message);
       setCurrentRide(response.data.ride);
       loadRideRequests();
@@ -67,6 +118,9 @@ function DriverDashboardPage() {
     }
   };
 
+  /* =========================
+     VERIFY / REJECT PAYMENT
+  ========================= */
   const handleVerifyPayment = async (rideId) => {
     try {
       const response = await verifyPayment(rideId);
@@ -87,17 +141,24 @@ function DriverDashboardPage() {
     }
   };
 
+  /* =========================
+     UPDATE STATUS — now emits to socket
+  ========================= */
   const updateRideStatus = (status) => {
     if (!currentRide) return;
-    const updatedRide = { ...currentRide, status };
-    setCurrentRide(updatedRide);
-    const allRides = JSON.parse(localStorage.getItem('rides') || '[]');
-    const updatedRides = allRides.map((ride) =>
-      ride.id === currentRide.id ? updatedRide : ride
-    );
-    localStorage.setItem('rides', JSON.stringify(updatedRides));
+
+    // ← Tell all clients in this ride room
+    socket.emit('ride-status-update', {
+      rideId: String(currentRide.id),
+      status,
+    });
+
+    setCurrentRide((prev) => ({ ...prev, status }));
   };
 
+  /* =========================
+     COMPLETE RIDE
+  ========================= */
   const completeRide = () => {
     updateRideStatus('Completed');
     alert('Ride completed successfully');
@@ -105,6 +166,9 @@ function DriverDashboardPage() {
     setChatOpen(false);
   };
 
+  /* =========================
+     CANCEL RIDE
+  ========================= */
   const cancelRide = () => {
     updateRideStatus('Cancelled');
     alert('Ride cancelled');
@@ -112,11 +176,22 @@ function DriverDashboardPage() {
     setChatOpen(false);
   };
 
+  /* =========================
+     LOGOUT
+  ========================= */
   const handleLogout = () => {
+    socket.disconnect(); // ← clean disconnect
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     navigate('/login');
   };
+
+  /* =========================
+     TOTAL EARNINGS
+  ========================= */
+  const totalEarnings = driverRides.reduce(
+    (total, ride) => total + Number(ride.fare || 0), 0
+  );
 
   return (
     <div className="driver-page">
@@ -144,7 +219,7 @@ function DriverDashboardPage() {
         <section className="driver-welcome">
           <div>
             <h1>Driver Dashboard</h1>
-            <p>Welcome, {driverName}.</p>
+            <p>Welcome, {driverName}</p>
           </div>
           <div className="driver-status-box">
             <p>Status</p>
@@ -161,11 +236,11 @@ function DriverDashboardPage() {
               <p>{driver.vehicleType || 'Taxi'} - {driver.vehicleNumber || 'Not set'}</p>
             </div>
           </div>
-          <div className="stat-card">
+          <div className="stat-card earnings-card">
             <FaMoneyBillWave />
             <div>
-              <h3>Today's Earnings</h3>
-              <p>Nu. 550</p>
+              <h3>Total Earnings</h3>
+              <p>Nu. {totalEarnings}</p>
             </div>
           </div>
           <div className="stat-card">
@@ -194,35 +269,24 @@ function DriverDashboardPage() {
               </div>
               <span className="ride-status-badge">{currentRide.status}</span>
             </div>
-
             <div className="active-details">
-              <p><strong>Pickup:</strong>      {currentRide.pickup}</p>
+              <p><strong>Pickup:</strong> {currentRide.pickup}</p>
               <p><strong>Destination:</strong> {currentRide.destination}</p>
-              <p><strong>Fare:</strong>        Nu. {currentRide.fare}</p>
+              <p><strong>Fare:</strong> Nu. {currentRide.fare}</p>
             </div>
-
             <div className="ride-progress-buttons">
               <button onClick={() => updateRideStatus('Driver Arriving')}>Driver Arriving</button>
               <button onClick={() => updateRideStatus('Ongoing')}>Start Trip</button>
               <button onClick={() => navigate('/map')}>Track Ride</button>
-
-              {/* Chat button — opens chat with rider */}
-              <button
-                onClick={() => setChatOpen(true)}
-                style={{ background: '#f5a623', color: '#fff' }}
-              >
-                💬 Chat with Rider
-              </button>
-
+              <button onClick={() => setChatOpen(true)}>💬 Chat</button>
               <button className="complete-btn" onClick={completeRide}>Complete</button>
-              <button className="cancel-btn"   onClick={cancelRide}>Cancel</button>
+              <button className="cancel-btn" onClick={cancelRide}>Cancel</button>
             </div>
           </div>
         )}
 
-        {/* REQUESTS + PAYMENTS GRID */}
+        {/* MAIN GRID */}
         <section className="driver-grid">
-
           {/* RIDE REQUESTS */}
           <div className="driver-card">
             <h2>Available Ride Requests</h2>
@@ -235,7 +299,7 @@ function DriverDashboardPage() {
             ) : (
               <div className="requests-list">
                 {rideRequests.map((ride) => (
-                  <div className="request-card" key={ride.id}>
+                  <div className="request-card" key={ride.id || ride.booking_id}>
                     <div className="request-top">
                       <h3>{ride.riderName}</h3>
                       <span>Nu. {ride.fare}</span>
@@ -249,7 +313,7 @@ function DriverDashboardPage() {
             )}
           </div>
 
-          {/* PAYMENT VERIFICATION */}
+          {/* PAYMENT */}
           <div className="driver-card">
             <h2>Payment Verification</h2>
             {driverRides.length === 0 ? (
@@ -257,18 +321,14 @@ function DriverDashboardPage() {
             ) : (
               <div className="requests-list">
                 {driverRides.map((ride) => (
-                  <div className="request-card" key={ride.id}>
+                  <div className="request-card" key={ride.id || ride.booking_id}>
                     <h3>{ride.riderName}</h3>
                     <p><strong>Payment:</strong> {ride.paymentStatus}</p>
                     {ride.paymentReference && (
                       <p><strong>Reference:</strong> {ride.paymentReference}</p>
                     )}
                     {ride.paymentScreenshot && (
-                      <img
-                        src={ride.paymentScreenshot}
-                        alt="Payment proof"
-                        className="payment-proof-image"
-                      />
+                      <img src={ride.paymentScreenshot} alt="Payment proof" className="payment-proof-image" />
                     )}
                     {ride.paymentStatus === 'Pending Verification' && (
                       <div className="payment-actions">
@@ -281,11 +341,10 @@ function DriverDashboardPage() {
               </div>
             )}
           </div>
-
         </section>
       </div>
 
-      {/* Driver Chat Modal — opens when chatOpen is true and there's an active ride */}
+      {/* CHAT */}
       {chatOpen && currentRide && (
         <RideChat
           rideId={String(currentRide.id)}
