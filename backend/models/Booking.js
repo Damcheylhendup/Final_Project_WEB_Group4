@@ -5,7 +5,7 @@ const Booking = sequelize.define('Booking', {
     booking_id:             { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     user_id:                { type: DataTypes.INTEGER, allowNull: false },
     driver_id:              { type: DataTypes.INTEGER },
-    vehicle_type_requested: { type: DataTypes.ENUM('sedan','suv','bike','tuktuk','van'), allowNull: false },
+    vehicle_type_requested: { type: DataTypes.ENUM('Car','Taxi','Bus'), allowNull: false },
     pickup_address:         { type: DataTypes.TEXT, allowNull: false },
     pickup_latitude:        { type: DataTypes.DECIMAL(9,6) },
     pickup_longitude:       { type: DataTypes.DECIMAL(9,6) },

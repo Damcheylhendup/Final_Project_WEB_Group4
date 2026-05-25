@@ -1,60 +1,64 @@
 .driver-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #ffffff;
   padding: 24px;
   font-family: Arial, sans-serif;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: .3s;
 }
 
 .driver-container {
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 0 auto;
 }
+
+/* =========================
+   HEADER
+========================= */
 
 .driver-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 30px;
 }
 
 .driver-logo {
-  background: #000;
-  border-radius: 16px;
-  padding: 16px 22px;
-  font-size: 1.6rem;
-  font-weight: 700;
+  background: #111827;
+  border-radius: 18px;
+  padding: 14px 22px;
+  font-size: 1.8rem;
+  font-weight: 800;
 }
 
 .yellow {
-  color: #ffd21f;
+  color: #ffb300;
 }
 
 .red {
-  color: #f05a1a;
+  color: #ff9800;
 }
 
 .header-actions {
   display: flex;
   gap: 12px;
-  align-items: center;
 }
 
 .status-btn,
 .logout-btn {
   border: none;
   border-radius: 999px;
-  padding: 12px 18px;
+  padding: 12px 20px;
   cursor: pointer;
   font-weight: 700;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: .25s;
 }
 
-.status-btn svg {
-  font-size: 1.2rem;
+.status-btn:hover,
+.logout-btn:hover {
+  transform: translateY(-2px);
 }
 
 .status-btn.online {
@@ -68,129 +72,180 @@
 }
 
 .logout-btn {
-  background: #000;
-  color: #fff;
+  background: #111827;
+  color: white;
 }
 
-.status-btn:hover,
-.logout-btn:hover {
-  transform: translateY(-2px);
-}
+/* =========================
+   WELCOME
+========================= */
 
 .driver-welcome {
-  background: #fff;
-  border-radius: 24px;
-  padding: 30px;
-  margin-bottom: 22px;
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f9f9f9
+  );
+
+  border-radius: 28px;
+  padding: 32px;
+  margin-bottom: 24px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 22px;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+
+  box-shadow:
+    0 12px 35px rgba(
+      0,
+      0,
+      0,
+      .08
+    );
 }
 
 .driver-welcome h1 {
   margin: 0;
   font-size: 2.2rem;
-  color: #111;
-  transition: color 0.3s ease;
 }
 
 .driver-welcome p {
+  margin-top: 8px;
   color: #666;
-  margin: 8px 0 0;
-  transition: color 0.3s ease;
 }
 
 .driver-status-box {
-  background: #f3f3f3;
-  border-radius: 18px;
-  padding: 18px 22px;
-  min-width: 160px;
+  background: #f3f4f6;
+  border-radius: 20px;
+  padding: 18px 24px;
+  min-width: 180px;
   text-align: center;
-  transition: background 0.3s ease;
 }
 
 .driver-status-box p {
   margin: 0;
-  color: #666;
-  transition: color 0.3s ease;
+  color: #777;
 }
 
 .driver-status-box h2 {
-  margin: 6px 0 0;
-  color: inherit;
+  margin-top: 6px;
 }
+
+/* =========================
+   STATS
+========================= */
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns:
+    repeat(4, 1fr);
+
   gap: 18px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .stat-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 22px;
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #fafafa
+  );
+
+  border-radius: 22px;
+  padding: 24px;
+
   display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  gap: 18px;
+
+  border: 1px solid #ececec;
+
+  box-shadow:
+    0 12px 28px rgba(
+      0,
+      0,
+      0,
+      .08
+    );
+
+  transition: .25s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
 }
 
 .stat-card svg {
-  font-size: 1.8rem;
-  flex-shrink: 0;
+  font-size: 1.9rem;
 }
 
 .stat-card h3 {
   margin: 0;
-  color: inherit;
 }
 
 .stat-card p {
-  margin: 6px 0 0;
+  margin-top: 6px;
   color: #666;
-  transition: color 0.3s ease;
+}
+
+/* =========================
+   EARNINGS CARD
+========================= */
+
+.earnings-card {
+  background:
+    linear-gradient(
+      135deg,
+      #ffb300,
+      #ff9800
+    );
+
+  color: black;
+}
+
+.earnings-card h3,
+.earnings-card p {
+  color: black !important;
 }
 
 .clickable-card {
   cursor: pointer;
 }
 
-.clickable-card:hover {
-  transform: translateY(-4px);
-  background: #f3f3f3;
-}
+/* =========================
+   MAIN GRID
+========================= */
 
 .driver-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 22px;
+  grid-template-columns:
+    1.2fr 0.8fr;
+
+  gap: 24px;
 }
 
 .driver-card {
-  background: #fff;
+  background: white;
   border-radius: 24px;
-  padding: 26px;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  padding: 24px;
+
+  box-shadow:
+    0 12px 35px rgba(
+      0,
+      0,
+      0,
+      .08
+    );
 }
 
 .driver-card h2 {
   margin-top: 0;
-  color: inherit;
 }
 
 .offline-box {
-  background: #f3f3f3;
+  background: #f3f4f6;
   border-radius: 16px;
-  padding: 20px;
-  color: #666;
-  transition: background 0.3s ease, color 0.3s ease;
+  padding: 18px;
 }
 
 .requests-list {
@@ -200,185 +255,182 @@
 }
 
 .request-card {
-  background: #f3f3f3;
+  background: #f7f7f7;
   border-radius: 18px;
   padding: 18px;
-  transition: background 0.3s ease;
 }
 
 .request-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-
-.request-top h3 {
-  margin: 0;
-  color: inherit;
 }
 
 .request-top span {
-  font-weight: 700;
-  background: #000;
-  color: #fff;
+  background: #111827;
+  color: white;
   border-radius: 999px;
   padding: 6px 12px;
-  transition: background 0.3s ease, color 0.3s ease;
+  font-weight: 700;
 }
 
-.request-card p,
-.current-ride p {
-  color: #444;
-  transition: color 0.3s ease;
-}
-
-.request-card button,
-.current-ride button {
+.request-card button {
   width: 100%;
-  min-height: 48px;
+  margin-top: 10px;
+
   border: none;
   border-radius: 12px;
-  background: #000;
-  color: #fff;
+
+  min-height: 46px;
+
+  background: #111827;
+  color: white;
+
   cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.2s ease;
 }
 
-.request-card button:hover,
-.current-ride button:hover {
-  background: #222;
-  transform: translateY(-2px);
+/* =========================
+   ACTIVE RIDE
+========================= */
+
+.active-ride-card {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 24px;
+
+  box-shadow:
+    0 12px 35px rgba(
+      0,
+      0,
+      0,
+      .08
+    );
 }
 
-.current-ride {
-  background: #f3f3f3;
-  border-radius: 18px;
-  padding: 20px;
-  transition: background 0.3s ease;
+.active-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.current-ride h3 {
-  margin-top: 0;
-  color: inherit;
+.ride-status-badge {
+  background: #ffb300;
+  color: black;
+
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 700;
 }
 
-/* ─── Dark Mode ───────────────────────────────────────── */
-
-html.dark-mode {
-  color-scheme: dark;
+.ride-progress-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
 }
 
-html.dark-mode body {
-  background: #0f0f0f;
-  color: #f0f0f0;
+.ride-progress-buttons button {
+  border: none;
+  border-radius: 12px;
+  min-height: 46px;
+  padding: 0 18px;
+  cursor: pointer;
 }
+
+.complete-btn {
+  background: #10b981;
+  color: white;
+}
+
+.cancel-btn {
+  background: #ef4444;
+  color: white;
+}
+
+/* =========================
+   PAYMENT IMAGE
+========================= */
+
+.payment-proof-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+/* =========================
+   DARK MODE
+========================= */
 
 html.dark-mode .driver-page {
   background: #0f0f0f;
   color: #f0f0f0;
 }
 
+html.dark-mode .driver-card,
 html.dark-mode .driver-welcome,
-html.dark-mode .stat-card,
-html.dark-mode .driver-card {
+html.dark-mode .active-ride-card,
+html.dark-mode .stat-card {
   background: #1a1a1a;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
 }
 
-html.dark-mode .driver-welcome h1 {
-  color: #f0f0f0;
-}
-
-html.dark-mode .driver-welcome p,
-html.dark-mode .driver-status-box p,
-html.dark-mode .stat-card p,
 html.dark-mode .offline-box,
-html.dark-mode .request-card p,
-html.dark-mode .current-ride p {
+html.dark-mode .request-card,
+html.dark-mode .driver-status-box {
+  background: #252525;
+}
+
+html.dark-mode .stat-card p,
+html.dark-mode .driver-welcome p {
   color: #aaa;
 }
 
-html.dark-mode .driver-status-box,
-html.dark-mode .offline-box,
-html.dark-mode .request-card,
-html.dark-mode .current-ride {
-  background: #252525;
+html.dark-mode .earnings-card {
+  background:
+    linear-gradient(
+      135deg,
+      #ffb300,
+      #ff9800
+    );
+
+  color: black;
 }
 
-html.dark-mode .clickable-card:hover {
-  background: #252525;
+html.dark-mode .earnings-card h3,
+html.dark-mode .earnings-card p {
+  color: black !important;
 }
 
-html.dark-mode .status-btn.online {
-  background: #123b2f;
-  color: #34d399;
-}
-
-html.dark-mode .status-btn.offline {
-  background: #3a1f1f;
-  color: #ff6b6b;
-}
-
-html.dark-mode .logout-btn,
-html.dark-mode .request-card button,
-html.dark-mode .current-ride button {
-  background: #f0f0f0;
-  color: #000;
-}
-
-html.dark-mode .logout-btn:hover,
-html.dark-mode .request-card button:hover,
-html.dark-mode .current-ride button:hover {
-  background: #ddd;
-}
-
-html.dark-mode .request-top span {
-  background: #f0f0f0;
-  color: #000;
-}
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 1000px) {
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(2, 1fr);
   }
 
   .driver-grid {
     grid-template-columns: 1fr;
   }
+}
 
+@media (max-width: 700px) {
+  .driver-header,
   .driver-welcome {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .driver-status-box {
-    width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
   .stats-grid {
     grid-template-columns: 1fr;
   }
 
-  .driver-header {
+  .ride-progress-buttons {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
   }
 
-  .header-actions {
+  .ride-progress-buttons button {
     width: 100%;
-  }
-
-  .status-btn,
-  .logout-btn {
-    flex: 1;
-    justify-content: center;
-  }
-
-  .driver-welcome h1 {
-    font-size: 1.8rem;
   }
 }
