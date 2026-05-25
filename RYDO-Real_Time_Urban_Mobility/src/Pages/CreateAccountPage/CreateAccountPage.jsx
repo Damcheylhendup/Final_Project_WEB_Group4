@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { registerUser } from '../../api/authApi';
+import { registerUser, registerDriver } from '../../api/authApi';
 import './CreateAccountPage.css';
 
 function CreateAccountPage() {
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const navigate    = useNavigate();
+  const location    = useLocation();
   const passedPhone = location.state?.phone || '';
 
   const [formData, setFormData] = useState({
@@ -60,13 +60,13 @@ function CreateAccountPage() {
     else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
 
     if (isDriver) {
-      if (!formData.vehicleType.trim())    newErrors.vehicleType    = 'Vehicle type is required';
-      if (!formData.vehicleNumber.trim())  newErrors.vehicleNumber  = 'Vehicle number is required';
-      if (!formData.licenseNumber.trim())  newErrors.licenseNumber  = 'License number is required';
-      if (!formData.bankName.trim())       newErrors.bankName       = 'Bank name is required';
-      if (!formData.accountHolder.trim())  newErrors.accountHolder  = 'Account holder name is required';
-      if (!formData.accountNumber.trim())  newErrors.accountNumber  = 'Account number is required';
-      if (!formData.qrImage)              newErrors.qrImage        = 'Payment QR image is required';
+      if (!formData.vehicleType.trim())   newErrors.vehicleType   = 'Vehicle type is required';
+      if (!formData.vehicleNumber.trim()) newErrors.vehicleNumber = 'Vehicle number is required';
+      if (!formData.licenseNumber.trim()) newErrors.licenseNumber = 'License number is required';
+      if (!formData.bankName.trim())      newErrors.bankName      = 'Bank name is required';
+      if (!formData.accountHolder.trim()) newErrors.accountHolder = 'Account holder name is required';
+      if (!formData.accountNumber.trim()) newErrors.accountNumber = 'Account number is required';
+      if (!formData.qrImage)             newErrors.qrImage       = 'Payment QR image is required';
     }
 
     return newErrors;
@@ -80,20 +80,35 @@ function CreateAccountPage() {
 
     try {
       setLoading(true);
-      const response = await registerUser({
-        fullName: formData.fullName,
-        email:    formData.email,
-        phone:    formData.phone.replace(/\s+/g, ''),
-        password: formData.password,
-      });
+
+      let response;
+
+      if (isDriver) {
+        // FIX: call registerDriver for drivers — saves to drivers table
+        response = await registerDriver({
+          fullName:      formData.fullName,
+          email:         formData.email,
+          phone:         formData.phone.replace(/\s+/g, ''),
+          password:      formData.password,
+          licenseNumber: formData.licenseNumber,
+          vehicleType:   formData.vehicleType,
+          vehicleNumber: formData.vehicleNumber,
+        });
+      } else {
+        // Riders go to users table
+        response = await registerUser({
+          fullName: formData.fullName,
+          email:    formData.email,
+          phone:    formData.phone.replace(/\s+/g, ''),
+          password: formData.password,
+        });
+      }
 
       const { token, user } = response.data;
 
-      /* Save token and user */
       localStorage.setItem('token', token);
       localStorage.setItem('currentUser', JSON.stringify({
         ...user,
-        role:          formData.role,
         vehicleType:   isDriver ? formData.vehicleType   : '',
         vehicleNumber: isDriver ? formData.vehicleNumber : '',
         licenseNumber: isDriver ? formData.licenseNumber : '',
@@ -103,7 +118,7 @@ function CreateAccountPage() {
         qrImage:       isDriver ? formData.qrImage       : '',
       }));
 
-      if (formData.role === 'driver') {
+      if (user.role === 'driver') {
         navigate('/driver-dashboard');
       } else {
         navigate('/dashboard');
@@ -127,13 +142,13 @@ function CreateAccountPage() {
         <p className="create-subtitle">Choose your role and complete your profile.</p>
 
         <form className="create-form" onSubmit={handleCreateAccount}>
-          <input type="text"  name="fullName" placeholder="Full Name"       value={formData.fullName} onChange={handleChange} />
+          <input type="text"  name="fullName" placeholder="Full Name"     value={formData.fullName} onChange={handleChange} />
           {errors.fullName && <p className="error-text">{errors.fullName}</p>}
 
-          <input type="email" name="email"    placeholder="Email Address"   value={formData.email}    onChange={handleChange} />
+          <input type="email" name="email"    placeholder="Email Address" value={formData.email}    onChange={handleChange} />
           {errors.email && <p className="error-text">{errors.email}</p>}
 
-          <input type="tel"   name="phone"    placeholder="17660994"         value={formData.phone}    onChange={handlePhoneChange} maxLength="8" />
+          <input type="tel"   name="phone"    placeholder="17660994"       value={formData.phone}    onChange={handlePhoneChange} maxLength="8" />
           {errors.phone && <p className="error-text">{errors.phone}</p>}
 
           <select name="role" value={formData.role} onChange={handleChange}>

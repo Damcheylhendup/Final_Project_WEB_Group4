@@ -16,3 +16,9 @@ CREATE TABLE payments (
     FOREIGN KEY (user_id)    REFERENCES users    (user_id)    ON DELETE CASCADE,
     FOREIGN KEY (driver_id)  REFERENCES drivers  (driver_id)  ON DELETE SET NULL
 );
+
+ALTER TABLE bookings 
+ADD COLUMN payment_status ENUM('unpaid', 'pending_verification', 'verified', 'rejected') DEFAULT 'unpaid',
+ADD COLUMN payment_reference VARCHAR(255),
+ADD COLUMN payment_screenshot TEXT,
+ADD COLUMN driver_name VARCHAR(255);

@@ -1,69 +1,17 @@
 const multer = require('multer');
-
 const path = require('path');
+const fs = require('fs');
 
-/* STORAGE */
 const storage = multer.diskStorage({
-  destination: (
-    req,
-    file,
-    cb
-  ) => {
-    cb(
-      null,
-      'uploads/payments'
-    );
-  },
-
-  filename: (
-    req,
-    file,
-    cb
-  ) => {
-    cb(
-      null,
-      `${Date.now()}-${file.originalname}`
-    );
-  },
+    destination: (req, file, cb) => {
+        const dir = 'uploads/payments';
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
 });
 
-/* FILE FILTER */
-const fileFilter = (
-  req,
-  file,
-  cb
-) => {
-  const allowedTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/webp',
-  ];
-
-  if (
-    allowedTypes.includes(
-      file.mimetype
-    )
-  ) {
-    cb(null, true);
-  } else {
-    cb(
-      new Error(
-        'Only image files are allowed'
-      ),
-      false
-    );
-  }
-};
-
-const upload = multer({
-  storage,
-
-  fileFilter,
-
-  limits: {
-    fileSize:
-      5 * 1024 * 1024,
-  },
-});
-
+const upload = multer({ storage });
 module.exports = upload;
