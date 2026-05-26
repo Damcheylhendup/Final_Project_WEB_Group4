@@ -4,7 +4,7 @@ CREATE TABLE vehicles (
     vehicle_id          INT AUTO_INCREMENT PRIMARY KEY,
     driver_id           INT NOT NULL,
     vehicle_number      VARCHAR(50) UNIQUE NOT NULL,
-    vehicle_type        ENUM('sedan', 'suv', 'bike', 'tuktuk', 'van') NOT NULL,
+    vehicle_type        ENUM('Car', 'Taxi', 'Bus') NOT NULL,
     vehicle_make        VARCHAR(100),
     vehicle_model       VARCHAR(100),
     vehicle_year        YEAR,

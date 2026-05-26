@@ -9,126 +9,68 @@ const Driver = require('../models/Driver');
    REGISTER RIDER
 ========================= */
 const registerUser = async (req, res) => {
-<<<<<<< HEAD
-    try {
-
-        const {
-            fullName,
-            email,
-            phone,
-            password
-        } = req.body;
-
-        if (!fullName || !phone || !password) {
-            return res.status(400).json({
-                message: 'Name, phone and password are required.'
-            });
-        }
-
-        const existingUser = await User.findOne({
-            where: {
-                user_number: phone
-            }
-        });
-
-        if (existingUser) {
-            return res.status(400).json({
-                message: 'Phone number already registered.'
-            });
-        }
-
-        const hashedPassword =
-            await bcrypt.hash(password, 10);
-
-        const user = await User.create({
-            user_name: fullName,
-            user_email: email || null,
-            user_number: phone,
-            user_password_hash: hashedPassword
-        });
-
-        const token = jwt.sign(
-            {
-                id: user.user_id,
-                role: 'rider',
-                name: user.user_name
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '7d' }
-        );
-
-        res.status(201).json({
-            token,
-            user: {
-                id: user.user_id,
-                fullName: user.user_name,
-                email: user.user_email,
-                phone: user.user_number,
-                role: 'rider'
-            }
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            message: error.message
-        });
-
-=======
   try {
-    const { fullName, email, phone, password } = req.body;
+    const {
+      fullName,
+      email,
+      phone,
+      password
+    } = req.body;
 
+    // Validate required fields
     if (!fullName || !phone || !password) {
       return res.status(400).json({
-        message: 'Name, phone and password are required.',
+        message: 'Name, phone and password are required.'
       });
->>>>>>> e02678e62532c557f4b1b3eb7bbe0d036a1490f4
     }
 
+    // Check if phone number already exists
     const existingUser = await User.findOne({
       where: {
-        user_number: phone,
-      },
+        user_number: phone
+      }
     });
 
     if (existingUser) {
       return res.status(400).json({
-        message: 'Phone number already registered.',
+        message: 'Phone number already registered.'
       });
     }
 
+    // Check if email already exists (if provided)
     if (email) {
       const existingEmail = await User.findOne({
         where: {
-          user_email: email,
-        },
+          user_email: email
+        }
       });
 
       if (existingEmail) {
         return res.status(400).json({
-          message: 'Email already exists.',
+          message: 'Email already exists.'
         });
       }
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create user
     const user = await User.create({
       user_name: fullName,
       user_email: email || null,
       user_number: phone,
-      user_password_hash: hashedPassword,
+      user_password_hash: hashedPassword
     });
 
+    // Generate JWT token
     const token = jwt.sign(
       {
         id: user.user_id,
-        role: 'rider',
+        role: 'rider'
       },
       process.env.JWT_SECRET,
-      {
-        expiresIn: '7d',
-      }
+      { expiresIn: '7d' }
     );
 
     res.status(201).json({
@@ -139,12 +81,13 @@ const registerUser = async (req, res) => {
         fullName: user.user_name,
         email: user.user_email,
         phone: user.user_number,
-        role: 'rider',
-      },
+        role: 'rider'
+      }
     });
+
   } catch (error) {
     res.status(500).json({
-      message: error.message,
+      message: error.message
     });
   }
 };
@@ -153,84 +96,6 @@ const registerUser = async (req, res) => {
    REGISTER DRIVER
 ========================= */
 const registerDriver = async (req, res) => {
-<<<<<<< HEAD
-    try {
-
-        const {
-            fullName,
-            email,
-            phone,
-            password,
-            licenseNumber,
-
-            bankName,
-            accountHolder,
-            accountNumber,
-            qrImage
-        } = req.body;
-
-        if (!fullName || !phone || !password) {
-            return res.status(400).json({
-                message: 'Name, phone and password are required.'
-            });
-        }
-
-        const existingDriver =
-            await Driver.findOne({
-                where: {
-                    driver_number: phone
-                }
-            });
-
-        if (existingDriver) {
-            return res.status(400).json({
-                message: 'Phone number already registered.'
-            });
-        }
-
-        const hashedPassword =
-            await bcrypt.hash(password, 10);
-
-        const driver = await Driver.create({
-            driver_name: fullName,
-            driver_email: email || null,
-            driver_number: phone,
-            driver_password_hash: hashedPassword,
-            license_number: licenseNumber || null,
-
-            payment_name: accountHolder || bankName || null,
-            payment_number: accountNumber || null,
-            qr_code_url: qrImage || null
-        });
-
-        const token = jwt.sign(
-            {
-                id: driver.driver_id,
-                role: 'driver',
-                name: driver.driver_name
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '7d' }
-        );
-
-        res.status(201).json({
-            token,
-            user: {
-                id: driver.driver_id,
-                fullName: driver.driver_name,
-                email: driver.driver_email,
-                phone: driver.driver_number,
-                role: 'driver'
-            }
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            message: error.message
-        });
-
-=======
   try {
     const {
       fullName,
@@ -238,62 +103,74 @@ const registerDriver = async (req, res) => {
       phone,
       password,
       licenseNumber,
+      bankName,
+      accountHolder,
+      accountNumber,
+      qrImage,
       vehicleType,
-      vehicleNumber,
+      vehicleNumber
     } = req.body;
 
+    // Validate required fields
     if (!fullName || !phone || !password) {
       return res.status(400).json({
-        message: 'Name, phone and password are required.',
+        message: 'Name, phone and password are required.'
       });
->>>>>>> e02678e62532c557f4b1b3eb7bbe0d036a1490f4
     }
 
+    // Check if phone number already exists
     const existingDriver = await Driver.findOne({
       where: {
-        driver_number: phone,
-      },
+        driver_number: phone
+      }
     });
 
     if (existingDriver) {
       return res.status(400).json({
-        message: 'Phone number already registered.',
+        message: 'Phone number already registered.'
       });
     }
 
+    // Check if email already exists (if provided)
     if (email) {
       const existingEmail = await Driver.findOne({
         where: {
-          driver_email: email,
-        },
+          driver_email: email
+        }
       });
 
       if (existingEmail) {
         return res.status(400).json({
-          message: 'Email already exists.',
+          message: 'Email already exists.'
         });
       }
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create driver
     const driver = await Driver.create({
       driver_name: fullName,
       driver_email: email || null,
       driver_number: phone,
       driver_password_hash: hashedPassword,
       license_number: licenseNumber || null,
+      payment_name: accountHolder || bankName || null,
+      payment_number: accountNumber || null,
+      qr_code_url: qrImage || null,
+      vehicle_type: vehicleType || 'Taxi',
+      vehicle_number: vehicleNumber || 'Not set'
     });
 
+    // Generate JWT token
     const token = jwt.sign(
       {
         id: driver.driver_id,
-        role: 'driver',
+        role: 'driver'
       },
       process.env.JWT_SECRET,
-      {
-        expiresIn: '7d',
-      }
+      { expiresIn: '7d' }
     );
 
     res.status(201).json({
@@ -305,156 +182,43 @@ const registerDriver = async (req, res) => {
         email: driver.driver_email,
         phone: driver.driver_number,
         role: 'driver',
-        vehicleType: vehicleType || 'Taxi',
-        vehicleNumber: vehicleNumber || 'Not set',
-      },
+        vehicleType: driver.vehicle_type,
+        vehicleNumber: driver.vehicle_number
+      }
     });
+
   } catch (error) {
     res.status(500).json({
-      message: error.message,
+      message: error.message
     });
   }
 };
 
-<<<<<<< HEAD
-/* LOGIN USER OR DRIVER */
-const loginUser = async (req, res) => {
-    try {
-
-        const {
-            emailOrPhone,
-            password
-        } = req.body;
-
-        if (!emailOrPhone || !password) {
-            return res.status(400).json({
-                message: 'Email/phone and password are required.'
-            });
-        }
-
-        const user = await User.findOne({
-            where: {
-                [Op.or]: [
-                    { user_email: emailOrPhone },
-                    { user_number: emailOrPhone }
-                ]
-            }
-        });
-
-        if (user) {
-
-            const valid =
-                await bcrypt.compare(
-                    password,
-                    user.user_password_hash
-                );
-
-            if (!valid) {
-                return res.status(400).json({
-                    message: 'Invalid credentials'
-                });
-            }
-
-            const token = jwt.sign(
-                {
-                    id: user.user_id,
-                    role: 'rider',
-                    name: user.user_name
-                },
-                process.env.JWT_SECRET,
-                { expiresIn: '7d' }
-            );
-
-            return res.json({
-                token,
-                user: {
-                    id: user.user_id,
-                    fullName: user.user_name,
-                    email: user.user_email,
-                    phone: user.user_number,
-                    role: 'rider'
-                }
-            });
-        }
-
-        const driver = await Driver.findOne({
-            where: {
-                [Op.or]: [
-                    { driver_email: emailOrPhone },
-                    { driver_number: emailOrPhone }
-                ]
-            }
-        });
-
-        if (driver) {
-
-            const valid =
-                await bcrypt.compare(
-                    password,
-                    driver.driver_password_hash
-                );
-
-            if (!valid) {
-                return res.status(400).json({
-                    message: 'Invalid credentials'
-                });
-            }
-
-            const token = jwt.sign(
-                {
-                    id: driver.driver_id,
-                    role: 'driver',
-                    name: driver.driver_name
-                },
-                process.env.JWT_SECRET,
-                { expiresIn: '7d' }
-            );
-
-            return res.json({
-                token,
-                user: {
-                    id: driver.driver_id,
-                    fullName: driver.driver_name,
-                    email: driver.driver_email,
-                    phone: driver.driver_number,
-                    role: 'driver'
-                }
-            });
-        }
-
-        return res.status(400).json({
-            message: 'Invalid credentials'
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            message: error.message
-        });
-
-=======
 /* =========================
-   LOGIN
+   LOGIN USER OR DRIVER
 ========================= */
 const loginUser = async (req, res) => {
   try {
-    const { emailOrPhone, password } = req.body;
+    const {
+      emailOrPhone,
+      password
+    } = req.body;
 
+    // Validate required fields
     if (!emailOrPhone || !password) {
       return res.status(400).json({
-        message: 'Email/phone and password are required.',
+        message: 'Email/phone and password are required.'
       });
->>>>>>> e02678e62532c557f4b1b3eb7bbe0d036a1490f4
     }
 
-    /* CHECK RIDERS */
+    // CHECK RIDERS
     const user = await User.findOne({
       where: {
         [Op.or]: [
           { user_email: emailOrPhone },
-          { user_number: emailOrPhone },
-        ],
-      },
+          { user_number: emailOrPhone }
+        ]
+      }
     });
 
     if (user) {
@@ -465,19 +229,17 @@ const loginUser = async (req, res) => {
 
       if (!isMatch) {
         return res.status(400).json({
-          message: 'Invalid credentials.',
+          message: 'Invalid credentials.'
         });
       }
 
       const token = jwt.sign(
         {
           id: user.user_id,
-          role: 'rider',
+          role: 'rider'
         },
         process.env.JWT_SECRET,
-        {
-          expiresIn: '7d',
-        }
+        { expiresIn: '7d' }
       );
 
       return res.json({
@@ -488,19 +250,19 @@ const loginUser = async (req, res) => {
           fullName: user.user_name,
           email: user.user_email,
           phone: user.user_number,
-          role: 'rider',
-        },
+          role: 'rider'
+        }
       });
     }
 
-    /* CHECK DRIVERS */
+    // CHECK DRIVERS
     const driver = await Driver.findOne({
       where: {
         [Op.or]: [
           { driver_email: emailOrPhone },
-          { driver_number: emailOrPhone },
-        ],
-      },
+          { driver_number: emailOrPhone }
+        ]
+      }
     });
 
     if (driver) {
@@ -511,19 +273,17 @@ const loginUser = async (req, res) => {
 
       if (!isMatch) {
         return res.status(400).json({
-          message: 'Invalid credentials.',
+          message: 'Invalid credentials.'
         });
       }
 
       const token = jwt.sign(
         {
           id: driver.driver_id,
-          role: 'driver',
+          role: 'driver'
         },
         process.env.JWT_SECRET,
-        {
-          expiresIn: '7d',
-        }
+        { expiresIn: '7d' }
       );
 
       return res.json({
@@ -534,30 +294,24 @@ const loginUser = async (req, res) => {
           fullName: driver.driver_name,
           email: driver.driver_email,
           phone: driver.driver_number,
-          role: 'driver',
-        },
+          role: 'driver'
+        }
       });
     }
 
     return res.status(400).json({
-      message: 'Invalid credentials.',
+      message: 'Invalid credentials.'
     });
 
   } catch (error) {
     res.status(500).json({
-      message: error.message,
+      message: error.message
     });
   }
 };
 
 module.exports = {
-<<<<<<< HEAD
-    registerUser,
-    registerDriver,
-    loginUser
-=======
   registerUser,
   registerDriver,
-  loginUser,
->>>>>>> e02678e62532c557f4b1b3eb7bbe0d036a1490f4
+  loginUser
 };
