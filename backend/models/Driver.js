@@ -8,6 +8,8 @@ const Driver = sequelize.define('Driver', {
     driver_email:         { type: DataTypes.STRING, unique: true },
     driver_password_hash: { type: DataTypes.STRING, allowNull: false },
     license_number:       { type: DataTypes.STRING, unique: true },
+    vehicle_type:         {type: DataTypes.STRING},
+    vehicle_number:       {type: DataTypes.STRING},
     driver_photo_url:     { type: DataTypes.TEXT },
     is_verified:          { type: DataTypes.BOOLEAN, defaultValue: false },
     driver_status:        { type: DataTypes.ENUM('active', 'inactive', 'suspended'), defaultValue: 'active' },
@@ -16,20 +18,9 @@ const Driver = sequelize.define('Driver', {
     current_latitude:     { type: DataTypes.DECIMAL(9, 6) },
     current_longitude:    { type: DataTypes.DECIMAL(9, 6) },
     last_location_updated:{ type: DataTypes.DATE },
-    payment_name:       { type: DataTypes.STRING },
-    payment_number:     { type: DataTypes.STRING },
-    qr_code_url:        { type: DataTypes.TEXT },
-    payment_name: {
-    type: DataTypes.STRING
-},
-
-payment_number: {
-    type: DataTypes.STRING
-},
-
-qr_code_url: {
-    type: DataTypes.TEXT
-},
+    payment_name:         { type: DataTypes.STRING},
+    payment_number:       { type: DataTypes.STRING},
+    qr_code_url:          {type: DataTypes.TEXT},
 }, { tableName: 'drivers', timestamps: true, createdAt: 'created_at', updatedAt: 'updated_at' });
 
 module.exports = Driver;

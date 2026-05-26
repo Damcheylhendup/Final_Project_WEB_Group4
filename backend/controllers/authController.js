@@ -177,14 +177,20 @@ const registerDriver = async (req, res) => {
       message: 'Driver registered successfully',
       token,
       user: {
-        id: driver.driver_id,
-        fullName: driver.driver_name,
-        email: driver.driver_email,
-        phone: driver.driver_number,
-        role: 'driver',
-        vehicleType: driver.vehicle_type,
-        vehicleNumber: driver.vehicle_number
-      }
+              id: driver.driver_id,
+              fullName: driver.driver_name,
+              email: driver.driver_email,
+              phone: driver.driver_number,
+              role: 'driver',
+
+              vehicleType: driver.vehicle_type,
+              vehicleNumber: driver.vehicle_number,
+              licenseNumber: driver.license_number,
+
+              paymentName: driver.payment_name,
+              paymentNumber: driver.payment_number,
+              qrCodeUrl: driver.qr_code_url
+}
     });
 
   } catch (error) {
