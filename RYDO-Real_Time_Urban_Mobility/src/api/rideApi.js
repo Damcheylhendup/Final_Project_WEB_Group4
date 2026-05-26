@@ -21,3 +21,5 @@ export const submitPayment   = (rideId, formData) =>
   API.put(`/rides/payment/${rideId}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const verifyPayment   = (rideId)         => API.put(`/rides/verify-payment/${rideId}`);
 export const rejectPayment   = (rideId)         => API.put(`/rides/reject-payment/${rideId}`);
+export const completeRide = (rideId) =>
+  API.put(`/rides/complete/${rideId}`);

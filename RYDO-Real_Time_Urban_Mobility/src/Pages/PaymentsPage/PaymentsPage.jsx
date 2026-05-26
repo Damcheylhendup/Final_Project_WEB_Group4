@@ -50,11 +50,7 @@ function PaymentsPage() {
           response.data || [];
 
         if (rides.length > 0) {
-          setLatestRide(
-            rides[
-              rides.length - 1
-            ]
-          );
+          setLatestRide(rides[0]);
         }
       } catch (error) {
         console.log(error);
@@ -149,10 +145,9 @@ function PaymentsPage() {
 
         const response =
           await submitPayment(
-            latestRide.id,
+          latestRide.booking_id,
             formData
-          );
-
+        );
         alert(
           response.data
             .message
@@ -228,7 +223,7 @@ function PaymentsPage() {
                   Pickup:
                 </strong>{' '}
                 {
-                  latestRide.pickup
+                  latestRide.pickup_address
                 }
               </p>
 
@@ -237,7 +232,7 @@ function PaymentsPage() {
                   Destination:
                 </strong>{' '}
                 {
-                  latestRide.destination
+                  latestRide.drop_address
                 }
               </p>
 
@@ -246,7 +241,7 @@ function PaymentsPage() {
                   Ride Type:
                 </strong>{' '}
                 {
-                  latestRide.rideType
+                  latestRide.vehicle_type_request
                 }
               </p>
 
@@ -255,7 +250,7 @@ function PaymentsPage() {
                   Distance:
                 </strong>{' '}
                 {
-                  latestRide.distance
+                  latestRide.distance_km
                 }{' '}
                 km
               </p>
@@ -265,7 +260,7 @@ function PaymentsPage() {
                   Status:
                 </strong>{' '}
                 {
-                  latestRide.status
+                  latestRide.booking_status
                 }
               </p>
 
@@ -273,7 +268,7 @@ function PaymentsPage() {
                 <strong>
                   Payment:
                 </strong>{' '}
-                {latestRide.paymentStatus ||
+                {latestRide.payment_Status ||
                   'Unpaid'}
               </p>
 
@@ -292,30 +287,28 @@ function PaymentsPage() {
               </h2>
 
               <p>
-                <strong>
-                  Driver:
-                </strong>{' '}
-                {latestRide.driverName ||
-                  'Not assigned yet'}
-              </p>
+  <strong>Driver:</strong>{' '}
+  {latestRide.driver_name ||
+    'Not assigned yet'}
+</p>
 
-              <p>
-                <strong>
-                  Bank:
-                </strong>{' '}
-                {latestRide.driverBankName ||
-                  'Not provided'}
-              </p>
+<p>
+  <strong>Bank:</strong>{' '}
+  {latestRide.payment_name ||
+    'Not provided'}
+</p>
 
-              <p>
-                <strong>
-                  Account
-                  Holder:
-                </strong>{' '}
-                {latestRide.driverAccountHolder ||
-                  'Not provided'}
-              </p>
+<p>
+  <strong>Account Holder:</strong>{' '}
+  {latestRide.payment_name ||
+    'Not provided'}
+</p>
 
+<p>
+  <strong>Account Number:</strong>{' '}
+  {latestRide.payment_number ||
+    'Not provided'}
+</p>
               <p>
                 <strong>
                   Account
@@ -327,20 +320,22 @@ function PaymentsPage() {
             </div>
 
             <div className="qr-box">
-              {latestRide.driverQrImage ? (
-                <img
-                  src={
-                    latestRide.driverQrImage
-                  }
-                  alt="Driver payment QR"
-                  className="payment-qr-image"
-                />
-              ) : (
-                <div className="fake-qr">
-                  QR
-                </div>
-              )}
-
+              {latestRide.qr_code_url ? (
+  <img
+    src={latestRide.qr_code_url}
+    alt="Driver payment QR"
+    className="payment-qr-image"
+    style={{
+      width: '220px',
+      height: '220px',
+      objectFit: 'contain'
+    }}
+  />
+) : (
+  <div className="fake-qr">
+    QR
+  </div>
+)}
               <p>
                 Scan using
                 mBoB / Mpay /

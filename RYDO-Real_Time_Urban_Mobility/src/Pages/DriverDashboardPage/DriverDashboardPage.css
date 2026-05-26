@@ -434,3 +434,374 @@ html.dark-mode .earnings-card p {
     width: 100%;
   }
 }
+
+/* --- Section Headers --- */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.polling-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #22c55e;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* --- Offline Banner --- */
+.offline-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+/* --- Empty State --- */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #888;
+  border: 2px dashed #333;
+  border-radius: 12px;
+}
+
+.empty-state svg {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.empty-state small {
+  font-size: 0.78rem;
+  opacity: 0.6;
+}
+
+/* --- Ride Request Cards Grid --- */
+.ride-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.ride-request-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.2s;
+}
+
+.ride-request-card:hover {
+  border-color: #c3a8a8;
+}
+
+.ride-request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ride-type-badge {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.ride-fare {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #ffffff;
+}
+
+/* --- Location Rows --- */
+.ride-location {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.location-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.location-row small {
+  font-size: 0.7rem;
+  color: #888;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.location-row p {
+  font-size: 0.88rem;
+  color: #e5e5e5;
+  margin: 0;
+}
+
+.location-divider {
+  width: 2px;
+  height: 16px;
+  background: #333;
+  margin-left: 7px;
+}
+
+.icon-green { color: #22c55e; margin-top: 3px; flex-shrink: 0; }
+.icon-red   { color: #ef4444; margin-top: 3px; flex-shrink: 0; }
+
+.ride-meta {
+  font-size: 0.8rem;
+  color: #888;
+  display: flex;
+  gap: 1rem;
+}
+
+.ride-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* --- Accept Button --- */
+.accept-btn {
+  width: 100%;
+  padding: 0.7rem;
+  background: #f59e0b;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.accept-btn:hover:not(:disabled) {
+  background: #34e937;
+}
+
+.accept-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Current Ride Section --- */
+.current-ride-section {
+  margin-top: 2rem;
+}
+
+.current-ride-section h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.current-ride-card {
+  background: #1a1a1a ;
+  border: 1px solid #000000;
+  border-radius: 14px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.current-ride-status {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.current-ride-fare {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.current-ride-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.complete-btn {
+  flex: 1;
+  padding: 0.7rem;
+  background: #ffffff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.complete-btn:hover { background: #5ddc61; }
+
+.cancel-ride-btn {
+  flex: 1;
+  padding: 0.7rem;
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #f8f8f8;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancel-ride-btn:hover {
+  background: rgb(240, 50, 50);
+}
+
+/* --- Status & Payment Badges --- */
+.status-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-confirmed  { background: rgba(34,197,94,0.15);  color: #ffffff; }
+.status-pending    { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.status-completed  { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.status-cancelled  { background: rgba(239,68,68,0.15);  color: #ef4444; }
+.status-in_progress { background: rgba(168,85,247,0.15); color: #a855f7; }
+
+.payment-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.payment-verified             { background: rgba(34,197,94,0.15);  color: #22c55e; }
+.payment-unpaid               { background: rgba(239,68,68,0.15);  color: #ef4444; }
+.payment-pending_verification { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.payment-rejected             { background: rgba(239,68,68,0.15);  color: #ef4444; }
+
+/* --- Ride History --- */
+.ride-history-section {
+  margin-top: 2rem;
+}
+
+.ride-history-section h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.ride-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.history-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.history-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  color: #ccc;
+}
+
+.history-card-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.payment-screenshot img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #333;
+  margin-top: 4px;
+}
+
+/* --- Payment Action Buttons --- */
+.payment-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.verify-btn {
+  flex: 1;
+  padding: 0.6rem;
+  background: #ffffff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.verify-btn:hover { background: #ffffff; }
+
+.reject-btn {
+  flex: 1;
+  padding: 0.6rem;
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #da6666;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reject-btn:hover {
+  background: rgba(251, 251, 251, 0.1);
+}
+
+/* --- Sections spacing --- */
+.ride-requests-section,
+.current-ride-section,
+.ride-history-section {
+  margin-top: 2rem;
+}

@@ -22,3 +22,6 @@ ADD COLUMN payment_status ENUM('unpaid', 'pending_verification', 'verified', 're
 ADD COLUMN payment_reference VARCHAR(255),
 ADD COLUMN payment_screenshot TEXT,
 ADD COLUMN driver_name VARCHAR(255);
+
+ALTER TABLE drivers
+ADD COLUMN qr_code_url TEXT NULL;

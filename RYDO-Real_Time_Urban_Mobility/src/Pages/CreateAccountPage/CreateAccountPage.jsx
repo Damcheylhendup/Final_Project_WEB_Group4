@@ -84,15 +84,18 @@ function CreateAccountPage() {
       let response;
 
       if (isDriver) {
-        // FIX: call registerDriver for drivers — saves to drivers table
         response = await registerDriver({
-          fullName:      formData.fullName,
-          email:         formData.email,
-          phone:         formData.phone.replace(/\s+/g, ''),
-          password:      formData.password,
-          licenseNumber: formData.licenseNumber,
+          fullName: formData.fullName,
+          email:    formData.email,
+          phone:    formData.phone.replace(/\s+/g, ''),
+          password: formData.password,
           vehicleType:   formData.vehicleType,
           vehicleNumber: formData.vehicleNumber,
+          licenseNumber: formData.licenseNumber,
+          bankName:      formData.bankName,
+          accountHolder: formData.accountHolder,
+          accountNumber: formData.accountNumber,
+          qrImage:       formData.qrImage,
         });
       } else {
         // Riders go to users table

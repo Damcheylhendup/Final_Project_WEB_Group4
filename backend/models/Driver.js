@@ -16,6 +16,20 @@ const Driver = sequelize.define('Driver', {
     current_latitude:     { type: DataTypes.DECIMAL(9, 6) },
     current_longitude:    { type: DataTypes.DECIMAL(9, 6) },
     last_location_updated:{ type: DataTypes.DATE },
+    payment_name:       { type: DataTypes.STRING },
+    payment_number:     { type: DataTypes.STRING },
+    qr_code_url:        { type: DataTypes.TEXT },
+    payment_name: {
+    type: DataTypes.STRING
+},
+
+payment_number: {
+    type: DataTypes.STRING
+},
+
+qr_code_url: {
+    type: DataTypes.TEXT
+},
 }, { tableName: 'drivers', timestamps: true, createdAt: 'created_at', updatedAt: 'updated_at' });
 
 module.exports = Driver;
