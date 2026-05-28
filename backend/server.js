@@ -32,11 +32,13 @@ const rideState = new Map();
 /* =========================
    MIDDLEWARE
 ========================= */
-app.use(cors({
-  origin: 'http://localhost:5173',   // ← exact origin, not '*'
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,                 // ← required for socket handshake
-}));
+app.use(cors([
+  {
+    origin: 'https://rydo-frontend.onrender.com',   // ← exact origin, not '*'
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,                 // ← required for socket handshake
+  }
+]));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
