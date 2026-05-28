@@ -64,7 +64,7 @@ const httpServer = http.createServer(app);
 ========================= */
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:5173',  // ← exact origin, not '*'
+    origin: 'https://rydo-frontend.onrender.com',  // ← exact origin, not '*'
     methods: ['GET', 'POST'],
     credentials: true,                // ← required
   },
@@ -278,7 +278,7 @@ sequelize.sync()
   .then(() => {
     console.log('✅ Database synced');
     httpServer.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:4000`);
+      console.log(`🚀 Server running on https://rydo-qvem.onrender.com`);
     });
   })
   .catch((err) => {
