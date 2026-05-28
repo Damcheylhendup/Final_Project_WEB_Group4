@@ -11,7 +11,7 @@ import MapPage from './Pages/MapPage/MapPage.jsx';
 import AccountSettingsPage from './Pages/AccountSettingsPage/AccountSettingsPage.jsx';
 import CreateAccountPage from './Pages/CreateAccountPage/CreateAccountPage.jsx';
 import DriverDashboardPage from './Pages/DriverDashboardPage/DriverDashboardPage.jsx';
-import ProtectedRoute from './Components/ProtectedRoute.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ResetPassword from './Pages/ResetPassword/ResetPassword.jsx';
 
 function App() {
