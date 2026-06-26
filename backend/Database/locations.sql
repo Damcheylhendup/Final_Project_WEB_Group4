@@ -1,1 +1,0 @@
-DESCRIBE driver_withdrawals;
